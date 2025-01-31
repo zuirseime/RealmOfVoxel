@@ -19,7 +19,6 @@ public class CreateUtility : Editor
     public static void Place(GameObject gObj)
     {
         gObj.transform.position = Vector3.zero;
-        GameObject.Instantiate
         StageUtility.PlaceGameObjectInCurrentStage(gObj);
         GameObjectUtility.EnsureUniqueNameForSibling(gObj);
 
