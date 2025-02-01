@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class CreateUtility : Editor
 {
-    [MenuItem("GameObject/Tools/Room")]
-    public static void CreateRoom(MenuCommand menuCommand)
+    [MenuItem("GameObject/Tools/Section")]
+    public static void CreateSection(MenuCommand menuCommand)
     {
-        GameObject room = new("Room");
+        GameObject section = new("Section");
+        section.AddComponent<Section>();
 
-        CreateDoors(room);
-        CreateGeometry(room);
-        CreateBounds(room);
+        CreateDoors(section);
+        CreateGeometry(section);
+        CreateBounds(section);
 
-        Place(room);
+        Place(section);
+    }
+
+    [MenuItem("GameObject/Tools/Level")]
+    public static void CreateLevel(MenuCommand menuCommand)
+    {
+        GameObject level = new("Level");
+        level.AddComponent<LevelGenerator>();
+
+        Place(level);
     }
 
     public static void Place(GameObject gObj)
@@ -34,6 +44,7 @@ public class CreateUtility : Editor
         doors.transform.parent = room.transform;
 
         GameObject door = new("Door (1)");
+        door.tag = "Door";
         door.transform.position = Vector3.forward * 0.5f;
         door.transform.parent = doors.transform;
         IconManager.SetIcon(door, IconManager.IconColor.Red, IconManager.IconType.Circle);
@@ -46,6 +57,7 @@ public class CreateUtility : Editor
 
         GameObject box = ObjectFactory.CreatePrimitive(PrimitiveType.Cube);
         box.transform.parent = geometry.transform;
+        box.GetComponent<Renderer>().material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Prefabs/Materials/Spawn.mat");
     }
 
     private static void CreateBounds(GameObject room)
@@ -53,6 +65,7 @@ public class CreateUtility : Editor
         GameObject bounds = new("Bounds");
         bounds.transform.parent = room.transform;
         bounds.AddComponent<BoxCollider>();
+        bounds.AddComponent<Bounds>();
         IconManager.SetIcon(bounds, IconManager.IconColor.Green, IconManager.IconType.Diamond);
     }
 }
