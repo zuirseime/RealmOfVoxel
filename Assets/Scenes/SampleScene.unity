@@ -406,24 +406,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fb7660ffd45db45b0edddb11c8abb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sectionAmount: 20
+  _maxRoomAmount: 10
+  _radius: 30
   _sectionPrefabs:
   - {fileID: 4230184461266974709, guid: 5d99df487eed2024a910b26db1c5c1a1, type: 3}
   - {fileID: 4230184461266974709, guid: 18b151cd09a7331449a11ece626ae921, type: 3}
   - {fileID: 4230184461266974709, guid: 91d3d5fddb714514ab5fde319a1f733b, type: 3}
   - {fileID: 1105173844697538428, guid: 293a89b6db903594c98058d1e02005fd, type: 3}
   - {fileID: 4363796129490100365, guid: 1a883f6ec0987c743a0207239339a76b, type: 3}
-  - {fileID: 9095550718648193135, guid: afe107fc1e7412c418f81486dceaa5ad, type: 3}
+  - {fileID: 9095550718648193135, guid: 488faf8926be29340ae2ca920ee0d60b, type: 3}
   - {fileID: 4549079487170052707, guid: 0f4b823d37c2273449597c11b4ef83cd, type: 3}
   - {fileID: 7780980507463311422, guid: e8c1d816eb2d83d48a43cf2225f3acc4, type: 3}
-  - {fileID: 9124749310083920671, guid: 626f6b7679d6a0d42ad3dc1c79295a57, type: 3}
-  - {fileID: 3087693767926433309, guid: 0fc4cdf799b9fb8449103f0bd5e6cb56, type: 3}
-  - {fileID: 3087693767926433309, guid: 1175032aa2fe99e41b3526ff5904cd92, type: 3}
-  - {fileID: 3087693767926433309, guid: 56eb7901708dcc643b7a667da10bfd12, type: 3}
+  - {fileID: 9095550718648193135, guid: afe107fc1e7412c418f81486dceaa5ad, type: 3}
   - {fileID: 6965265812424317769, guid: 855129954e2183443960411785fb5932, type: 3}
-  - {fileID: 9088462536580689066, guid: ca9605e1d0c3c2a4bb5d41c46becf5d2, type: 3}
-  _deadEnd: {fileID: 8403298676697698429, guid: 684b54053dde60848af72a695726dac4,
-    type: 3}
   _rules:
   - sectionType: 0
     minAmount: 1
@@ -433,15 +428,11 @@ MonoBehaviour:
     minAmount: 1
     maxAmount: 2
     actualAmount: 0
+  - sectionType: 2
+    minAmount: 1
+    maxAmount: 1
+    actualAmount: 0
   - sectionType: 4
-    minAmount: 1
-    maxAmount: 1
-    actualAmount: 0
-  - sectionType: 5
-    minAmount: 1
-    maxAmount: 1
-    actualAmount: 0
-  - sectionType: 7
     minAmount: 1
     maxAmount: 1
     actualAmount: 0

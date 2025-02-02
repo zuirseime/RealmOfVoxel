@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3807886120310546663}
   - component: {fileID: 9197788148025722812}
+  - component: {fileID: 2884619693298660852}
   m_Layer: 0
   m_Name: Bounds
   m_TagString: Untagged
@@ -83,8 +84,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8, y: 8, z: 8}
+  m_Size: {x: 16, y: 3, z: 16}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2884619693298660852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3783648527064032362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3985634630560337592
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +336,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5157351580449299928}
   - component: {fileID: 4230184461266974709}
-  - component: {fileID: 857545676227567252}
   m_Layer: 0
   m_Name: Spawn (3)
   m_TagString: Untagged
@@ -362,18 +374,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  creates: 02000000
-  deadEndProbability: -1
-  doors: []
---- !u!114 &857545676227567252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8941911632331708768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  connects: 01000000
+  doors:
+  - {fileID: 2048850781305143108}
+  - {fileID: 5328527103066804266}
+  connections:
+    m_Keys: []
+    m_Values: []

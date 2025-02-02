@@ -65,7 +65,7 @@ public class CreateUtility : Editor
         GameObject bounds = new("Bounds");
         bounds.transform.parent = room.transform;
         bounds.AddComponent<BoxCollider>();
-        bounds.AddComponent<Bounds>();
+        bounds.AddComponent<SectionBounds>();
         IconManager.SetIcon(bounds, IconManager.IconColor.Green, IconManager.IconType.Diamond);
     }
 }

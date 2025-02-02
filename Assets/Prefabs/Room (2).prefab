@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce5ac040dd310146885a881ec7c0a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Available>k__BackingField: 1
 --- !u!1 &1657108540166719216
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,7 +55,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4989710982988830311}
   - component: {fileID: 4549079487170052707}
-  - component: {fileID: -6257291587375237141}
   m_Layer: 0
   m_Name: Room (2)
   m_TagString: Untagged
@@ -93,21 +93,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  creates: 02000000
-  deadEndProbability: 10
-  doors: []
---- !u!114 &-6257291587375237141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1657108540166719216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  connects: 0000000001000000020000000300000004000000
+  doors:
+  - {fileID: 26807348647834266}
+  - {fileID: 6968194109097648295}
+  - {fileID: 9219883601937392847}
+  connections:
+    m_Keys: []
+    m_Values: []
 --- !u!1 &4062592428031780933
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9142225834231275235}
   - component: {fileID: 6360158960470596909}
+  - component: {fileID: 8774582542149221302}
   m_Layer: 0
   m_Name: Bounds
   m_TagString: Untagged
@@ -159,8 +153,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 16, y: 16, z: 16}
+  m_Size: {x: 24, y: 3, z: 24}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8774582542149221302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4062592428031780933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4203612938869627825
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce5ac040dd310146885a881ec7c0a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Available>k__BackingField: 1
 --- !u!1 &6044866234206755175
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce5ac040dd310146885a881ec7c0a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Available>k__BackingField: 1
 --- !u!1 &8628301216922130428
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,20 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.WebSockets;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-    [SerializeField] private int _sectionAmount;
+    [SerializeField] private int _maxRoomAmount;
+    [SerializeField] private int _radius;
 
     [SerializeField] private List<Section> _sectionPrefabs = new();
-    [SerializeField] private Section _deadEnd;
 
     [SerializeField] private List<Rule> _rules = new();
 
     [Header("Read Only")]
     [SerializeField] private List<Section> _sections = new();
+
+    private float[] _possibleRotations = new float[] { 0, 90, 180, 270 };
+
+    private List<(Vector3 start, Vector3 end)> _connections = new();
 
     private void Start()
     {
@@ -25,131 +27,122 @@ public class LevelGenerator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RegenerateLevel();
+            ClearLevel();
+            GenerateLevel();
         }
-    }
 
-    private void RegenerateLevel()
-    {
-        ClearLevel();
-        GenerateLevel();
+        _connections.ForEach(c => Debug.DrawLine(c.start, c.end));
     }
 
     private void ClearLevel()
     {
+        _sections.ForEach(section => Destroy(section.gameObject));
         _sections.Clear();
-
-        foreach (var child in transform.GetComponentsInChildren<Section>())
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (var rule in _rules)
-        {
-            rule.actualAmount = 0;
-        }
+        _rules.ForEach(rule => rule.Revert());
     }
 
     private void GenerateLevel()
     {
-        CreateSection(SectionType.Spawn, Vector3.zero, Vector3.forward);
-
-        for (int i = 0; i < _sectionAmount; i++)
+        while (_sections.Count < _maxRoomAmount)
         {
-            var currentSection = _sections[i];
-            var sectionCreates = currentSection.creates;
+            SectionType type = GetRandomSectionType();
+            Vector3 position = GetRandomPosition();
 
-            if (sectionCreates.Count == 0)
+            CreateSection(type, position);
+        }
+
+        ResolveCollisions();
+
+        ConnectSections();
+    }
+
+    private SectionType GetRandomSectionType()
+    {
+        var validTypes = _rules.Where(r => r.actualAmount < r.maxAmount).Select(r => r.sectionType).ToList();
+        return validTypes.Count > 0 ? validTypes[Random.Range(0, validTypes.Count)] : SectionType.Casual;
+    }
+
+    private Vector3 GetRandomPosition()
+    {
+        return new Vector3(Random.Range(-_radius, _radius), 0, (Random.Range(-_radius, _radius)));
+    }
+
+    private void CreateSection(SectionType type, Vector3 position)
+    {
+        var prefab = _sectionPrefabs.OrderBy(_ => Random.value).FirstOrDefault(s => s.type == type);
+        if (prefab == null)
+            return;
+
+        var rotation = _possibleRotations.OrderBy(_ => Random.value).First();
+
+        var section = Instantiate(prefab, position, Quaternion.Euler(0, rotation, 0), transform);
+        _sections.Add(section);
+        _rules.FirstOrDefault(r => r.sectionType == type)?.IncreaseActualAmount();
+    }
+
+    private void ResolveCollisions()
+    {
+        float pushStrength = 1f;
+        bool hasCollisions;
+
+        do
+        {
+            hasCollisions = false;
+            Dictionary<Section, Vector3> displacementMap = new();
+
+            foreach (var section1 in _sections)
             {
-                continue;
+                foreach (var section2 in _sections)
+                {
+                    if (section1 == section2)
+                        continue;
+                    if (!BoundsOverlap(section1, section2))
+                        continue;
+
+                    hasCollisions = true;
+                    Vector3 pushDirection = (section1.transform.position - section2.transform.position).normalized;
+
+                    if (!displacementMap.ContainsKey(section1))
+                        displacementMap[section1] = Vector3.zero;
+                    if (!displacementMap.ContainsKey(section2))
+                        displacementMap[section2] = Vector3.zero;
+
+                    displacementMap[section1] += pushDirection * pushStrength;
+                    displacementMap[section2] -= pushDirection * pushStrength;
+                }
             }
 
-            for (int door = 0; door < currentSection.doors.Count; door++)
+            foreach (var kvp in displacementMap)
             {
-                var doorPosition = currentSection.doors[door].transform.position;
-                var doorDirection = currentSection.doors[door].transform.forward;
+                kvp.Key.transform.position += Vector3Int.RoundToInt(kvp.Value);
+            }
 
-                if (!currentSection.doors[door].Available)
-                {
+            Physics.SyncTransforms();
+
+        } while (hasCollisions);
+    }
+
+    private bool BoundsOverlap(Section section1, Section section2)
+    {
+        var bounds1 = section1.GetComponentInChildren<SectionBounds>().GetComponent<BoxCollider>().bounds;
+        var bounds2 = section2.GetComponentInChildren<SectionBounds>().GetComponent<BoxCollider>().bounds;
+        return bounds1.Intersects(bounds2);
+    }
+
+    private void ConnectSections()
+    {
+        foreach (var giver in _sections)
+        {
+            foreach (var receiver in _sections)
+            {
+                if (giver == receiver) continue;
+
+                if (giver.connects.All(t => t != receiver.type) || 
+                    receiver.connects.All(t => t != giver.type))
                     continue;
-                }
 
-                if (Random.Range(0, 100) < currentSection.deadEndProbability |
-                    !CanPlaceSection(doorPosition, doorDirection))
-                {
-                    CreateDeadEnd(doorPosition, doorDirection);
-                    continue;
-                }
-
-                SectionType nextSectionType = SectionType.Casual;
-                bool typePoolIsFull = false;
-                while (!typePoolIsFull)
-                {
-                    nextSectionType = sectionCreates[Random.Range(0, sectionCreates.Count)];
-
-                    if (!_rules.Any(r => r.sectionType == nextSectionType && r.maxAmount <= r.actualAmount))
-                    {
-                        typePoolIsFull = true;
-                    }
-                }
-
-                CreateSection(nextSectionType, doorPosition, doorDirection);
+                _connections.Add((giver.transform.position, receiver.transform.position));
             }
         }
-    }
-
-    private bool CanPlaceSection(Vector3 origin, Vector3 direction, float checkDistance = 32f)
-    {
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, checkDistance))
-        {
-            return hit.collider.GetComponent<Bounds>() is null;
-        }
-
-        return true;
-    }
-
-    private void CreateSection(SectionType type, Vector3 position, Vector3 forward)
-    {
-        Section[] sections = _sectionPrefabs.Where(s => s.type == type).ToArray();
-        //Debug.Log(sections[0].doors.Count);
-
-        var newSection = Instantiate(sections[Random.Range(0, sections.Length)], transform);
-        _sections.Add(newSection);
-        
-        if (_sections.Count > 1)
-        {
-            ConnectSections(newSection, position, forward);
-        }
-
-        var rule = _rules.FirstOrDefault(r => r.sectionType == newSection.type);
-        if (rule is not null)
-        {
-            rule.actualAmount++;
-        }
-    }
-
-    private void ConnectSections(Section newSection, Vector3 existingPosition, Vector3 existingDirection)
-    {
-        Door newDoor = newSection.doors[Random.Range(0, newSection.doors.Count)];
-
-        Vector3 newDoorPos = newDoor.transform.position;
-        Vector3 newDoorForward = newDoor.transform.forward;
-
-        Quaternion rotationOffset = Quaternion.FromToRotation(newDoorForward, -existingDirection);
-
-        newSection.transform.rotation = rotationOffset * newSection.transform.rotation;
-
-        Vector3 adjustedNewDoorPos = newDoor.transform.position;
-
-        Vector3 positionOffset = existingPosition - adjustedNewDoorPos;
-        newSection.transform.position += positionOffset;
-
-        newDoor.Available = false;
-    }
-
-    private void CreateDeadEnd(Vector3 position, Vector3 forward)
-    {
-        var deadEnd = Instantiate(_deadEnd, position, Quaternion.LookRotation(-forward), transform);
-        _sections.Add(deadEnd);
     }
 }

@@ -79,10 +79,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f765db10dc2d1a4f835299efa4b33db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
-  creates: 02000000
-  deadEndProbability: 10
-  doors: []
+  type: 2
+  connects: 01000000
+  doors:
+  - {fileID: 8332241004309994540}
+  connections:
+    m_Keys: []
+    m_Values: []
 --- !u!1 &6375051852860260335
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +170,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8, y: 8, z: 8}
+  m_Size: {x: 16, y: 3, z: 16}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &358215222901129341
 MonoBehaviour:
@@ -330,3 +333,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce5ac040dd310146885a881ec7c0a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Available>k__BackingField: 1

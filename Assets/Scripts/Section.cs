@@ -1,33 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum SectionType
 {
     Spawn,
     Casual,
-    Corridor,
     Treasure,
     Merchant,
     Boss,
-    DeadEnd,
-    Exit
 }
 
 public class Section : MonoBehaviour
 {
     public SectionType type;
-    public List<SectionType> creates;
-
-    [Range(-1, 100)] public int deadEndProbability = 10;
+    public List<SectionType> connects;
 
     //[HideInInspector]
     public List<Door> doors;
 
-    void OnEnable()
-    {
-        doors = transform.GetComponentsInChildren<Door>().ToList();
-    }
+    [Header("Read Only")]
+    public SerializedDictionary<Door, Section> connections;
 
     void OnValidate()
     {

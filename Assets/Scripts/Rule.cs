@@ -9,4 +9,7 @@ public class Rule
     public int maxAmount;
 
     [HideInInspector] public int actualAmount;
+
+    public void IncreaseActualAmount() => actualAmount++;
+    public void Revert() => actualAmount = 0;
 }
