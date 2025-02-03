@@ -82,16 +82,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f765db10dc2d1a4f835299efa4b33db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
-  connects: 0000000001000000020000000300000004000000
+  _deadEndPrefab: {fileID: 6868126781527026442, guid: 6c4eca43b443473489349e29f0ebc80d,
+    type: 3}
+  type: 4
+  connectsTo: 0000000001000000020000000300000004000000
   doors:
   - {fileID: 8889113620142075138}
   - {fileID: 7295507470372178878}
   - {fileID: 267692482743331372}
   - {fileID: 2095131982225439880}
-  connections:
-    m_Keys: []
-    m_Values: []
+  bounds:
+  - {fileID: 7490050038892996875}
 --- !u!1 &3990347820843453800
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Available>k__BackingField: 1
+  <ConnectedDoor>k__BackingField: {fileID: 0}
 --- !u!1 &4409086498949502558
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,6 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Available>k__BackingField: 1
+  <ConnectedDoor>k__BackingField: {fileID: 0}
 --- !u!1 &4737869859240070152
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,6 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Available>k__BackingField: 1
+  <ConnectedDoor>k__BackingField: {fileID: 0}
 --- !u!1 &5346503214780438523
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,3 +479,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Available>k__BackingField: 1
+  <ConnectedDoor>k__BackingField: {fileID: 0}

@@ -79,13 +79,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f765db10dc2d1a4f835299efa4b33db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deadEndPrefab: {fileID: 6868126781527026442, guid: 6c4eca43b443473489349e29f0ebc80d,
+    type: 3}
   type: 2
-  connects: 01000000
+  connectsTo: 04000000
   doors:
   - {fileID: 8332241004309994540}
-  connections:
-    m_Keys: []
-    m_Values: []
+  bounds:
+  - {fileID: 358215222901129341}
 --- !u!1 &6375051852860260335
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,3 +335,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Available>k__BackingField: 1
+  <ConnectedDoor>k__BackingField: {fileID: 0}

@@ -16,8 +16,6 @@ public class LevelGenerator : MonoBehaviour
 
     private float[] _possibleRotations = new float[] { 0, 90, 180, 270 };
 
-    private List<(Vector3 start, Vector3 end)> _connections = new();
-
     private void Start()
     {
         GenerateLevel();
@@ -31,7 +29,13 @@ public class LevelGenerator : MonoBehaviour
             GenerateLevel();
         }
 
-        _connections.ForEach(c => Debug.DrawLine(c.start, c.end));
+        foreach (var section in _sections)
+        {
+            foreach (var door in section.doors)
+            {
+                Debug.DrawLine(door.transform.position, door.ConnectedDoor.transform.position);
+            }
+        }
     }
 
     private void ClearLevel()
@@ -54,6 +58,9 @@ public class LevelGenerator : MonoBehaviour
         ResolveCollisions();
 
         ConnectSections();
+
+        _sections.ForEach(s => s.SealUnusedDoors());
+        _sections.ForEach(s => s.FixRotation());
     }
 
     private SectionType GetRandomSectionType()
@@ -129,19 +136,50 @@ public class LevelGenerator : MonoBehaviour
         return bounds1.Intersects(bounds2);
     }
 
+    //private void ConnectSections(Door door, Section newSection)
+
     private void ConnectSections()
     {
-        foreach (var giver in _sections)
-        {
-            foreach (var receiver in _sections)
-            {
-                if (giver == receiver) continue;
+        List<Section> possibleConnections = new();
 
-                if (giver.connects.All(t => t != receiver.type) || 
-                    receiver.connects.All(t => t != giver.type))
+        var givers = _sections.OrderBy(s => s.type);
+        foreach (var giver in givers)
+        {
+            if (!giver.Available())
+                continue;
+
+            possibleConnections.Clear();
+
+            var receivers = _sections.OrderBy(s => Vector3.Distance(giver.transform.position, s.transform.position)).Take(_maxRoomAmount / 2);
+            foreach (var receiver in receivers)
+            {
+                if (giver == receiver)
                     continue;
 
-                _connections.Add((giver.transform.position, receiver.transform.position));
+                if (!(giver.Connects(receiver) && receiver.Connects(giver)))
+                    continue;
+
+                if (!receiver.Available())
+                    continue;
+
+                if (giver.IsAlreadyConnected(receiver))
+                    continue;
+
+                possibleConnections.Add(receiver);
+            }
+
+            foreach (var nearest in possibleConnections.OrderBy(r => Vector3.Distance(giver.transform.position, r.transform.position)))
+            {
+                var giverDoor = giver.GetNearestDoor(nearest);
+                var receiverDoor = nearest.GetNearestDoor(giver);
+
+                if (giverDoor.Connects(receiverDoor))
+                {
+                    giverDoor.Connect(receiverDoor);
+                    receiverDoor.Connect(giverDoor);
+
+                    break;
+                }
             }
         }
     }

@@ -406,6 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fb7660ffd45db45b0edddb11c8abb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxCorridorLength: 10
   _maxRoomAmount: 10
   _radius: 30
   _sectionPrefabs:
@@ -414,8 +415,6 @@ MonoBehaviour:
   - {fileID: 4230184461266974709, guid: 91d3d5fddb714514ab5fde319a1f733b, type: 3}
   - {fileID: 1105173844697538428, guid: 293a89b6db903594c98058d1e02005fd, type: 3}
   - {fileID: 4363796129490100365, guid: 1a883f6ec0987c743a0207239339a76b, type: 3}
-  - {fileID: 9095550718648193135, guid: 488faf8926be29340ae2ca920ee0d60b, type: 3}
-  - {fileID: 4549079487170052707, guid: 0f4b823d37c2273449597c11b4ef83cd, type: 3}
   - {fileID: 7780980507463311422, guid: e8c1d816eb2d83d48a43cf2225f3acc4, type: 3}
   - {fileID: 9095550718648193135, guid: afe107fc1e7412c418f81486dceaa5ad, type: 3}
   - {fileID: 6965265812424317769, guid: 855129954e2183443960411785fb5932, type: 3}
@@ -424,15 +423,15 @@ MonoBehaviour:
     minAmount: 1
     maxAmount: 1
     actualAmount: 0
-  - sectionType: 3
+  - sectionType: 2
     minAmount: 1
     maxAmount: 2
     actualAmount: 0
-  - sectionType: 2
+  - sectionType: 3
     minAmount: 1
     maxAmount: 1
     actualAmount: 0
-  - sectionType: 4
+  - sectionType: 1
     minAmount: 1
     maxAmount: 1
     actualAmount: 0
