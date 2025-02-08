@@ -44,10 +44,14 @@ public class CreateUtility : Editor
         doors.transform.parent = room.transform;
 
         GameObject door = new("Door (1)");
-        door.tag = "Door";
+        door.AddComponent<Door>();
         door.transform.position = Vector3.forward * 0.5f;
         door.transform.parent = doors.transform;
         IconManager.SetIcon(door, IconManager.IconColor.Red, IconManager.IconType.Circle);
+
+        GameObject cube = ObjectFactory.CreatePrimitive(PrimitiveType.Cube);
+        cube.transform.parent = door.transform;
+        cube.GetComponent<Renderer>().material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Prefabs/Materials/Door.mat");
     }
 
     private static void CreateGeometry(GameObject room)
@@ -64,8 +68,18 @@ public class CreateUtility : Editor
     {
         GameObject bounds = new("Bounds");
         bounds.transform.parent = room.transform;
+
+        CreateBounds(bounds.transform, SectionBounds.BoundsType.Outer, IconManager.IconColor.Green);
+        CreateBounds(bounds.transform, SectionBounds.BoundsType.Inner, IconManager.IconColor.Yellow);
+    }
+
+    private static void CreateBounds(Transform parent, SectionBounds.BoundsType type, IconManager.IconColor iconColor)
+    {
+        GameObject bounds = new($"{type} Bounds");
+        bounds.transform.parent = parent;
+
         bounds.AddComponent<BoxCollider>();
-        bounds.AddComponent<SectionBounds>();
-        IconManager.SetIcon(bounds, IconManager.IconColor.Green, IconManager.IconType.Diamond);
+        bounds.AddComponent<SectionBounds>().type = type;
+        IconManager.SetIcon(bounds, iconColor, IconManager.IconType.Diamond);
     }
 }
