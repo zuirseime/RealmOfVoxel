@@ -8,6 +8,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private int _radius;
 
     [SerializeField] private List<Section> _sectionPrefabs = new();
+    [SerializeField] private CorridorSegment _corridorPrefab;
 
     [SerializeField] private List<Rule> _rules = new();
 
@@ -15,6 +16,11 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private List<Section> _sections = new();
 
     private float[] _possibleRotations = new float[] { 0, 90, 180, 270 };
+
+    private Pathfinder _pathfinder;
+    private List<List<Vector3>> _pathes = new();
+    private HashSet<Vector3> _corridorPositions = new();
+    private List<CorridorSegment> _corridors = new();
 
     private void Start()
     {
@@ -28,14 +34,6 @@ public class LevelGenerator : MonoBehaviour
             ClearLevel();
             GenerateLevel();
         }
-
-        foreach (var section in _sections)
-        {
-            foreach (var door in section.doors)
-            {
-                Debug.DrawLine(door.transform.position, door.ConnectedDoor.transform.position);
-            }
-        }
     }
 
     private void ClearLevel()
@@ -43,6 +41,10 @@ public class LevelGenerator : MonoBehaviour
         _sections.ForEach(section => Destroy(section.gameObject));
         _sections.Clear();
         _rules.ForEach(rule => rule.Revert());
+        _pathes.Clear();
+        _corridors.ForEach(corridor => Destroy(corridor.gameObject));
+        _corridors.Clear();
+        _corridorPositions.Clear();
     }
 
     private void GenerateLevel()
@@ -60,13 +62,77 @@ public class LevelGenerator : MonoBehaviour
         ConnectSections();
 
         _sections.ForEach(s => s.SealUnusedDoors());
-        _sections.ForEach(s => s.FixRotation());
+
+        BuildCorridors();
+    }
+
+    private void BuildCorridors()
+    {
+        _pathfinder = new Pathfinder(_sections.SelectMany(s => s.bounds).ToList());
+
+        List<Door> used = new();
+        foreach (var door in _sections.SelectMany(s => s.doors))
+        {
+            if (used.Contains(door))
+                continue;
+
+            BuildCorridor(door);
+
+            used.Add(door.ConnectedDoor);
+        }
+
+        FixCorridors();
+    }
+
+    private void BuildCorridor(Door door)
+    {
+        foreach (var segment in _pathfinder.FindPath(door))
+        {
+            if (_corridorPositions.Contains(segment.Position))
+                continue;
+
+            var corridor = Instantiate(_corridorPrefab, segment.Position, Quaternion.identity, transform);
+
+            _corridors.Add(corridor);
+            _corridorPositions.Add(segment.Position);
+        }
+    }
+
+    private void FixCorridors()
+    {
+        foreach (var corridorSection in _corridors)
+        {
+            if (_corridorPositions.Contains(corridorSection.transform.position + Vector3.left))
+            {
+                corridorSection.RemoveWalls(Vector3.left);
+            }
+            if (_corridorPositions.Contains(corridorSection.transform.position + Vector3.right))
+            {
+                corridorSection.RemoveWalls(Vector3.right);
+            }
+            if (_corridorPositions.Contains(corridorSection.transform.position + Vector3.forward))
+            {
+                corridorSection.RemoveWalls(Vector3.forward);
+            }
+            if (_corridorPositions.Contains(corridorSection.transform.position + Vector3.back))
+            {
+                corridorSection.RemoveWalls(Vector3.back);
+            }
+
+            foreach (var door in _sections.SelectMany(s => s.doors))
+            {
+                if (corridorSection.transform.position == door.transform.position)
+                {
+                    corridorSection.RemoveWalls(-door.transform.forward);
+                }
+            }
+        }
     }
 
     private SectionType GetRandomSectionType()
     {
-        var validTypes = _rules.Where(r => r.actualAmount < r.maxAmount).Select(r => r.sectionType).ToList();
-        return validTypes.Count > 0 ? validTypes[Random.Range(0, validTypes.Count)] : SectionType.Casual;
+        var validTypes = _rules.Where(r => r.Available()).Select(r => r.sectionType).ToList();
+        return validTypes.Count > 0 ? validTypes[Random.Range(0, validTypes.Count)] : SectionType.Room;
     }
 
     private Vector3 GetRandomPosition()
@@ -136,42 +202,18 @@ public class LevelGenerator : MonoBehaviour
         return bounds1.Intersects(bounds2);
     }
 
-    //private void ConnectSections(Door door, Section newSection)
-
     private void ConnectSections()
     {
-        List<Section> possibleConnections = new();
-
-        var givers = _sections.OrderBy(s => s.type);
-        foreach (var giver in givers)
+        foreach (var giver in _sections.Where(s => s.Available()).OrderBy(s => s.type))
         {
-            if (!giver.Available())
-                continue;
+            var receivers = _sections.Where(r => r != giver).Where(r => r.Available())
+                                     .Where(r => !giver.IsAlreadyConnected(r))
+                                     .Where(r => r.Connects(giver) && giver.Connects(r)).ToArray();
 
-            possibleConnections.Clear();
-
-            var receivers = _sections.OrderBy(s => Vector3.Distance(giver.transform.position, s.transform.position)).Take(_maxRoomAmount / 2);
-            foreach (var receiver in receivers)
+            foreach (var receiver in receivers.OrderBy(r => Vector3.Distance(giver.transform.position, r.transform.position)))
             {
-                if (giver == receiver)
-                    continue;
-
-                if (!(giver.Connects(receiver) && receiver.Connects(giver)))
-                    continue;
-
-                if (!receiver.Available())
-                    continue;
-
-                if (giver.IsAlreadyConnected(receiver))
-                    continue;
-
-                possibleConnections.Add(receiver);
-            }
-
-            foreach (var nearest in possibleConnections.OrderBy(r => Vector3.Distance(giver.transform.position, r.transform.position)))
-            {
-                var giverDoor = giver.GetNearestDoor(nearest);
-                var receiverDoor = nearest.GetNearestDoor(giver);
+                var giverDoor = giver.GetNearestDoor(receiver);
+                var receiverDoor = receiver.GetNearestDoor(giver);
 
                 if (giverDoor.Connects(receiverDoor))
                 {

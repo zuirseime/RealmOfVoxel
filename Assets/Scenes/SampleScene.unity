@@ -406,18 +406,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fb7660ffd45db45b0edddb11c8abb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxCorridorLength: 10
   _maxRoomAmount: 10
-  _radius: 30
+  _radius: 5
   _sectionPrefabs:
-  - {fileID: 4230184461266974709, guid: 5d99df487eed2024a910b26db1c5c1a1, type: 3}
-  - {fileID: 4230184461266974709, guid: 18b151cd09a7331449a11ece626ae921, type: 3}
-  - {fileID: 4230184461266974709, guid: 91d3d5fddb714514ab5fde319a1f733b, type: 3}
-  - {fileID: 1105173844697538428, guid: 293a89b6db903594c98058d1e02005fd, type: 3}
-  - {fileID: 4363796129490100365, guid: 1a883f6ec0987c743a0207239339a76b, type: 3}
-  - {fileID: 7780980507463311422, guid: e8c1d816eb2d83d48a43cf2225f3acc4, type: 3}
-  - {fileID: 9095550718648193135, guid: afe107fc1e7412c418f81486dceaa5ad, type: 3}
-  - {fileID: 6965265812424317769, guid: 855129954e2183443960411785fb5932, type: 3}
+  - {fileID: 7746576386828603638, guid: 9904eab9377f1d8459fba6039761bcd9, type: 3}
+  - {fileID: 7440803634308897732, guid: 855129954e2183443960411785fb5932, type: 3}
+  - {fileID: 968582196943453439, guid: 293a89b6db903594c98058d1e02005fd, type: 3}
+  - {fileID: 3337005682354599953, guid: 1a883f6ec0987c743a0207239339a76b, type: 3}
+  - {fileID: 6461106330158010989, guid: cd5f35247519f7644bf097af81bf021b, type: 3}
+  - {fileID: 6461106330158010989, guid: 1a28cd2f32f9d4e47908c7a118515802, type: 3}
+  - {fileID: 6461106330158010989, guid: 1f8a25ac4f6a16848808ba42658d912d, type: 3}
+  - {fileID: 6461106330158010989, guid: f2f8f775150acb044b419f309e440618, type: 3}
+  _corridorPrefab: {fileID: 3222297157727429418, guid: 179f4e05abe35204dac384d59346cd99,
+    type: 3}
   _rules:
   - sectionType: 0
     minAmount: 1
@@ -433,6 +434,10 @@ MonoBehaviour:
     actualAmount: 0
   - sectionType: 1
     minAmount: 1
+    maxAmount: 1
+    actualAmount: 0
+  - sectionType: 5
+    minAmount: 0
     maxAmount: 1
     actualAmount: 0
   _sections: []
@@ -467,7 +472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &832575518
 MonoBehaviour:
   m_ObjectHideFlags: 0

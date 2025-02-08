@@ -4,11 +4,12 @@ using UnityEngine;
 
 public enum SectionType
 {
-    Spawn,
-    Boss,
-    Treasure,
-    Merchant,
-    Casual,
+    Spawn = 0,
+    Boss = 1,
+    Treasure = 2,
+    Merchant = 3,
+    Room = 4,
+    BigRoom = 5
 }
 
 public class Section : MonoBehaviour
@@ -35,7 +36,7 @@ public class Section : MonoBehaviour
 
     private Door GetNearestDoor(Vector3 position)
     {
-        return doors.Where(d => d.Available).OrderBy(d => Vector3.Distance(d.transform.position, position)).First();
+        return doors.Where(d => d.Available).OrderBy(d => Vector3.Distance(d.transform.position, position)).FirstOrDefault();
     }
 
     public bool IsAlreadyConnected(Section section)
@@ -60,11 +61,6 @@ public class Section : MonoBehaviour
         {
             var deadEnd = Instantiate(_deadEndPrefab, transform);
 
-            //deadEnd.transform.position = door.transform.position;
-
-            //Quaternion rotationOffset = Quaternion.FromToRotation(deadEnd.doors[0].transform.right, -door.transform.forward);
-            //deadEnd.transform.rotation = rotationOffset * deadEnd.transform.rotation;
-
             Vector3 deadEndPos = deadEnd.doors[0].transform.position;
             Vector3 deadEndForward = deadEnd.doors[0].transform.forward;
 
@@ -85,21 +81,5 @@ public class Section : MonoBehaviour
             Destroy(door.gameObject);
             doors.Remove(door);
         }
-    }
-
-    public void FixRotation()
-    {
-        if (doors.Count > 1)
-            return;
-
-        var doorDirection = doors[0].transform.forward;
-        var connectedDoorDorection = doors[0].ConnectedDoor.transform.forward;
-
-        if (doorDirection == -connectedDoorDorection)
-            return;
-
-        Quaternion rotationOffset = Quaternion.FromToRotation(connectedDoorDorection, doorDirection);
-
-        transform.rotation = rotationOffset * transform.rotation;
     }
 }

@@ -1,16 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SectionBounds : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public enum BoundsType
+    {
+        Inner, Outer
+    }
+
+    public SectionBounds.BoundsType type;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
