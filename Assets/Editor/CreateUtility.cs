@@ -8,7 +8,7 @@ public class CreateUtility : Editor
     public static void CreateSection(MenuCommand menuCommand)
     {
         GameObject section = new("Section");
-        section.AddComponent<Section>();
+        section.AddComponent<Room>();
 
         CreateDoors(section);
         CreateGeometry(section);
