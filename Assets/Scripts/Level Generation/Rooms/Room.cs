@@ -3,16 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-//public enum SectionType
-//{
-//    Spawn = 0,
-//    Boss = 1,
-//    Treasure = 2,
-//    Merchant = 3,
-//    Room = 4,
-//    BigRoom = 5
-//}
-
 public class Room : MonoBehaviour
 {
     [SerializeField] private GameObject _deadEndPrefab;
@@ -24,6 +14,7 @@ public class Room : MonoBehaviour
     [Header("Read Only")]
     public List<Door> doors;
     public List<SectionBounds> bounds;
+    public List<MeshFilter> geometries;
 
     void OnValidate()
     {
@@ -34,6 +25,7 @@ public class Room : MonoBehaviour
     {
         doors = transform.GetComponentsInChildren<Door>().ToList();
         bounds = transform.GetComponentsInChildren<SectionBounds>().ToList();
+        geometries = transform.GetComponentsInChildren<MeshFilter>().Where(c => c.GetComponent<Door>() == null).ToList();
     }
 
     public virtual void Prepare() { }

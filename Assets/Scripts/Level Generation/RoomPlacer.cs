@@ -14,7 +14,6 @@ public class RoomPlacer
     [SerializeField] private List<Room> rooms;
 
     private float[] _possibleRotations = new float[] { 0, 90, 180, 270 };
-    private int _romsCount;
 
     public void RevertRules()
     {
@@ -68,7 +67,7 @@ public class RoomPlacer
 
         var rotation = _possibleRotations.OrderBy(_ => Random.value).First();
         var room = Object.Instantiate(prefab, position, Quaternion.Euler(0, rotation, 0), level);
-        room.name = $"[{_romsCount:00}] {type}";
+        room.name = $"[{rooms.Count:00}] {type}";
 
         rules.FirstOrDefault(r => r.GetRoomType() == type)?.IncreaseActualAmount();
 

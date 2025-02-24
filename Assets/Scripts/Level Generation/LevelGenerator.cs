@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -50,6 +51,9 @@ public class LevelGenerator : MonoBehaviour
 
             break;
         }
+
+        transform.localScale *= 4f;
+        GetComponent<NavMeshSurface>().BuildNavMesh();
 
         foreach (var room in Rooms)
         {
