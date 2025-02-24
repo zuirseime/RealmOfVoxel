@@ -95,7 +95,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 779533331528255689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
+  m_Script: {fileID: 11500000, guid: 9884d6dc9b02c934eb105ea225c6db31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2308392180494108343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
+  m_Script: {fileID: 11500000, guid: 9884d6dc9b02c934eb105ea225c6db31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
@@ -229,7 +229,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3892956386456046843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
+  m_Script: {fileID: 11500000, guid: 9884d6dc9b02c934eb105ea225c6db31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4736374668508432312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1520ee47e9d4dfe42bcee4e9fbd64046, type: 3}
+  m_Script: {fileID: 11500000, guid: 9884d6dc9b02c934eb105ea225c6db31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deadEndPrefab: {fileID: 3833857687938428980, guid: 86c0e5f14e885924e9494b9a8b72b18d,
     type: 3}
-  _connectsTo:
+  connectsTo:
   - Merchant
   - Treasure
   - SmallTrial

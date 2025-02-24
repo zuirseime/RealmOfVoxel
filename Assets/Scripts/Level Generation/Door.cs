@@ -24,15 +24,15 @@ public class Door : MonoBehaviour
 
         if (Physics.Raycast(transform.position, rayDirection, out RaycastHit hit))
         {
-            SectionBounds bounds;
-            if ((bounds = hit.collider.transform.parent.parent.GetComponentInChildren<SectionBounds>()) != null)
+            RoomBounds bounds;
+            if ((bounds = hit.collider.transform.parent.parent.GetComponentInChildren<RoomBounds>()) != null)
             {
                 var thisParent = transform.parent.parent.GetComponent<Room>();
                 var aotherParent = doorToConnect.transform.parent.parent.GetComponent<Room>();
 
                 if (!thisParent.bounds.Contains(bounds) && !aotherParent.bounds.Contains(bounds))
                 {
-                    if (bounds.type == SectionBounds.BoundsType.Inner)
+                    if (bounds.type == RoomBounds.BoundsType.Inner)
                     {
                         return false;
                     }

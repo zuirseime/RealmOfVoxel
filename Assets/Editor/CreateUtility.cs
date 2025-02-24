@@ -4,20 +4,63 @@ using UnityEngine;
 
 public class CreateUtility : Editor
 {
-    [MenuItem("GameObject/Tools/Section")]
-    public static void CreateSection(MenuCommand menuCommand)
+    [MenuItem("GameObject/Current Project/Spawn Room", false, 50)]
+    public static void CreateSpawn(MenuCommand menuCommand)
     {
-        GameObject section = new("Section");
-        section.AddComponent<Room>();
+        GameObject room = RoomUtility.GetRoom<SpawnRoom>(new string[] { "SmallTrial", "MediumTrial" });
 
-        CreateDoors(section);
-        CreateGeometry(section);
-        CreateBounds(section);
-
-        Place(section);
+        Place(room);
     }
 
-    [MenuItem("GameObject/Tools/Level")]
+    [MenuItem("GameObject/Current Project/Boss Room", false, 51)]
+    public static void CreateBoss(MenuCommand menuCommand)
+    {
+        GameObject room = RoomUtility.GetRoom<BossRoom>(new string[] { "Merchant", "Treasure", "SmallTrial", "MediumTrial", "BigTrial" });
+
+        Place(room);
+    }
+
+    [MenuItem("GameObject/Current Project/Treasure Room", false, 52)]
+    public static void CreateTreasure(MenuCommand menuCommand)
+    {
+        GameObject room = RoomUtility.GetRoom<TreasureRoom>(new string[] { "Boss", "Merchant", "SmallTrial", "MediumTrial", "BigTrial" });
+
+        Place(room);
+    }
+
+    [MenuItem("GameObject/Current Project/Merchant Room", false, 53)]
+    public static void CreateMerchant(MenuCommand menuCommand)
+    {
+        GameObject room = RoomUtility.GetRoom<MerchantRoom>(new string[] { "Boss", "Treasure", "SmallTrial", "MediumTrial", "BigTrial" });
+
+        Place(room);
+    }
+
+    [MenuItem("GameObject/Current Project/Small Trial Room", false, 54)]
+    public static void CreateSmallTrial(MenuCommand menuCommand)
+    {
+        GameObject room = RoomUtility.GetRoom<SmallTrialRoom>(new string[] { "Spawn", "Boss", "Merchant", "Treasure", "SmallTrial", "MediumTrial", "BigTrial" });
+
+        Place(room);
+    }
+
+    [MenuItem("GameObject/Current Project/Medium Trial Room", false, 55)]
+    public static void CreateMediumTrial(MenuCommand menuCommand)
+    {
+        GameObject room = RoomUtility.GetRoom<MediumTrialRoom>(new string[] { "Spawn", "Boss", "Merchant", "Treasure", "SmallTrial", "MediumTrial", "BigTrial" });
+
+        Place(room);
+    }
+
+    [MenuItem("GameObject/Current Project/Big Trial Room", false, 56)]
+    public static void CreateBigTrial(MenuCommand menuCommand)
+    {
+        GameObject room = RoomUtility.GetRoom<BigTrialRoom>(new string[] { "Spawn", "Boss", "Merchant", "Treasure", "SmallTrial", "MediumTrial" });
+
+        Place(room);
+    }
+
+    [MenuItem("GameObject/Current Project/Level", false, 0)]
     public static void CreateLevel(MenuCommand menuCommand)
     {
         GameObject level = new("Level");
@@ -36,50 +79,5 @@ public class CreateUtility : Editor
         Selection.activeGameObject = gObj;
 
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-    }
-
-    private static void CreateDoors(GameObject room)
-    {
-        GameObject doors = new("Doors");
-        doors.transform.parent = room.transform;
-
-        GameObject door = new("Door (1)");
-        door.AddComponent<Door>();
-        door.transform.position = Vector3.forward * 0.5f;
-        door.transform.parent = doors.transform;
-        IconManager.SetIcon(door, IconManager.IconColor.Red, IconManager.IconType.Circle);
-
-        GameObject cube = ObjectFactory.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.parent = door.transform;
-        cube.GetComponent<Renderer>().material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Prefabs/Materials/Door.mat");
-    }
-
-    private static void CreateGeometry(GameObject room)
-    {
-        GameObject geometry = new("Geometry");
-        geometry.transform.parent = room.transform;
-
-        GameObject box = ObjectFactory.CreatePrimitive(PrimitiveType.Cube);
-        box.transform.parent = geometry.transform;
-        box.GetComponent<Renderer>().material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Prefabs/Materials/Spawn.mat");
-    }
-
-    private static void CreateBounds(GameObject room)
-    {
-        GameObject bounds = new("Bounds");
-        bounds.transform.parent = room.transform;
-
-        CreateBounds(bounds.transform, SectionBounds.BoundsType.Outer, IconManager.IconColor.Green);
-        CreateBounds(bounds.transform, SectionBounds.BoundsType.Inner, IconManager.IconColor.Yellow);
-    }
-
-    private static void CreateBounds(Transform parent, SectionBounds.BoundsType type, IconManager.IconColor iconColor)
-    {
-        GameObject bounds = new($"{type} Bounds");
-        bounds.transform.parent = parent;
-
-        bounds.AddComponent<BoxCollider>();
-        bounds.AddComponent<SectionBounds>().type = type;
-        IconManager.SetIcon(bounds, iconColor, IconManager.IconType.Diamond);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TrialRoom : Room
+public abstract class TrialRoom : Room
 {
     [SerializeField] protected int _enemiesNumber;
     [SerializeField] protected List<Enemy> _enemyPrefabs;

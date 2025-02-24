@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Pathfinder
 {
-    private List<SectionBounds> _bounds;
+    private List<RoomBounds> _bounds;
     private float _step;
 
     public bool StraightenCorridors { get; set; }
 
-    public Pathfinder(List<SectionBounds> bounds, float step = 1f)
+    public Pathfinder(List<RoomBounds> bounds, float step = 1f)
     {
         _bounds = bounds;
         _step = step;
@@ -92,7 +92,7 @@ public class Pathfinder
     {
         foreach (var bound in _bounds)
         {
-            if (bound.type == SectionBounds.BoundsType.Inner && bound.GetComponent<BoxCollider>().bounds.Contains(position))
+            if (bound.type == RoomBounds.BoundsType.Inner && bound.GetComponent<BoxCollider>().bounds.Contains(position))
             {
                 return true;
             }

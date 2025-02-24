@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public abstract class Room : MonoBehaviour
 {
     [SerializeField] private GameObject _deadEndPrefab;
-    [SerializeField] protected List<string> _connectsTo = new();
+    public List<string> connectsTo = new();
 
     [Range(0, 1)] public float chanceToCloseDoors;
     public int spawnIndex = 0;
 
     [Header("Read Only")]
     public List<Door> doors;
-    public List<SectionBounds> bounds;
+    public List<RoomBounds> bounds;
     public List<MeshFilter> geometries;
 
     void OnValidate()
@@ -24,7 +24,7 @@ public class Room : MonoBehaviour
     protected virtual void Validate()
     {
         doors = transform.GetComponentsInChildren<Door>().ToList();
-        bounds = transform.GetComponentsInChildren<SectionBounds>().ToList();
+        bounds = transform.GetComponentsInChildren<RoomBounds>().ToList();
         geometries = transform.GetComponentsInChildren<MeshFilter>().Where(c => c.GetComponent<Door>() == null).ToList();
     }
 
@@ -54,7 +54,7 @@ public class Room : MonoBehaviour
 
     public List<string> GetConnections()
     {
-        return _connectsTo.Select(t => t + nameof(Room)).ToList();
+        return connectsTo.Select(t => t + nameof(Room)).ToList();
     }
 
     public bool Available()

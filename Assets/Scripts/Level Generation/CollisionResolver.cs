@@ -65,8 +65,8 @@ public class CollisionResolver
 
     private bool BoundsOverlap(Room room1, Room room2)
     {
-        var bounds1 = room1.GetComponentInChildren<SectionBounds>().GetComponent<BoxCollider>().bounds;
-        var bounds2 = room2.GetComponentInChildren<SectionBounds>().GetComponent<BoxCollider>().bounds;
+        var bounds1 = room1.GetComponentInChildren<RoomBounds>().GetComponent<BoxCollider>().bounds;
+        var bounds2 = room2.GetComponentInChildren<RoomBounds>().GetComponent<BoxCollider>().bounds;
         return bounds1.Intersects(bounds2);
     }
 }

@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class SectionBounds : MonoBehaviour
+public class RoomBounds : MonoBehaviour
 {
     public enum BoundsType
     {
         Inner, Outer
     }
 
-    public SectionBounds.BoundsType type;
+    public RoomBounds.BoundsType type;
 
     void Start()
     {
