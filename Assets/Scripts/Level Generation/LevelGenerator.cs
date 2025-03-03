@@ -5,6 +5,8 @@ using Unity.AI.Navigation;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public static NavMeshSurface Surface;
+
     [SerializeField] private RoomPlacer _roomPlacer;
     [SerializeField] private CollisionResolver _collisionResolver;
     [SerializeField] private RoomConnector _roomConnector;
@@ -15,6 +17,8 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
+        Surface = GetComponent<NavMeshSurface>();
+
         _roomPlacer.level = transform;
         _corridorBuilder.Initialize(transform);
 
@@ -53,12 +57,13 @@ public class LevelGenerator : MonoBehaviour
         }
 
         transform.localScale *= 4f;
-        GetComponent<NavMeshSurface>().BuildNavMesh();
 
         foreach (var room in Rooms)
         {
             room.Prepare();
         }
+
+        Surface.BuildNavMesh();
     }
 
     private void ClearLevel()

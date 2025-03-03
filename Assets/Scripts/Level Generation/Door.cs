@@ -5,6 +5,28 @@ public class Door : MonoBehaviour
     [field: SerializeField] public bool Available { get; set; } = true;
     [field: SerializeField] public Door ConnectedDoor { get; set; }
 
+    private Animator _animator;
+
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
+    }
+
+    public void Close()
+    {
+        _animator.Play("DoorClose", 0, 0f);
+    }
+
+    public void Open()
+    {
+        _animator.Play("DoorOpen", 0, 0f);
+    }
+    
+    public float GetAnimationState()
+    {
+        return _animator.GetCurrentAnimatorStateInfo(0).length;
+    }
+
     public void Connect(Door doorToConnect)
     {
         ConnectedDoor = doorToConnect;

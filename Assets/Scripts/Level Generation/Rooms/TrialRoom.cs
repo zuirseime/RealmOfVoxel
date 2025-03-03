@@ -1,7 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public abstract class TrialRoom : Room
 {
     [SerializeField] protected int _enemiesNumber;
@@ -14,6 +17,8 @@ public abstract class TrialRoom : Room
 
     private HashSet<Vector3> _usedSpawnablePositions = new();
     private List<Vector3> _spawnablePositions = new();
+    private List<BoxCollider> _triggers;
+    private bool _isClean = false;
 
     private void OnDrawGizmosSelected()
     {
@@ -24,11 +29,24 @@ public abstract class TrialRoom : Room
         }
     }
 
+    private void Start()
+    {
+        _triggers = GetComponents<BoxCollider>().ToList();
+    }
+
+    private void Update()
+    {
+        if (_enemies.Count == 0 && !_isClean)
+        {
+            StartCoroutine(OpenDoors());
+        }
+    }
+
     public override void Prepare()
     {
         _spawnablePositions = GetSpawnablePositions();
 
-        while (_enemies.Count <= _enemiesNumber)
+        while (_enemies.Count < _enemiesNumber)
         {
             var position = _spawnablePositions.OrderBy(p => Random.value).FirstOrDefault();
 
@@ -41,6 +59,43 @@ public abstract class TrialRoom : Room
 
             _usedSpawnablePositions.Add(position);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<Player>() is Player player)
+        {
+            _enemies.ForEach(e => e.Activate());
+            Debug.Log("Player entered room");
+
+            _triggers.ForEach(t => t.enabled = false);
+
+            StartCoroutine(CloseDoors());
+        }
+    }
+
+    private IEnumerator CloseDoors()
+    {
+        doors.ForEach(d => d.Close());
+
+        float animationTime = doors.FirstOrDefault()?.GetAnimationState() ?? 1f;
+
+        yield return new WaitForSeconds(animationTime);
+
+        LevelGenerator.Surface.BuildNavMesh();
+    }
+
+    private IEnumerator OpenDoors()
+    {
+        _isClean = true;
+
+        doors.ForEach(d => d.Open());
+
+        float animationTime = doors.FirstOrDefault()?.GetAnimationState() ?? 1f;
+
+        yield return new WaitForSeconds(animationTime);
+
+        LevelGenerator.Surface.BuildNavMesh();
     }
 
     protected override void Validate()
@@ -77,7 +132,7 @@ public abstract class TrialRoom : Room
         return matchingVertices;
     }
 
-    float ColorDistance(Color a, Color b)
+    private float ColorDistance(Color a, Color b)
     {
         return Mathf.Abs(a.r - b.r) + Mathf.Abs(a.g - b.g) + Mathf.Abs(a.b - b.b);
     }
