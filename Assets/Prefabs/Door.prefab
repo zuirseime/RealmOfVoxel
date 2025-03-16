@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6793839756220895972}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 12}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -127,11 +127,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4228845232574986134, guid: 584e95f4811c4014d8fd0c5d9abf0985,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6518750302079217331, guid: 584e95f4811c4014d8fd0c5d9abf0985,
         type: 3}
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 7936103865323626439, guid: 584e95f4811c4014d8fd0c5d9abf0985,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d4a64d58837b84c49b3b38882c257488, type: 2}
     m_RemovedComponents:
     - {fileID: 2931318222644172558, guid: 584e95f4811c4014d8fd0c5d9abf0985, type: 3}
     m_RemovedGameObjects: []

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3137490441785085301}
   - component: {fileID: 4577039083093363083}
   - component: {fileID: -8262837495919608223}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5b0a3e041fb5992478f52d82190052cb, type: 2}
-  - {fileID: -6478536213147159724, guid: ba601728295c09348b4fac5596e4c87e, type: 3}
+  - {fileID: 2100000, guid: d4a64d58837b84c49b3b38882c257488, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

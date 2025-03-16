@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7005479956770970409}
   - component: {fileID: 7446636464011104674}
   - component: {fileID: -7239945430746038153}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Room (Big)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f60dba211f2f929468f6cc7ef1bb922d, type: 2}
-  - {fileID: -6478536213147159724, guid: ba601728295c09348b4fac5596e4c87e, type: 3}
+  - {fileID: 2100000, guid: d4a64d58837b84c49b3b38882c257488, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

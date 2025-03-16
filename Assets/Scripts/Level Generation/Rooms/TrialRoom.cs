@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -15,7 +14,6 @@ public abstract class TrialRoom : Room
     [Header("Read Only")]
     [SerializeField] protected List<Enemy> _enemies;
 
-    private HashSet<Vector3> _usedSpawnablePositions = new();
     private List<Vector3> _spawnablePositions = new();
     private List<BoxCollider> _triggers;
     private bool _isClean = false;
@@ -36,7 +34,7 @@ public abstract class TrialRoom : Room
 
     private void Update()
     {
-        if (_enemies.Count == 0 && !_isClean)
+        if (!_enemies.Any(e => e.IsAlive) && !_isClean)
         {
             StartCoroutine(OpenDoors());
         }
@@ -50,14 +48,11 @@ public abstract class TrialRoom : Room
         {
             var position = _spawnablePositions.OrderBy(p => Random.value).FirstOrDefault();
 
-            if (_usedSpawnablePositions.Contains(position))
-                continue;
-
             var prefab = _enemyPrefabs.OrderBy(p => Random.value).FirstOrDefault();
             var enemy = Instantiate(prefab, position, Random.rotationUniform, transform);
             _enemies.Add(enemy);
 
-            _usedSpawnablePositions.Add(position);
+            _spawnablePositions.Remove(position);
         }
     }
 
@@ -65,12 +60,24 @@ public abstract class TrialRoom : Room
     {
         if (other.gameObject.GetComponent<Player>() is Player player)
         {
-            _enemies.ForEach(e => e.Activate());
-            Debug.Log("Player entered room");
+            Debug.Log($"Player entered the {name}");
 
-            _triggers.ForEach(t => t.enabled = false);
+            //_triggers.ForEach(t => t.enabled = false);
+            player.transform.parent = transform;
 
-            StartCoroutine(CloseDoors());
+            if (!_isClean && _enemies.Any(e => !e.Active))
+            {
+                _enemies.ForEach(e => e.Activate());
+                StartCoroutine(CloseDoors());
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.GetComponent<Player>() is Player player && _enemies.All(e => !e.IsAlive))
+        {
+            player.transform.parent = null;
         }
     }
 
@@ -80,7 +87,7 @@ public abstract class TrialRoom : Room
 
         float animationTime = doors.FirstOrDefault()?.GetAnimationState() ?? 1f;
 
-        yield return new WaitForSeconds(animationTime);
+        yield return new WaitForSeconds(animationTime / 2f);
 
         LevelGenerator.Surface.BuildNavMesh();
     }
@@ -96,11 +103,6 @@ public abstract class TrialRoom : Room
         yield return new WaitForSeconds(animationTime);
 
         LevelGenerator.Surface.BuildNavMesh();
-    }
-
-    protected override void Validate()
-    {
-        base.Validate();
     }
 
     private List<Vector3> GetSpawnablePositions()

@@ -56,13 +56,14 @@ public class LevelGenerator : MonoBehaviour
             break;
         }
 
-        transform.localScale *= 4f;
+        transform.localScale *= 8f;
 
         foreach (var room in Rooms)
         {
             room.Prepare();
         }
 
+        Surface.BuildNavMesh();
         Surface.BuildNavMesh();
     }
 
