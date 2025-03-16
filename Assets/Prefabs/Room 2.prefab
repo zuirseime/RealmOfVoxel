@@ -366,6 +366,7 @@ MonoBehaviour:
   - BigTrial
   chanceToCloseDoors: 0.75
   spawnIndex: 5
+  rotatable: 1
   doors:
   - {fileID: 6544687387976907829}
   - {fileID: 8369928434811283286}

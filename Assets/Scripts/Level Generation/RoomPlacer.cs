@@ -65,7 +65,7 @@ public class RoomPlacer
         if (prefab == null)
             return null;
 
-        var rotation = _possibleRotations.OrderBy(_ => Random.value).First();
+        var rotation = prefab.rotatable ? _possibleRotations.OrderBy(_ => Random.value).First() : 0;
         var room = Object.Instantiate(prefab, position, Quaternion.Euler(0, rotation, 0), level);
         room.name = $"[{rooms.Count:00}] {type}";
 

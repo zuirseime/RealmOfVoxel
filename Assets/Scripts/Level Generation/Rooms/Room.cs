@@ -11,6 +11,8 @@ public abstract class Room : MonoBehaviour
     [Range(0, 1)] public float chanceToCloseDoors;
     public int spawnIndex = 0;
 
+    public bool rotatable;
+
     [Header("Read Only")]
     public List<Door> doors;
     public List<RoomBounds> bounds;
