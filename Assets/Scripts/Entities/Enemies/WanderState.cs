@@ -10,7 +10,7 @@ public class WanderState : EnemyState
     public override void Enter()
     {
         RefreshTimer();
-        Debug.Log($"{_enemy.name} is currently wandering...");
+        //Debug.Log($"{_enemy.name} is currently wandering...");
     }
 
     public override void Update()
@@ -38,7 +38,8 @@ public class WanderState : EnemyState
     {
         for (int i = 0; i < 10; i++)
         {
-            Vector3 randomDirection = Random.insideUnitCircle * radius;
+            Vector3 randomDirection = Random.insideUnitSphere * radius;
+            randomDirection.y = 0;
             randomDirection += center;
 
             NavMeshHit hit;

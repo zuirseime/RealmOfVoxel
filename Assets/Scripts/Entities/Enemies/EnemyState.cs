@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public abstract class EnemyState
+public abstract class EnemyState : IState
 {
     protected Enemy _enemy;
 

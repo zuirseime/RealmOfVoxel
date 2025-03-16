@@ -4,6 +4,4 @@ public class DumyEnemy : Enemy
     {
         base.Update();
     }
-
-    protected override void Die() => throw new System.NotImplementedException();
 }

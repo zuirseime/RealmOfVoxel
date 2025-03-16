@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
@@ -15,29 +16,64 @@ public abstract class Entity : MonoBehaviour
     protected float _currentMana;
 
     public NavMeshAgent agent;
+    public Entity target;
 
-    public bool IsAlive => _currentHealth > 0;
+    [field: Header("Current Stats")]
+    [field: SerializeField] public float Health
+    {
+        get => _currentHealth;
+        private set
+        {
+            if (_currentHealth != value)
+            {
+                _currentHealth = value;
+                HealthChanged?.Invoke(this, new AttributeEventArgs(value, _maxHealth));
+            }
+        }
+    }
+
+    [field: SerializeField] public float Mana
+    {
+        get => _currentMana;
+        private set
+        {
+            if (_currentMana != value)
+            {
+                _currentMana = value;
+                ManaChanged?.Invoke(this, new AttributeEventArgs(value, _maxMana));
+            }
+        }
+    }
+
+    public bool IsAlive => Health > 0;
+
+    public event EventHandler EntityDied;
+    public event EventHandler<AttributeEventArgs> HealthChanged;
+    public event EventHandler<AttributeEventArgs> ManaChanged;
 
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
 
-        _currentHealth = _maxHealth;
-        _currentMana = _maxMana;
+        Health = _maxHealth;
+        Mana = _maxMana;
     }
 
     public virtual void TakeDamage(float amount)
     {
-        _currentHealth -= amount;
-        if (_currentHealth <= 0)
+        Health -= amount;
+        if (Health <= 0)
         {
             Die();
         }
     }
 
-    protected virtual void Die() { }
+    protected virtual void Die()
+    {
+        EntityDied?.Invoke(this, EventArgs.Empty);
+    }
 
-    public virtual void Attack(Entity target)
+    public virtual void Attack()
     {
         if (target != null)
         {
@@ -45,15 +81,38 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
-    public virtual void AlternativeAttack(Entity target) { }
+    public virtual void AlternativeAttack() { }
 
     public void Heal(float amount)
     {
-        _currentHealth = Mathf.Min(_currentHealth + amount, _maxHealth);
+        Health = Mathf.Min(Health + amount, _maxHealth);
     }
 
     public void RestoreMana(float amount)
     {
-        _currentHealth = Mathf.Min(_currentMana + amount, _maxMana);
+        Mana = Mathf.Min(Mana + amount, _maxMana);
+    }
+
+    public void SetDestination(Vector3 destination)
+    {
+        agent.SetDestination(destination);
+    }
+
+    public void ClearDestination()
+    {
+        agent.isStopped = true;
+        agent.ResetPath();
+    }
+}
+
+public class AttributeEventArgs : EventArgs
+{
+    public float MaxValue { get; private set; }
+    public float CurrentValue { get; private set; }
+
+    public AttributeEventArgs(float value, float max)
+    {
+        CurrentValue = value;
+        MaxValue = max;
     }
 }

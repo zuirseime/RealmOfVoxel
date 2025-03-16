@@ -6,7 +6,7 @@ public class ChaseState : EnemyState
 
     public override void Enter()
     {
-        Debug.Log($"{_enemy.name} is currently chasing the player...");
+        //Debug.Log($"{_enemy.name} is currently chasing the player...");
     }
 
     public override void Update()
@@ -17,7 +17,7 @@ public class ChaseState : EnemyState
             return;
         }
 
-        _enemy.SetDestination(_enemy.Player.position);
+        _enemy.SetDestination(_enemy.target.transform.position);
 
         if (_enemy.HasPlayerInAttackRange())
         {

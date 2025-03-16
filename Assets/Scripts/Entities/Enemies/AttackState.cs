@@ -2,14 +2,16 @@
 
 public class AttackState : EnemyState
 {
-    private float _attackCooldown = 1.5f;
-    private float _nextAttackTime;
+    private float _attackTimer;
 
-    public AttackState(Enemy enemy) : base(enemy) { }
+    public AttackState(Enemy enemy) : base(enemy)
+    {
+    }
 
     public override void Enter()
     {
-        Debug.Log($"{_enemy.name} is currently attacking the player...");
+        _enemy.agent.ResetPath();
+        //Debug.Log($"{_enemy.name} is currently attacking the player...");
     }
 
     public override void Update()
@@ -20,10 +22,13 @@ public class AttackState : EnemyState
             return;
         }
 
-        if (Time.time > _nextAttackTime)
+        _attackTimer -= Time.deltaTime;
+        if (_attackTimer <= 0)
         {
-            _enemy.Attack(_enemy.Player.GetComponent<Entity>());
-            _nextAttackTime = Time.time + _attackCooldown;
+            _enemy.Attack();
+            _attackTimer = _enemy.AttackCooldown;
         }
+
+        _enemy.transform.LookAt(_enemy.target.transform);
     }
 }

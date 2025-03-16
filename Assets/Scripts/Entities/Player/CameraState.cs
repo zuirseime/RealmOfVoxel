@@ -1,4 +1,4 @@
-﻿public abstract class CameraState
+﻿public abstract class CameraState : IState
 {
     protected CameraController _controller;
 

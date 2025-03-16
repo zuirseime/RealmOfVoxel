@@ -1,42 +1,47 @@
-﻿using UnityEngine;
-using UnityEngine.AI;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public abstract class Enemy : Entity
 {
     [SerializeField] protected float _detectionRange;
+
     [SerializeField] protected float _attackRange;
+    [SerializeField] protected float _attackCooldown;
+
     [SerializeField] protected float _wanderRadius;
     [SerializeField] protected float _wanderCooldown;
 
-    protected Transform _player;
-    protected bool _active;
+    protected List<Player> _players;
 
     [SerializeField, Header("Read Only")] protected EnemyState _currentState;
 
-    public Transform Player
-    {
-        get => _player;
-        protected set => _player = value;
-    }
     public float WanderRadius => _wanderRadius;
     public float WanderCooldown => _wanderCooldown;
+    public bool Active { get; protected set; }
+    public float DetectionRange => _detectionRange;
+    public float AttackRange => _attackRange;
+    public float AttackCooldown => _attackCooldown;
 
     public void Activate()
     {
-        _active = true;
+        enabled = true;
+        Active = true;
         ChangeState(new WanderState(this));
     }
 
     protected override void Awake()
     {
         base.Awake();
-        Player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        _players = FindObjectsOfType<Player>().ToList();
     }
 
     protected virtual void Update()
     {
-        if (!_active)
+        if (!Active)
             return;
+
+        target = _players.OrderBy(p => DistanceToTarget(p)).FirstOrDefault();
 
         _currentState?.Update();
     }
@@ -50,16 +55,25 @@ public abstract class Enemy : Entity
 
     public bool HasPlayerInDetectionRange()
     {
-        return Vector3.Distance(transform.position, Player.position) < _detectionRange;
+        return DistanceToTarget(target) < _detectionRange;
     }
 
     public bool HasPlayerInAttackRange()
     {
-        return Vector3.Distance(transform.position, Player.position) < _attackRange;
+        return DistanceToTarget(target) < _attackRange;
     }
 
-    public void SetDestination(Vector3 destination)
+    private float DistanceToTarget(Entity target)
     {
-        agent.SetDestination(destination);
+        return Vector3.Distance(transform.position, target.transform.position);
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        transform.Rotate(Vector3.right * 90, Space.Self);
+        agent.enabled = false;
+        this.enabled = false;
+        GetComponent<Collider>().enabled = false;
     }
 }
