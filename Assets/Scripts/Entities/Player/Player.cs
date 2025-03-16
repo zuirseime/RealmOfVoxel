@@ -11,9 +11,12 @@ public class Player : Entity
 
     [SerializeField] private Transform _weaponHolder;
     private PlayerState _currentState;
+    private int _currentWeaponIndex;
 
     public SelectionManager SelectionManager { get; private set; }
     public bool Original { get; set; } = true;
+
+    public event EventHandler<WeaponEventArgs> WeaponChanged;
 
     public override void Attack()
     {
@@ -70,19 +73,35 @@ public class Player : Entity
             CurrentSpell = _spells[3];
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeWeapon(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChangeWeapon(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ChangeWeapon((_currentWeaponIndex + 1) % _weapons.Length);
+        }
+
         _currentState?.Update();
     }
 
     private void ChangeWeapon(int index)
     {
-        if (index >= 0 && index < _weapons.Length)
+        if (index >= 0 && index < _weapons.Length && CurrentWeapon != _weapons[index])
         {
+            WeaponChanged?.Invoke(this, new WeaponEventArgs(_weapons[index], _weapons));
+
             if (CurrentWeapon != null)
             {
                 Destroy(CurrentWeapon.gameObject);
                 CurrentWeapon = null;
             }
-            CurrentWeapon = Instantiate(_weapons[index], _weaponHolder.position, Quaternion.identity, _weaponHolder);
+            CurrentWeapon = Instantiate(_weapons[index], _weaponHolder.position, _weaponHolder.rotation, _weaponHolder);
+            _currentWeaponIndex = index;
         }
     }
 
@@ -91,5 +110,17 @@ public class Player : Entity
         base.Die();
         //Debug.Log("Player has died!");
         //agent.isStopped = true;
+    }
+}
+
+public class WeaponEventArgs : EventArgs
+{
+    public Weapon Current { get; private set; }
+    public Weapon[] Weapons { get; private set; }
+
+    public WeaponEventArgs(Weapon current, Weapon[] weapons)
+    {
+        Current = current;
+        Weapons = weapons;
     }
 }

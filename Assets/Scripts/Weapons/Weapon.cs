@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public abstract class Weapon : MonoBehaviour
 {
+    [SerializeField] private Sprite _sprite;
+
     [Header("Weapon Stats")]
     public float damage;
     public float range;
@@ -11,6 +13,8 @@ public abstract class Weapon : MonoBehaviour
 
     protected float _nextAttackTime;
     protected Animator _animator;
+
+    public Sprite Sprite => _sprite;
 
     private void Start()
     {

@@ -38,11 +38,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _PixelSize: 0.02
+    - _PixelSize: 0.04
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Radius: 0.24
-    - _Thickness: 0.01
+    - _Thickness: 0.02
     m_Colors:
     - _Color: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

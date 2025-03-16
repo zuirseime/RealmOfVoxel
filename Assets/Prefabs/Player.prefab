@@ -115,7 +115,7 @@ MonoBehaviour:
     type: 3}
   _weapons:
   - {fileID: -358158709396281742, guid: 6bfeb260ec0e04a4fb5c0dee80819698, type: 3}
-  - {fileID: -358158709396281742, guid: 6bfeb260ec0e04a4fb5c0dee80819698, type: 3}
+  - {fileID: -267794447042164441, guid: 5907d80f45eefe340b60f831b281d1e3, type: 3}
   _spells:
   - {fileID: 0}
   - {fileID: 0}
