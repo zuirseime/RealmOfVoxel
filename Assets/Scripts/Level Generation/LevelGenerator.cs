@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Unity.AI.Navigation;
 
@@ -15,14 +14,23 @@ public class LevelGenerator : MonoBehaviour
     [field: Header("Read Only"), SerializeField]
     public List<Room> Rooms { get; private set; } = new();
 
-    private void Start()
+    private void Awake()
     {
-        Surface = GetComponent<NavMeshSurface>();
-
         _roomPlacer.level = transform;
         _corridorBuilder.Initialize(transform);
 
         GenerateLevel();
+    }
+
+    private void Start()
+    {
+        Surface = GetComponent<NavMeshSurface>();
+        Surface.BuildNavMesh();
+
+        foreach (var room in Rooms)
+        {
+            room.Prepare();
+        }
     }
 
     private void GenerateLevel()
@@ -57,14 +65,6 @@ public class LevelGenerator : MonoBehaviour
         }
 
         transform.localScale *= 8f;
-
-        foreach (var room in Rooms)
-        {
-            room.Prepare();
-        }
-
-        Surface.BuildNavMesh();
-        Surface.BuildNavMesh();
     }
 
     private void ClearLevel()

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class HealthBar : AttributeBar
 {
-    private void Start()
+    private void Awake()
     {
         _entity.HealthChanged += OnValueChanged;
     }

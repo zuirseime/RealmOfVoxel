@@ -15,8 +15,6 @@ public abstract class TrialRoom : Room
     [SerializeField] protected List<Enemy> _enemies;
 
     private List<Vector3> _spawnablePositions = new();
-    private List<BoxCollider> _triggers;
-    private bool _isClean = false;
 
     private void OnDrawGizmosSelected()
     {
@@ -27,16 +25,13 @@ public abstract class TrialRoom : Room
         }
     }
 
-    private void Start()
-    {
-        _triggers = GetComponents<BoxCollider>().ToList();
-    }
-
+    private bool _clear = false;
     private void Update()
     {
-        if (!_enemies.Any(e => e.IsAlive) && !_isClean)
+        if (_enemies.All(e => !e.IsAlive) && !_clear)
         {
             StartCoroutine(OpenDoors());
+            _clear = true;
         }
     }
 
@@ -60,13 +55,10 @@ public abstract class TrialRoom : Room
     {
         if (other.gameObject.GetComponent<Player>() is Player player)
         {
-            Debug.Log($"Player entered the {name}");
-
-            //_triggers.ForEach(t => t.enabled = false);
-            player.transform.parent = transform;
-
-            if (!_isClean && _enemies.Any(e => !e.Active))
+            if (_enemies.All(e => e.IsAlive && !e.enabled))
             {
+                player.transform.parent = transform;
+
                 _enemies.ForEach(e => e.Activate());
                 StartCoroutine(CloseDoors());
             }
@@ -75,7 +67,7 @@ public abstract class TrialRoom : Room
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.GetComponent<Player>() is Player player && _enemies.All(e => !e.IsAlive))
+        if (other.TryGetComponent(out Player player) && _enemies.All(e => !e.IsAlive))
         {
             player.transform.parent = null;
         }
@@ -85,7 +77,7 @@ public abstract class TrialRoom : Room
     {
         doors.ForEach(d => d.Close());
 
-        float animationTime = doors.FirstOrDefault()?.GetAnimationState() ?? 1f;
+        float animationTime = doors.FirstOrDefault().GetAnimationState();
 
         yield return new WaitForSeconds(animationTime / 2f);
 
@@ -94,11 +86,9 @@ public abstract class TrialRoom : Room
 
     private IEnumerator OpenDoors()
     {
-        _isClean = true;
-
         doors.ForEach(d => d.Open());
 
-        float animationTime = doors.FirstOrDefault()?.GetAnimationState() ?? 1f;
+        float animationTime = doors.FirstOrDefault().GetAnimationState();
 
         yield return new WaitForSeconds(animationTime);
 

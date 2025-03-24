@@ -1,14 +1,18 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SpawnRoom : Room
 {
-
     public override void Prepare()
     {
         base.Prepare();
 
-        var player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Entity>();
+        var player = FindObjectOfType<Player>();
+        var agent = player.GetComponent<NavMeshAgent>();
+        agent.enabled = false;
+
         player.transform.position = transform.position;
+        agent.enabled = true;
 
         Camera camera = Camera.main;
         camera.transform.position = player.transform.position + Vector3.up * 3f;

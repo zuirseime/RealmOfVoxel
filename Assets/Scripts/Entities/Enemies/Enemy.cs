@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(SphereCollider))]
 public abstract class Enemy : Entity
 {
     [SerializeField] protected float _detectionRange;
@@ -12,55 +11,45 @@ public abstract class Enemy : Entity
     [SerializeField] protected float _wanderRadius;
     [SerializeField] protected float _wanderCooldown;
 
-    protected List<Player> _players;
-
-    [SerializeField, Header("Read Only")] protected EnemyState _currentState;
-
     public float WanderRadius => _wanderRadius;
     public float WanderCooldown => _wanderCooldown;
-    public bool Active { get; protected set; }
     public float DetectionRange => _detectionRange;
     public float AttackRange => _attackRange;
     public float AttackCooldown => _attackCooldown;
 
     public void Activate()
     {
+        if (!IsAlive) return;
+
         enabled = true;
-        Active = true;
-        ChangeState(new WanderState(this));
+        ChangeState(new DummyEnemyWanderState(this));
     }
 
     protected override void Awake()
     {
         base.Awake();
-        _players = FindObjectsOfType<Player>().ToList();
+        GetComponent<SphereCollider>().radius = DetectionRange;
     }
 
-    protected virtual void Update()
+    protected override void Start()
     {
-        if (!Active)
-            return;
+        base.Start();
+        enabled = false;
+    }
 
-        target = _players.OrderBy(p => DistanceToTarget(p)).FirstOrDefault();
-
+    protected override void Update()
+    {
         _currentState?.Update();
-    }
-
-    internal void ChangeState(EnemyState newState)
-    {
-        _currentState?.Exit();
-        _currentState = newState;
-        _currentState.Enter();
     }
 
     public bool HasPlayerInDetectionRange()
     {
-        return DistanceToTarget(target) < _detectionRange;
+        return target != null && target.IsAlive && DistanceToTarget(target) < _detectionRange;
     }
 
     public bool HasPlayerInAttackRange()
     {
-        return DistanceToTarget(target) < _attackRange;
+        return target != null && target.IsAlive && DistanceToTarget(target) < _attackRange;
     }
 
     private float DistanceToTarget(Entity target)
@@ -72,8 +61,24 @@ public abstract class Enemy : Entity
     {
         base.Die();
         transform.Rotate(Vector3.right * 90, Space.Self);
-        agent.enabled = false;
+        Agent.enabled = false;
         this.enabled = false;
-        GetComponent<Collider>().enabled = false;
+        GetComponent<BoxCollider>().enabled = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Player player) && player.IsAlive)
+        {
+            target = player;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out Player player) && player.IsAlive)
+        {
+            target = null;
+        }
     }
 }

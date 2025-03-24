@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,61 +9,65 @@ public abstract class Entity : MonoBehaviour
     [SerializeField] protected Animator _animator;
 
     [Header("Stats")]
-    [SerializeField] protected float _maxHealth;
-    [SerializeField] protected float _maxMana;
+    [SerializeField] protected EntityAttribute _health;
+    [SerializeField] protected EntityAttribute _mana;
     [SerializeField] protected float _attackDamage;
 
-    protected float _currentHealth;
-    protected float _currentMana;
+    [Header("Current Stats")]
+    [SerializeField, ReadOnly] protected EntityState _currentState;
 
-    public NavMeshAgent agent;
-    public Entity target;
+    protected NavMeshAgent _agent;
 
-    [field: Header("Current Stats")]
-    [field: SerializeField] public float Health
-    {
-        get => _currentHealth;
-        private set
-        {
-            if (_currentHealth != value)
-            {
-                _currentHealth = value;
-                HealthChanged?.Invoke(this, new AttributeEventArgs(value, _maxHealth));
-            }
-        }
-    }
+    [ReadOnly] public Entity target;
 
-    [field: SerializeField] public float Mana
-    {
-        get => _currentMana;
-        private set
-        {
-            if (_currentMana != value)
-            {
-                _currentMana = value;
-                ManaChanged?.Invoke(this, new AttributeEventArgs(value, _maxMana));
-            }
-        }
-    }
+    public NavMeshAgent Agent => _agent;
+    public EntityAttribute Health => _health;
+    public EntityAttribute Mana => _mana;
+    public bool IsAlive => _health.Value > 0;
 
-    public bool IsAlive => Health > 0;
-
-    public event EventHandler EntityDied;
+    public event EventHandler Died;
     public event EventHandler<AttributeEventArgs> HealthChanged;
     public event EventHandler<AttributeEventArgs> ManaChanged;
 
     protected virtual void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        _agent = GetComponent<NavMeshAgent>();
 
-        Health = _maxHealth;
-        Mana = _maxMana;
+        _health.ValueChanged += (s, e) => HealthChanged?.Invoke(this, e);
+        _mana.ValueChanged += (s, e) => ManaChanged?.Invoke(this, e);
+    }
+
+    protected virtual void Start()
+    {
+        _health.Restore();
+        _mana.Restore();
+    }
+
+    protected virtual void Update()
+    {
+        _currentState?.Update();
+        _mana.Regenerate();
+    }
+
+    public virtual void TakeRegularDamage(float amount, float duration, float tick)
+    {
+        if (!IsAlive || !enabled)
+            return;
+
+        StartCoroutine(DamageRoutine(amount, duration, tick));
+        if (_health.Value <= 0)
+        {
+            Die();
+        }
     }
 
     public virtual void TakeDamage(float amount)
     {
-        Health -= amount;
-        if (Health <= 0)
+        if (!IsAlive || !enabled)
+            return;
+
+        _health.Drain(amount);
+        if (_health.Value <= 0)
         {
             Die();
         }
@@ -70,7 +75,7 @@ public abstract class Entity : MonoBehaviour
 
     protected virtual void Die()
     {
-        EntityDied?.Invoke(this, EventArgs.Empty);
+        Died?.Invoke(this, EventArgs.Empty);
     }
 
     public virtual void Attack()
@@ -85,34 +90,51 @@ public abstract class Entity : MonoBehaviour
 
     public void Heal(float amount)
     {
-        Health = Mathf.Min(Health + amount, _maxHealth);
+        _health.Regenerate(amount: amount);
     }
 
     public void RestoreMana(float amount)
     {
-        Mana = Mathf.Min(Mana + amount, _maxMana);
+        _mana.Regenerate(amount);
+    }
+
+    public void DrainMana(float amount)
+    {
+        _mana.Drain(amount);
     }
 
     public void SetDestination(Vector3 destination)
     {
-        agent.SetDestination(destination);
+        Agent.SetDestination(destination);
     }
 
     public void ClearDestination()
     {
-        agent.isStopped = true;
-        agent.ResetPath();
+        Agent.isStopped = true;
+        Agent.ResetPath();
     }
-}
 
-public class AttributeEventArgs : EventArgs
-{
-    public float MaxValue { get; private set; }
-    public float CurrentValue { get; private set; }
-
-    public AttributeEventArgs(float value, float max)
+    public void OnTargetDied(object sender, EventArgs args)
     {
-        CurrentValue = value;
-        MaxValue = max;
+        target = null;
+    }
+
+    public void ChangeState(EntityState state)
+    {
+        _currentState?.Exit();
+        _currentState = state;
+        _currentState.Enter();
+    }
+
+    private IEnumerator DamageRoutine(float amount, float duration, float tick)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            _health.Drain(amount);
+
+            timer += tick * Time.deltaTime;
+            yield return null;
+        }
     }
 }

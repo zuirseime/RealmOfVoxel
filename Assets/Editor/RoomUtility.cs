@@ -83,6 +83,6 @@ public class RoomUtility : Editor
 
     private static Material GetMaterialByName(string name)
     {
-        return AssetDatabase.LoadAssetAtPath<Material>($"Assets/Prefabs/Materials/{name}.mat");
+        return AssetDatabase.LoadAssetAtPath<Material>($"Assets/Resources/Materials/{name}.mat");
     }
 }

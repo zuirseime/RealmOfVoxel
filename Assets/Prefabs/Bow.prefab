@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 3756245221619888975}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 1, z: 0.075}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -151,10 +151,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprite: {fileID: 21300000, guid: d0f9b03532eef8c4393eacf83e226e46, type: 3}
-  damage: 5
-  range: 6
-  _speed: 0.1
-  cooldown: 2
+  _name: Training Bow
+  _baseDamage: 5
+  _range: 7
+  _cooldown: 1
+  _critChance: 0.15
+  _critMultiplier: 2
   _arrowPrefab: {fileID: 1959255874989540471, guid: b473d5046315b5d4db3c2d4b210b92ae,
     type: 3}
   _arrowSource: {fileID: 6335397143553348993, guid: cc9231f1d5a399e4f8c2b1a7d1fbbdc0,

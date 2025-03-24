@@ -29,7 +29,7 @@ public class SelectionManager : MonoBehaviour
         GetComponent<Player>().target = target;
 
         _target = target;
-        _target.EntityDied += OnTargetDied;
+        _target.Died += OnTargetDied;
     }
 
     private void DiselectTargetIfNeeded()
@@ -38,16 +38,14 @@ public class SelectionManager : MonoBehaviour
 
         if (_target != null)
         {
-            GetComponent<Player>().target = null;
-
-            _target.EntityDied -= OnTargetDied;
+            _target.Died -= OnTargetDied;
             _target = null;
         }
     }
 
     private void Update()
     {
-        if (IsNearSelection())
+        if (IsNearSelection() && _target == null)
         {
             DestroySelection();
         }

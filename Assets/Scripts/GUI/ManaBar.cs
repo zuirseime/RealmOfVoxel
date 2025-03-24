@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ManaBar : AttributeBar
 {
-    private void Start()
+    private void Awake()
     {
         _entity.ManaChanged += OnValueChanged;
     }

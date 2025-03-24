@@ -5,6 +5,7 @@ Shader "Custom/DetectionRangeShader"
         _DetectionColour ("Detection Colour", Color) = (1,0,0,1)
         _AttackColour ("Attack Colour", Color) = (1,0,0,1)
         _PlayerAttackColour("Player Attack Colour", Color) = (1,0,0,1)
+        _SpellRangeColour("Spell Range Colour", Color) = (1,1,1,1)
         _Thickness("Thickness", Range(0, 5)) = 0.1
 
         // Specular vs Metallic workflow
@@ -243,6 +244,7 @@ Shader "Custom/DetectionRangeShader"
 
 
 
+            float4 _SpellRangeColour;
             float4 _PlayerAttackColour;
             float4 _DetectionColour;
             float4 _AttackColour;
@@ -256,6 +258,8 @@ Shader "Custom/DetectionRangeShader"
 
             float _PlayerAttackRange;
             float4 _PlayerPosition;
+
+            float _SpellRange;
 
 
 
@@ -427,16 +431,12 @@ Shader "Custom/DetectionRangeShader"
             #endif
 
                 half4 color = UniversalFragmentPBR(inputData, surfaceData);
-                color.rgb = MixFog(color.rgb, inputData.fogCoord);
-                color.a = OutputAlpha(color.a, IsSurfaceTypeTransparent(_Surface));
+                
 
 
 
 
 
-
-
-                float3 finalColor = color.rgb;
 
                 for (int i = 0; i < _EnemyCount; i++)
                 {
@@ -448,24 +448,31 @@ Shader "Custom/DetectionRangeShader"
 
                     if (dist > attackRange && dist < (attackRange + _Thickness))
                     {
-                        finalColor *= _AttackColour.rgb;
+                        color.rgb *= _AttackColour.rgb * 2;
                     }
-                    else if (dist > detectionRange && dist < (detectionRange + _Thickness))
+                    
+                    if (dist > detectionRange && dist < (detectionRange + _Thickness))
                     {
-                        finalColor *= _DetectionColour.rgb;
+                        color.rgb *= _DetectionColour.rgb * 2;
                     }
-                    else if (playerDist > _PlayerAttackRange && playerDist < (_PlayerAttackRange + _Thickness))
+                    
+                    if (playerDist > _PlayerAttackRange && playerDist < (_PlayerAttackRange + _Thickness))
                     {
-                        finalColor *= _PlayerAttackColour.rgb;
+                        color.rgb *= _PlayerAttackColour.rgb * 2;
+                    }
+
+                    if (playerDist > _SpellRange && playerDist < (_SpellRange + _Thickness))
+                    {
+                        color.rgb *= _SpellRangeColour.rgb * 2;
                     }
                 }
 
 
 
+                color.rgb = MixFog(color.rgb, inputData.fogCoord);
+                color.a = OutputAlpha(color.a, IsSurfaceTypeTransparent(_Surface));
 
-
-                outColor = float4(finalColor, color.a);
-                //outColor = color;
+                outColor = color;
 
             #ifdef _WRITE_RENDERING_LAYERS
                 uint renderingLayers = GetMeshRenderingLayer();

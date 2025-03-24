@@ -328,7 +328,7 @@ MonoBehaviour:
   - {fileID: 1446897223792337264}
   - {fileID: 2844638167629934010}
   - {fileID: 4783088777886828723}
-  _enemiesNumber: 10
+  _enemiesNumber: 8
   _enemyPrefabs:
   - {fileID: 9201017724323144184, guid: b4ef7dbba8a171244bb01ba64a13c978, type: 3}
   _colorThreshold: 0.01

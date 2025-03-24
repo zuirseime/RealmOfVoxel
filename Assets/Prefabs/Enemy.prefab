@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8115167662262358417}
   - component: {fileID: 727699487766246304}
   - component: {fileID: -7965119769168901370}
+  - component: {fileID: -8158390304489947911}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -93,10 +94,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _maxHealth: 15
-  _maxMana: 100
-  _attackDamage: 2
-  agent: {fileID: 0}
+  _health:
+    _maxValue: 15
+    _regenerationRate: 0
+    <Value>k__BackingField: 0
+  _mana:
+    _maxValue: 50
+    _regenerationRate: 2
+    <Value>k__BackingField: 0
+  _attackDamage: 5
   target: {fileID: 0}
   _detectionRange: 6
   _attackRange: 3
@@ -172,6 +178,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &-8158390304489947911
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718932696815380621}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &2651202947952300779
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +257,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -389,11 +416,26 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4040452697292039207, guid: 4b08c2257cc2dd54281813f8e9c232b9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5536261510292379481, guid: 4b08c2257cc2dd54281813f8e9c232b9,
         type: 3}
       propertyPath: _entity
       value: 
       objectReference: {fileID: 9201017724323144184}
+    - target: {fileID: 5536261510292379481, guid: 4b08c2257cc2dd54281813f8e9c232b9,
+        type: 3}
+      propertyPath: _showValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5677787729832130039, guid: 4b08c2257cc2dd54281813f8e9c232b9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5915810399580883450, guid: 4b08c2257cc2dd54281813f8e9c232b9,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -424,6 +466,11 @@ PrefabInstance:
       propertyPath: _entity
       value: 
       objectReference: {fileID: 9201017724323144184}
+    - target: {fileID: 6100585674771993819, guid: 4b08c2257cc2dd54281813f8e9c232b9,
+        type: 3}
+      propertyPath: _showValue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6488560316240026100, guid: 4b08c2257cc2dd54281813f8e9c232b9,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -452,7 +499,7 @@ PrefabInstance:
     - target: {fileID: 8227261959364603496, guid: 4b08c2257cc2dd54281813f8e9c232b9,
         type: 3}
       propertyPath: m_Spacing
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8227261959364603496, guid: 4b08c2257cc2dd54281813f8e9c232b9,
         type: 3}

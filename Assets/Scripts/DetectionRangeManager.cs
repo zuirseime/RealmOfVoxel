@@ -5,11 +5,12 @@ public class DetectionRangeManager : MonoBehaviour
 {
     public Material material;
     private Enemy[] _enemies;
-    private Vector4[] _enemyPositions;
-    private float[] _detectionRanges;
-    private float[] _attackRanges;
+    private Vector4[] _enemyPositions = new Vector4[100];
+    private float[] _detectionRanges = new float[100];
+    private float[] _attackRanges = new float[100];
 
     private Player _player;
+    private float _spellRange;
 
     private static readonly int playerPositionID = Shader.PropertyToID("_PlayerPosition");
     private static readonly int playerAttackRangeID = Shader.PropertyToID("_PlayerAttackRange");
@@ -19,23 +20,40 @@ public class DetectionRangeManager : MonoBehaviour
     private static readonly int attackRangesID = Shader.PropertyToID("_AttackRanges");
     private static readonly int enemyCountID = Shader.PropertyToID("_EnemyCount");
 
-    private void Update()
+    private static readonly int spellRangeID = Shader.PropertyToID("_SpellRange");
+
+    private void Start()
     {
         _player = FindObjectOfType<Player>();
-        float attackRange = _player.CurrentWeapon.range;
-
-        if (_player.IsAlive)
+        var spells = Game.Instance.CurrentSpellSet.ToList();
+        spells.ForEach(s =>
         {
-            material.SetVector(playerPositionID, _player.transform.position);
-            material.SetFloat(playerAttackRangeID, attackRange);
+            if (s != null)
+            {
+                s.SpellSelected += OnSpellSelected;
+                s.SpellDeselected += OnSpellDeselected;
+            }
+        });
+    }
+
+    private void Update()
+    {
+        material.SetFloat(spellRangeID, _spellRange);
+
+        if (_player.Inventory != null)
+        {
+            float attackRange = _player.Inventory.CurrentWeapon.Range;
+
+            if (_player.IsAlive)
+            {
+                material.SetVector(playerPositionID, _player.transform.position);
+                material.SetFloat(playerAttackRangeID, attackRange);
+            }
         }
 
         _enemies = FindObjectsOfType<Enemy>().Where(e => e.IsAlive).ToArray();
-        int enemyCount = Mathf.Min(_enemies.Length, 100);
 
-        _enemyPositions = new Vector4[enemyCount];
-        _detectionRanges = new float[enemyCount];
-        _attackRanges = new float[enemyCount];
+        int enemyCount = Mathf.Min(_enemies.Length, 100);
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -48,5 +66,15 @@ public class DetectionRangeManager : MonoBehaviour
         material.SetFloatArray(detectionRangesID, _detectionRanges);
         material.SetFloatArray(attackRangesID, _attackRanges);
         material.SetInt(enemyCountID, enemyCount);
+    }
+
+    private void OnSpellSelected(object sender, SpellEventArgs args)
+    {
+        _spellRange = args.Spell.Range;
+    }
+
+    private void OnSpellDeselected(object sender, SpellEventArgs args)
+    {
+        _spellRange = 0.01f;
     }
 }

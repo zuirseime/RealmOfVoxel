@@ -9,13 +9,13 @@ public class WeaponsDisplay : MonoBehaviour
 
     void Awake()
     {
-        var player = FindObjectOfType<Player>();
-        player.WeaponChanged += OnWeaponChanged;
+        var playerInventory = FindObjectOfType<Inventory>();
+        playerInventory.WeaponChanged += OnWeaponChanged;
     }
 
     private void OnWeaponChanged(object sender, WeaponEventArgs args)
     {
-        _primary.sprite = args.Current.Sprite;
-        _seconday.sprite = args.Weapons.First(w => w != args.Current).Sprite;
+        _primary.sprite = args.Primary.Sprite;
+        _seconday.sprite = args.Secondary.Sprite;
     }
 }

@@ -9,7 +9,7 @@ public class Billboard : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main.transform;
-        _entity.EntityDied += OnEntityDied;
+        _entity.Died += OnEntityDied;
     }
 
     private void LateUpdate()
