@@ -10,7 +10,7 @@ public class PhoenixFlameSpell : AreaSpell
     {
         base.Initialize();
 
-        AddToStats("Heal", _heal);
+        AddToStats("Heal", _heal / _tickRate, "/s");
         AddToStats("Range", _range);
         AddToStats("Mana", _manaCost);
         AddToStats("Radius", _maxExpansion);

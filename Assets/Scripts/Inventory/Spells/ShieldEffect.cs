@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ShieldEffect : AuraEffect
@@ -20,8 +21,9 @@ public class ShieldEffect : AuraEffect
         Owner.Heal(reducedDamage);
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         transform.position = Owner.transform.position;
         transform.Rotate(RotationSpeed * Time.deltaTime * Vector3.up);
     }

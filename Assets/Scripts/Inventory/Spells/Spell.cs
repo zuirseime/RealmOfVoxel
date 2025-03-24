@@ -72,11 +72,14 @@ public abstract class Spell : ScriptableObject
         _nextCastTime = 0;
     }
 
-    protected void AddToStats(string key, float value, char units = '\0')
+    protected void AddToStats(string key, float value, char units)
+        => AddToStats(key, value, units.ToString());
+
+    protected void AddToStats(string key, float value, string units = "")
     {
         if (value != 0)
         {
-            Stats.Add(key, $"{value}{units}");
+            Stats.Add(key, $"{Math.Round(value, 1)}{units}");
         }
     }
 

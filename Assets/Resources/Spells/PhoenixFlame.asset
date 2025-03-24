@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe7d5cb22de32044849c5414e8e3f97, type: 3}
   m_Name: PhoenixFlame
   m_EditorClassIdentifier: 
-  _nextCastTime: 123.118744
+  _nextCastTime: 71.58471
   _spellName: Phoenix Flame
   _description: Cures any injuries of those who come to ask for its help. Legend
     tells us that the Flame can even stop a person from turning into a monster.

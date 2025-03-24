@@ -7,4 +7,9 @@ public class AuraEffect : SpellEffect
     {
         Destroy();
     }
+
+    protected virtual void Update()
+    {
+        
+    }
 }

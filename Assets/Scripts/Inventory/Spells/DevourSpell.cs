@@ -1,11 +1,5 @@
 using UnityEngine;
 
-public abstract class AreaSpell : Spell
-{
-    [SerializeField] protected float _maxExpansion;
-    [SerializeField] protected float _tickRate;
-}
-
 [CreateAssetMenu(fileName = "Devour", menuName = "Spells/Devour")]
 public class DevourSpell : AreaSpell
 {
@@ -15,7 +9,7 @@ public class DevourSpell : AreaSpell
     {
         base.Initialize();
 
-        AddToStats("Damage", _damage);
+        AddToStats("Damage", _damage / _tickRate, "/s");
         AddToStats("Range", _range);
         AddToStats("Mana", _manaCost);
         AddToStats("Radius", _maxExpansion);
