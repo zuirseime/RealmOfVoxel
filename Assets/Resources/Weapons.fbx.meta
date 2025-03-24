@@ -13,12 +13,22 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Sword.aseprite
-    second: {fileID: 2100000, guid: 4707bcce7c2f06e41a14549032115f34, type: 2}
+    second: {fileID: 2100000, guid: 2dc6af50cb374e14e80e544c5fadfef1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Torch
+    second: {fileID: 2100000, guid: 6764dc0e49912d34383540e9b365ad35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Torch Fire
+    second: {fileID: 2100000, guid: 17b2751a6a99f6c45ab3529bec21af6d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

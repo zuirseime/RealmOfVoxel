@@ -24,6 +24,7 @@ public abstract class Entity : MonoBehaviour
     public EntityAttribute Health => _health;
     public EntityAttribute Mana => _mana;
     public bool IsAlive => _health.Value > 0;
+    public bool TakingPeriodicDamage { get; private set; }
 
     public event EventHandler Died;
     public event EventHandler<AttributeEventArgs> HealthChanged;
@@ -49,16 +50,12 @@ public abstract class Entity : MonoBehaviour
         _mana.Regenerate();
     }
 
-    public virtual void TakeRegularDamage(float amount, float duration, float tick)
+    public virtual void TakePeriodicDamage(float amount, float duration, float tick)
     {
-        if (!IsAlive || !enabled)
+        if (!IsAlive || !enabled || TakingPeriodicDamage)
             return;
 
         StartCoroutine(DamageRoutine(amount, duration, tick));
-        if (_health.Value <= 0)
-        {
-            Die();
-        }
     }
 
     public virtual void TakeDamage(float amount)
@@ -128,13 +125,19 @@ public abstract class Entity : MonoBehaviour
 
     private IEnumerator DamageRoutine(float amount, float duration, float tick)
     {
+        TakingPeriodicDamage = true;
         float timer = 0f;
-        while (timer < duration)
+        while (timer < duration && IsAlive)
         {
             _health.Drain(amount);
+            if (_health.Value <= 0)
+            {
+                Die();
+            }
 
-            timer += tick * Time.deltaTime;
-            yield return null;
+            timer += tick;
+            yield return new WaitForSeconds(tick);
         }
+        TakingPeriodicDamage = false;
     }
 }
