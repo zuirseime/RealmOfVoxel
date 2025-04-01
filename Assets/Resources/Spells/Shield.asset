@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc6f29832266dd4a92b8da5bb77e43c, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
+  <ID>k__BackingField: divine-shield
+  _nextCastTime: 0
   _spellName: Divine Shield
   _description: Provides its owner with divine protection, which absorbs part of
     the damage done to him.
   _price: 0
-  <Acquired>k__BackingField: 1
-  <Active>k__BackingField: 1
   _sprite: {fileID: 21300000, guid: ec9fdd9dc640cfc448b6383e9b84b2c9, type: 3}
   _effectPrefab: {fileID: -6905713041695097470, guid: 1930e1e1bd60e0c4096b55215a19ee54,
     type: 3}

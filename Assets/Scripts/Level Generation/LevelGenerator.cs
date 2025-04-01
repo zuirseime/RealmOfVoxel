@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
+using System.Linq;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -18,24 +19,24 @@ public class LevelGenerator : MonoBehaviour
     {
         _roomPlacer.level = transform;
         _corridorBuilder.Initialize(transform);
-
-        GenerateLevel();
+        Surface = GetComponent<NavMeshSurface>();
     }
 
     private void Start()
     {
-        Surface = GetComponent<NavMeshSurface>();
-        Surface.BuildNavMesh();
+        GenerateLevel();
 
         foreach (var room in Rooms)
         {
             room.Prepare();
         }
+
+        Surface.BuildNavMesh();
     }
 
     private void GenerateLevel()
     {
-        while (true)
+        while (!IsLevelFullyConnected())
         {
             ClearLevel();
 
@@ -58,10 +59,8 @@ public class LevelGenerator : MonoBehaviour
             catch (System.Exception ex)
             {
                 Debug.LogWarning(ex.Message);
-                continue;
+                ClearLevel();
             }
-
-            break;
         }
 
         transform.localScale *= 8f;
@@ -74,5 +73,38 @@ public class LevelGenerator : MonoBehaviour
 
         _roomPlacer?.RevertRules();
         _corridorBuilder?.Clear();
+    }
+
+    private bool IsLevelFullyConnected()
+    {
+        if (Rooms.Count == 0) return false;
+
+        SpawnRoom spawnRoom = Rooms.OfType<SpawnRoom>().FirstOrDefault();
+        if (spawnRoom == null) return false;
+
+        HashSet<Room> visited = new();
+        Queue<Room> queue = new();
+
+        queue.Enqueue(spawnRoom);
+        visited.Add(spawnRoom);
+
+        while (queue.Count > 0)
+        {
+            Room current = queue.Dequeue();
+
+            foreach (var door in current.doors)
+            {
+                if (door.ConnectedDoor == null) continue;
+
+                Room neigbour = door.ConnectedDoor.Parent;
+                if (!visited.Contains(neigbour))
+                {
+                    visited.Add(neigbour);
+                    queue.Enqueue(neigbour);
+                }
+            }
+        }
+
+        return visited.Count == Rooms.Count;
     }
 }

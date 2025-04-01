@@ -12,4 +12,10 @@ public class AttributeEventArgs : EventArgs
         PreviousValue = previous;
         MaxValue = max;
     }
+
+    public AttributeEventArgs(float value, float max)
+    {
+        CurrentValue = value;
+        MaxValue = max;
+    }
 }

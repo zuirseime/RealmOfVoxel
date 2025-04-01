@@ -1,11 +1,7 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : Collectable
 {
-    [SerializeField] private Sprite _sprite;
-    [SerializeField] protected string _name;
-
     [Header("Weapon Stats")]
     [SerializeField, Min(0)] protected float _baseDamage;
     [SerializeField, Min(0)] protected float _range;
@@ -14,22 +10,33 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField, Min(1f)] protected float _critMultiplier;
 
     protected float _nextAttackTime = 0;
-    protected Animator _animator;
 
-    public Sprite Sprite => _sprite;
-    public string Name => _name;
     public float Damage { get; private set; }
     public float Range => _range;
-    public float Cooldown => _cooldown;
-    public float CritChance => _critChance;
-    public float CritMultiplier => _critMultiplier;
+    public float Cooldown => _cooldown * Owner.GetComponent<EntityModifiers>().CooldownModifier.Value;
+    public float CritChance => _critChance * Owner.GetComponent<EntityModifiers>().CritChanceModifier.Value;
+    public float CritMultiplier => _critMultiplier * Owner.GetComponent<EntityModifiers>().CritMultiplicationModifier.Value;
+    public Entity Owner { get; private set; }
 
     public event System.EventHandler<WeaponCritEventArgs> CritStrike;
 
-    private void Start()
+    protected override void Awake()
     {
-        _animator = GetComponent<Animator>();
+        base.Awake();
+
+        Owner = FindObjectOfType<Player>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
         Damage = _baseDamage;
+
+        AddToStats("Damage", Damage);
+        AddToStats("Range", Range);
+        AddToStats("Cooldown", Cooldown, 's');
+        AddToStats("Critical Chance", CritChance * 100, '%');
     }
 
     public void Attack(Entity target)
@@ -40,11 +47,11 @@ public abstract class Weapon : MonoBehaviour
         if (Time.time < _nextAttackTime)
             return;
 
-        Damage = _baseDamage;
-        if (Random.value < _critChance)
+        Damage = _baseDamage * Owner.GetComponent<EntityModifiers>().DamageModifier.Value;
+        if (Random.value < CritChance)
         {
-            Damage *= _critMultiplier;
-            CritStrike?.Invoke(this, new WeaponCritEventArgs(_critMultiplier, Damage));
+            Damage *= CritMultiplier;
+            CritStrike?.Invoke(this, new WeaponCritEventArgs(CritMultiplier, Damage));
         }
 
         AttackLogic(target);
@@ -57,9 +64,20 @@ public abstract class Weapon : MonoBehaviour
         return target != null;
     }
 
-    protected abstract void AttackLogic(Entity target);
+    protected override void Collect(Player player)
+    {
+        if (!player.TryGetComponent(out Inventory inventory)) return;
+        if (!inventory.CanCollect()) return;
 
-    public abstract void Use();
+        transform.position = Vector3.zero;
+        inventory.TakeWeapon(this);
+
+        base.Collect(player);
+
+        Destroy(gameObject);
+    }
+
+    protected abstract void AttackLogic(Entity target);
 }
 
 public class WeaponCritEventArgs : System.EventArgs

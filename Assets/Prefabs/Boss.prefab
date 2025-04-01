@@ -424,6 +424,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4903675216790579202}
   - component: {fileID: -1443125466687422802}
+  - component: {fileID: -8908612326764681448}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -464,11 +465,10 @@ MonoBehaviour:
   _deadEndPrefab: {fileID: 3833857687938428980, guid: 86c0e5f14e885924e9494b9a8b72b18d,
     type: 3}
   connectsTo:
-  - Merchant
-  - Treasure
   - SmallTrial
   - MediumTrial
   - BigTrial
+  doorsClosed: 0
   chanceToCloseDoors: 0
   spawnIndex: 1
   rotatable: 1
@@ -483,6 +483,25 @@ MonoBehaviour:
   - {fileID: 1533787634401824230}
   - {fileID: 2749269135003599148}
   - {fileID: 2446009904850326337}
+--- !u!114 &-8908612326764681448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7466931595865297087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &755307191329119796
 PrefabInstance:
   m_ObjectHideFlags: 0

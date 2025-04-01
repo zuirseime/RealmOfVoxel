@@ -23,7 +23,7 @@ public class FireballEffect : ProjectileEffect
             return;
 
         if (entity != null)
-            entity.TakeDamage(Damage);
+            entity.TakeDamage(Owner, Damage);
 
         if (!_expoding)
             Explode();

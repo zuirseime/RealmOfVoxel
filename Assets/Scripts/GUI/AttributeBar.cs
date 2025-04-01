@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class AttributeBar : MonoBehaviour
 {
     [SerializeField] private bool _showValue = true;
-    [SerializeField] private Slider _slider;
+    [SerializeField] protected Slider _slider;
     [SerializeField] protected Entity _entity;
     [SerializeField] protected TextMeshProUGUI _text;
 
@@ -14,18 +14,21 @@ public class AttributeBar : MonoBehaviour
         _text.gameObject.SetActive(_showValue);
     }
 
+    protected virtual void Start()
+    {
+        UpdateText(_entity.Health.Value, _entity.Health.MaxValue);
+    }
+
     public void OnValueChanged(object sender, AttributeEventArgs args)
     {
-        _text.text = $"{args.CurrentValue:N0} / {args.MaxValue:N0}";
+        UpdateText(args.CurrentValue, args.MaxValue);
 
         if (_slider == null)
             return;
 
-        if (_slider.maxValue != args.MaxValue)
-        {
-            _slider.maxValue = args.MaxValue;
-        }
-
+        _slider.maxValue = args.MaxValue;
         _slider.value = args.CurrentValue;
     }
+
+    private void UpdateText(float value, float maxValue) => _text.text = $"{value:N0} / {maxValue:N0}";
 }

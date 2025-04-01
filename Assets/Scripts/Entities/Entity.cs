@@ -3,28 +3,28 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
+[RequireComponent(typeof(NavMeshAgent), typeof(EntityModifiers))]
 public abstract class Entity : MonoBehaviour
 {
-    [SerializeField] protected Animator _animator;
+    [ReadOnly] public Entity target;
 
-    [Header("Stats")]
+    [Header("NavMesh Agent")]
+    [SerializeField] private float _acceleration = 2f;
+    [SerializeField] private float _deceleration = 60f;
+
+    [Header("Attributes")]
     [SerializeField] protected EntityAttribute _health;
     [SerializeField] protected EntityAttribute _mana;
-    [SerializeField] protected float _attackDamage;
 
-    [Header("Current Stats")]
-    [SerializeField, ReadOnly] protected EntityState _currentState;
-
+    protected EntityState _currentState;
     protected NavMeshAgent _agent;
 
-    [ReadOnly] public Entity target;
+    private bool _takingPeriodicDamage;
 
     public NavMeshAgent Agent => _agent;
     public EntityAttribute Health => _health;
     public EntityAttribute Mana => _mana;
-    public bool IsAlive => _health.Value > 0;
-    public bool TakingPeriodicDamage { get; private set; }
+    public bool IsAlive { get; private set; } = true;
 
     public event EventHandler Died;
     public event EventHandler<AttributeEventArgs> HealthChanged;
@@ -34,54 +34,53 @@ public abstract class Entity : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
 
-        _health.ValueChanged += (s, e) => HealthChanged?.Invoke(this, e);
-        _mana.ValueChanged += (s, e) => ManaChanged?.Invoke(this, e);
-    }
+        Health.ValueChanged += (s, e) => HealthChanged?.Invoke(this, e);
+        Mana.ValueChanged += (s, e) => ManaChanged?.Invoke(this, e);
 
-    protected virtual void Start()
-    {
-        _health.Restore();
-        _mana.Restore();
+        Health.Restore();
+        Mana.Restore();
     }
 
     protected virtual void Update()
     {
+        Agent.acceleration = (Agent.remainingDistance <= 1) ? _deceleration : _acceleration;
+
         _currentState?.Update();
-        _mana.Regenerate();
+        Health.Regenerate();
+        Mana.Regenerate();
     }
 
-    public virtual void TakePeriodicDamage(float amount, float duration, float tick)
+    public virtual void TakePeriodicDamage(Entity entity, float amount, float duration, float tick)
     {
-        if (!IsAlive || !enabled || TakingPeriodicDamage)
+        if (_takingPeriodicDamage)
+        {
+            TakeDamage(entity, amount);
             return;
+        }
 
-        StartCoroutine(DamageRoutine(amount, duration, tick));
+        StartCoroutine(DamageRoutine(entity, amount, duration, tick));
     }
 
-    public virtual void TakeDamage(float amount)
+    public virtual void TakeDamage(Entity entity, float amount)
     {
         if (!IsAlive || !enabled)
             return;
 
-        _health.Drain(amount);
-        if (_health.Value <= 0)
+        float damageAfterDefence = amount / GetComponent<EntityModifiers>().DefenceModifier.Value;
+        Health.Drain(damageAfterDefence);
+        if (Health.Value <= 0)
         {
-            Die();
+            Die(entity);
         }
     }
 
-    protected virtual void Die()
+    protected virtual void Die(Entity entity)
     {
+        IsAlive = Health.Value > 0;
         Died?.Invoke(this, EventArgs.Empty);
     }
 
-    public virtual void Attack()
-    {
-        if (target != null)
-        {
-            target.TakeDamage(_attackDamage);
-        }
-    }
+    public virtual void Attack() { }
 
     public virtual void AlternativeAttack() { }
 
@@ -123,21 +122,17 @@ public abstract class Entity : MonoBehaviour
         _currentState.Enter();
     }
 
-    private IEnumerator DamageRoutine(float amount, float duration, float tick)
+    private IEnumerator DamageRoutine(Entity entity, float amount, float duration, float tick)
     {
-        TakingPeriodicDamage = true;
+        _takingPeriodicDamage = true;
         float timer = 0f;
         while (timer < duration && IsAlive)
         {
-            _health.Drain(amount);
-            if (_health.Value <= 0)
-            {
-                Die();
-            }
+            TakeDamage(entity, amount);
 
             timer += tick;
             yield return new WaitForSeconds(tick);
         }
-        TakingPeriodicDamage = false;
+        _takingPeriodicDamage = false;
     }
 }

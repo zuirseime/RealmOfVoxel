@@ -18,6 +18,9 @@ public class RoomConnector
 
             foreach (var receiver in receivers.OrderBy(r => Vector3.Distance(giver.transform.position, r.transform.position)))
             {
+                if (receiver.doorsClosed)
+                    continue;
+
                 var giverDoor = giver.GetNearestDoor(receiver);
                 var receiverDoor = receiver.GetNearestDoor(giver);
 
@@ -30,7 +33,10 @@ public class RoomConnector
                     receiverDoor.Connect(giverDoor);
 
                     if (Random.value < giver.chanceToCloseDoors)
+                    {
+                        giver.doorsClosed = true;
                         break;
+                    }
                 }
             }
         }

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92b993e9eccf0d449e0fe3e593f3e23, type: 3}
   m_Name: Devour
   m_EditorClassIdentifier: Assembly-CSharp::DevourSpell
+  <ID>k__BackingField: devour
+  _nextCastTime: 0
   _spellName: Devour
   _description: Creates an area on the ground that devours the life energy of all
     enemy creatures within its boundaries.
   _price: 0
-  <Acquired>k__BackingField: 1
-  <Active>k__BackingField: 1
   _sprite: {fileID: 21300000, guid: 5c848d76bd69628488d5c8942e1215f6, type: 3}
   _effectPrefab: {fileID: 3981172538928285608, guid: 25bd5330c3c7eee439e39fb81e2fefed,
     type: 3}

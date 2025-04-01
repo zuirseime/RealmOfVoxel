@@ -8,6 +8,7 @@ public abstract class Room : MonoBehaviour
     [SerializeField] private GameObject _deadEndPrefab;
     public List<string> connectsTo = new();
 
+    public bool doorsClosed = false;
     [Range(0, 1)] public float chanceToCloseDoors;
     public int spawnIndex = 0;
 

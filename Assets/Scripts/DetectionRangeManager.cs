@@ -22,25 +22,21 @@ public class DetectionRangeManager : MonoBehaviour
 
     private static readonly int spellRangeID = Shader.PropertyToID("_SpellRange");
 
+    private void OnEnable()
+    {
+        FindObjectOfType<Game>().SpellSetChanged += OnSpellSetChanged;
+    }
+
     private void Start()
     {
         _player = FindObjectOfType<Player>();
-        var spells = Game.Instance.CurrentSpellSet.ToList();
-        spells.ForEach(s =>
-        {
-            if (s != null)
-            {
-                s.SpellSelected += OnSpellSelected;
-                s.SpellDeselected += OnSpellDeselected;
-            }
-        });
     }
 
     private void Update()
     {
         material.SetFloat(spellRangeID, _spellRange);
 
-        if (_player.Inventory != null)
+        if (_player.Inventory != null && _player.Inventory.CurrentWeapon != null)
         {
             float attackRange = _player.Inventory.CurrentWeapon.Range;
 
@@ -76,5 +72,17 @@ public class DetectionRangeManager : MonoBehaviour
     private void OnSpellDeselected(object sender, SpellEventArgs args)
     {
         _spellRange = 0.01f;
+    }
+
+    private void OnSpellSetChanged(object sender, SpellSetEventArgs args)
+    {
+        foreach (var spell in args.Spells)
+        {
+            if (spell != null)
+            {
+                spell.SpellSelected += OnSpellSelected;
+                spell.SpellDeselected += OnSpellDeselected;
+            }
+        }
     }
 }

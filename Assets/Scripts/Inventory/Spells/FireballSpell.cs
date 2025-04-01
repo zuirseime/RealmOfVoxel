@@ -21,9 +21,11 @@ public class FireballSpell : Spell
 
     protected override void ApplyEffect(Entity owner, Vector3 targetPosition)
     {
-        Vector3 spawnPosition = owner.transform.position + Vector3.up;
-        var projectile = Instantiate(_effectPrefab, spawnPosition, Quaternion.identity);
         targetPosition += Vector3.up;
+
+        Vector3 spawnPosition = owner.transform.position + Vector3.up;
+        var projectile = Instantiate(_effectPrefab, spawnPosition, Quaternion.LookRotation((targetPosition - spawnPosition).normalized));
+        projectile.transform.LookAt(targetPosition);
 
         var effect = projectile.GetComponent<FireballEffect>();
         effect.Owner = owner;

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2520885237327844080}
+  - component: {fileID: 8846623005308179269}
   - component: {fileID: 5836134672669064263}
   m_Layer: 0
   m_Name: Game
@@ -32,6 +33,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8846623005308179269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763822055763383107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a580d95a5a17881469f1676f6c20fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5836134672669064263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,8 +57,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d21cc21ce015a4eb5c528a4f544cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spellSet:
-  - {fileID: 11400000, guid: 1e4948ba5c3b3664ba1831e5052c45d1, type: 2}
-  - {fileID: 11400000, guid: a0ac902239678c041bc04acea857c909, type: 2}
-  - {fileID: 11400000, guid: c495d170caa115e49871e34d8976da82, type: 2}
-  - {fileID: 11400000, guid: f45c52fd15c53ba418405cbc2f60c892, type: 2}
+  _weaponSet: []

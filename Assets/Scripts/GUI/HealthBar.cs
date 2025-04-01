@@ -3,8 +3,9 @@ using UnityEngine.UI;
 
 public class HealthBar : AttributeBar
 {
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
         _entity.HealthChanged += OnValueChanged;
     }
 }

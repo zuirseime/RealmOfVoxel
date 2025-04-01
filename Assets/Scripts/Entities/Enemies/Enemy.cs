@@ -5,17 +5,22 @@ public abstract class Enemy : Entity
 {
     [SerializeField] protected float _detectionRange;
 
+    [SerializeField] protected float _attackDamage;
     [SerializeField] protected float _attackRange;
     [SerializeField] protected float _attackCooldown;
 
     [SerializeField] protected float _wanderRadius;
     [SerializeField] protected float _wanderCooldown;
 
+    [SerializeField] protected int _minCoins;
+    [SerializeField] protected int _maxCoins;
+
     public float WanderRadius => _wanderRadius;
     public float WanderCooldown => _wanderCooldown;
     public float DetectionRange => _detectionRange;
     public float AttackRange => _attackRange;
     public float AttackCooldown => _attackCooldown;
+    public int Coins { get; private set; }
 
     public void Activate()
     {
@@ -25,15 +30,25 @@ public abstract class Enemy : Entity
         ChangeState(new DummyEnemyWanderState(this));
     }
 
+    public override void Attack()
+    {
+        base.Attack();
+        if (target != null)
+        {
+            target.TakeDamage(this, _attackDamage * GetComponent<EntityModifiers>().DamageModifier.BaseValue);
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();
         GetComponent<SphereCollider>().radius = DetectionRange;
+
+        Coins = Random.Range(_minCoins, _maxCoins);
     }
 
-    protected override void Start()
+    protected virtual void Start()
     {
-        base.Start();
         enabled = false;
     }
 
@@ -44,12 +59,12 @@ public abstract class Enemy : Entity
 
     public bool HasPlayerInDetectionRange()
     {
-        return target != null && target.IsAlive && DistanceToTarget(target) < _detectionRange;
+        return target != null && target.IsAlive;
     }
 
     public bool HasPlayerInAttackRange()
     {
-        return target != null && target.IsAlive && DistanceToTarget(target) < _attackRange;
+        return HasPlayerInDetectionRange() && DistanceToTarget(target) < _attackRange;
     }
 
     private float DistanceToTarget(Entity target)
@@ -57,9 +72,14 @@ public abstract class Enemy : Entity
         return Vector3.Distance(transform.position, target.transform.position);
     }
 
-    protected override void Die()
+    protected override void Die(Entity entity)
     {
-        base.Die();
+        if (entity.TryGetComponent(out Inventory inventory))
+        {
+            inventory.AddCoins(Coins);
+        }
+
+        base.Die(entity);
         transform.Rotate(Vector3.right * 90, Space.Self);
         Agent.enabled = false;
         this.enabled = false;

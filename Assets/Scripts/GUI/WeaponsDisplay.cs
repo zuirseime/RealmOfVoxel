@@ -1,11 +1,13 @@
-using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WeaponsDisplay : MonoBehaviour
 {
-    [SerializeField] private Image _primary;
-    [SerializeField] private Image _seconday;
+    [SerializeField] private TextMeshProUGUI _hint;
+
+    [SerializeField] private UISlot _primarySlot;
+    [SerializeField] private UISlot _secondarySlot;
 
     void Awake()
     {
@@ -13,9 +15,14 @@ public class WeaponsDisplay : MonoBehaviour
         playerInventory.WeaponChanged += OnWeaponChanged;
     }
 
+    private void Start()
+    {
+        _hint.text = Settings.Instance.Input.SwapWeapons.ToString();
+    }
+
     private void OnWeaponChanged(object sender, WeaponEventArgs args)
     {
-        _primary.sprite = args.Primary.Sprite;
-        _seconday.sprite = args.Secondary.Sprite;
+        _primarySlot.Initialize(args.Primary);
+        _secondarySlot.Initialize(args.Secondary);
     }
 }

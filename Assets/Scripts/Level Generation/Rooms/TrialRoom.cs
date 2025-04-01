@@ -32,6 +32,7 @@ public abstract class TrialRoom : Room
         {
             StartCoroutine(OpenDoors());
             _clear = true;
+            FindObjectOfType<Player>().SwitchToSprintMode();
         }
     }
 
@@ -57,6 +58,7 @@ public abstract class TrialRoom : Room
         {
             if (_enemies.All(e => e.IsAlive && !e.enabled))
             {
+                player.SwitchToBattleMode();
                 player.transform.parent = transform;
 
                 _enemies.ForEach(e => e.Activate());
@@ -69,6 +71,7 @@ public abstract class TrialRoom : Room
     {
         if (other.TryGetComponent(out Player player) && _enemies.All(e => !e.IsAlive))
         {
+            player.SwitchToSprintMode();
             player.transform.parent = null;
         }
     }
@@ -81,7 +84,7 @@ public abstract class TrialRoom : Room
 
         yield return new WaitForSeconds(animationTime / 2f);
 
-        LevelGenerator.Surface.BuildNavMesh();
+        LevelGenerator.Surface.UpdateNavMesh(LevelGenerator.Surface.navMeshData);
     }
 
     private IEnumerator OpenDoors()
@@ -92,7 +95,7 @@ public abstract class TrialRoom : Room
 
         yield return new WaitForSeconds(animationTime);
 
-        LevelGenerator.Surface.BuildNavMesh();
+        LevelGenerator.Surface.UpdateNavMesh(LevelGenerator.Surface.navMeshData);
     }
 
     private List<Vector3> GetSpawnablePositions()
@@ -107,7 +110,6 @@ public abstract class TrialRoom : Room
 
             if (colors == null || colors.Length == 0)
             {
-                Debug.LogWarning("No vertex colors found in mesh.");
                 continue;
             }
 

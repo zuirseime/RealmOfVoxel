@@ -39,7 +39,7 @@ public class AbyssalShroudEffect : AuraEffect
     private void AffectEntity(Entity entity)
     {
         if (entity != null && entity.GetType() != Owner.GetType())
-            entity.TakeDamage(Damage);
+            entity.TakeDamage(Owner, Damage);
     }
 
     private void OnTriggerEnter(Collider other)

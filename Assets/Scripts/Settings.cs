@@ -22,5 +22,5 @@ public class InputSettings
 
     public KeyCode SwapWeapons { get; set; } = KeyCode.Tab;
 
-    public KeyCode Interact { get; set; } = KeyCode.E;
+    public KeyCode Interact { get; set; } = KeyCode.F;
 }

@@ -2,10 +2,17 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    public Room Parent { get; set; }
+
     [field: SerializeField] public bool Available { get; set; } = true;
     [field: SerializeField] public Door ConnectedDoor { get; set; }
 
     private Animator _animator;
+
+    private void Awake()
+    {
+        Parent = transform.parent.parent.GetComponent<Room>();
+    }
 
     private void Start()
     {

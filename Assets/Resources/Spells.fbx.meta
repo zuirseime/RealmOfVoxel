@@ -9,6 +9,26 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Abyssal Shroud.png
     second: {fileID: 2100000, guid: 156ed0a738173224d9597ec920dbb13b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Devour.png
+    second: {fileID: 2100000, guid: 5881b1a35204d0d4eac0759f5a8ecff3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fireball.png
+    second: {fileID: 2100000, guid: cdfa539e8c3c993439f0f648ebf0872b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Phoenix Flame.png
+    second: {fileID: 2100000, guid: 22de7f6eaf4ae7c4d93e73052fe66bca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shield
+    second: {fileID: 2100000, guid: bcd28b44b719a6d439f906acf0acbba0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -259,6 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 187350655854181743}
   - component: {fileID: -8553242173722074749}
+  - component: {fileID: 7902786543998540233}
   m_Layer: 0
   m_Name: Spawn
   m_TagString: Untagged
@@ -301,7 +302,8 @@ MonoBehaviour:
   connectsTo:
   - SmallTrial
   - MediumTrial
-  chanceToCloseDoors: 0.25
+  doorsClosed: 0
+  chanceToCloseDoors: 0.75
   spawnIndex: 0
   rotatable: 1
   doors:
@@ -322,6 +324,25 @@ MonoBehaviour:
   - {fileID: 7988323705472829543}
   - {fileID: 6751595244325160109}
   - {fileID: 5008355826999861466}
+--- !u!114 &7902786543998540233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042308863102902810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &2589990255195760537
 GameObject:
   m_ObjectHideFlags: 0

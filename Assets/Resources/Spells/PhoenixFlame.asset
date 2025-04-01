@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe7d5cb22de32044849c5414e8e3f97, type: 3}
   m_Name: PhoenixFlame
   m_EditorClassIdentifier: 
-  _nextCastTime: 71.58471
+  <ID>k__BackingField: phoenix-flame
+  _nextCastTime: 223.6666
   _spellName: Phoenix Flame
   _description: Cures any injuries of those who come to ask for its help. Legend
     tells us that the Flame can even stop a person from turning into a monster.
   _price: 0
-  <Acquired>k__BackingField: 1
-  <Active>k__BackingField: 1
   _sprite: {fileID: 21300000, guid: 6cd419284a219704f8db76c2bbe0b74d, type: 3}
   _effectPrefab: {fileID: -672847550711270695, guid: b3c817b594866324ca7beae2ff038d00,
     type: 3}
@@ -27,6 +26,6 @@ MonoBehaviour:
   _manaCost: 15
   _duration: 10
   _maxExpansion: 10
-  _tickRate: 2
+  _tickRate: 1
   _heal: 2
   _rotationSpeed: 45

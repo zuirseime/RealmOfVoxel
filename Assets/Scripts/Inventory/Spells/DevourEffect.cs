@@ -23,7 +23,7 @@ public class DevourEffect : AreaEffect
     protected override void AffectEntity(Entity entity)
     {
         if (entity != null && entity.GetType() != Owner.GetType())
-            entity.TakeDamage(Damage);
+            entity.TakeDamage(Owner, Damage);
     }
 
     private IEnumerator ExpansionRoutine()

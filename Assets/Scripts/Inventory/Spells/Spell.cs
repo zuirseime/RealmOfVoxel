@@ -1,25 +1,32 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Scripting;
 
-//public abstract class SpellData : ScriptableObject
+[Serializable]
+public class SpellData
+{
+    [field: SerializeField] public string SpellId { get; set; }
+    [field: SerializeField] public bool Acquired { get; set; } = false;
+    [field: SerializeField] public bool Active { get; set; } = false;
+}
 
-public abstract class Spell : ScriptableObject
+[Preserve]
+public abstract class Spell : ScriptableObject, IDisplayable
 {
     public event EventHandler<SpellEventArgs> SpellUsed;
     public event EventHandler<SpellEventArgs> SpellSelected;
     public event EventHandler<SpellEventArgs> SpellDeselected;
+
+    [field: SerializeField] public string ID { get; set; }
 
     [SerializeField, ReadOnly] protected float _nextCastTime = 0;
 
     [Header("Information")]
     [SerializeField] protected string _spellName;
     [SerializeField, TextArea] protected string _description;
-
-    [Header("Status")]
     [SerializeField] protected float _price;
-    [field: SerializeField] public bool Acquired { get; set; }
-    [field: SerializeField] public bool Active { get; set; }
 
     [Header("Visualisation")]
     [SerializeField] protected Sprite _sprite;
@@ -33,13 +40,25 @@ public abstract class Spell : ScriptableObject
 
     public float Range => _range;
     public float Cooldown => _cooldown;
-    public string SpellName => _spellName;
-    public string Description => _description;
-    public Sprite Sprite => _sprite;
+    public string Title
+    {
+        get => _spellName;
+        set => _spellName = value;
+    }
+    public string Description
+    {
+        get => _description;
+        set => _description = value;
+    }
+    public Sprite Sprite
+    {
+        get => _sprite;
+        set => _sprite = value;
+    }
     public float ManaCost => _manaCost;
     public float Duration => _duration;
 
-    public Dictionary<string, string> Stats { get; private set; } = new();
+    public SerializedDictionary<string, string> Stats { get; set; } = new();
 
     public void CastAt(Entity owner, Vector3 targetPosition)
     {
@@ -79,7 +98,11 @@ public abstract class Spell : ScriptableObject
     {
         if (value != 0)
         {
-            Stats.Add(key, $"{Math.Round(value, 1)}{units}");
+            string valueFormatted = $"{Math.Round(value, 1)}{units}";
+            if (!Stats.ContainsKey(key))
+                Stats.Add(key, valueFormatted);
+            else
+                Stats[key] = valueFormatted;
         }
     }
 
@@ -89,7 +112,7 @@ public abstract class Spell : ScriptableObject
 
     public override string ToString()
     {
-        return $"{SpellName}";
+        return $"{Title}";
     }
 }
 
