@@ -84,7 +84,7 @@ public abstract class TrialRoom : Room
 
         yield return new WaitForSeconds(animationTime / 2f);
 
-        LevelGenerator.Surface.UpdateNavMesh(LevelGenerator.Surface.navMeshData);
+        LevelGenerator.UpdateSurfaces();
     }
 
     private IEnumerator OpenDoors()
@@ -95,7 +95,7 @@ public abstract class TrialRoom : Room
 
         yield return new WaitForSeconds(animationTime);
 
-        LevelGenerator.Surface.UpdateNavMesh(LevelGenerator.Surface.navMeshData);
+        LevelGenerator.UpdateSurfaces();
     }
 
     private List<Vector3> GetSpawnablePositions()

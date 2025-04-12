@@ -22,12 +22,11 @@ public abstract class Enemy : Entity
     public float AttackCooldown => _attackCooldown;
     public int Coins { get; private set; }
 
-    public void Activate()
+    public virtual void Activate()
     {
         if (!IsAlive) return;
 
         enabled = true;
-        ChangeState(new DummyEnemyWanderState(this));
     }
 
     public override void Attack()
@@ -45,10 +44,7 @@ public abstract class Enemy : Entity
         GetComponent<SphereCollider>().radius = DetectionRange;
 
         Coins = Random.Range(_minCoins, _maxCoins);
-    }
 
-    protected virtual void Start()
-    {
         enabled = false;
     }
 

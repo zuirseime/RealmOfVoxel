@@ -8,15 +8,16 @@ public class BossBar : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _name;
     [SerializeField] private Slider _slider;
 
-    public void Initialize(Entity entity)
+    public void Initialize(Boss boss)
     {
-        enabled = true;
+        gameObject.SetActive(true);
 
-        _slider.maxValue = entity.Health.MaxValue;
-        _slider.value = entity.Health.Value;
+        _name.text = boss.Name;
+        _slider.maxValue = boss.Health.MaxValue;
+        _slider.value = boss.Health.Value;
 
-        entity.HealthChanged += OnHealthChanged;
-        entity.Died += OnBossDied;
+        boss.HealthChanged += OnHealthChanged;
+        boss.Died += OnBossDied;
     }
 
     private void OnHealthChanged(object sender, AttributeEventArgs args)
@@ -27,6 +28,6 @@ public class BossBar : MonoBehaviour
 
     private void OnBossDied(object sender, EventArgs args)
     {
-        enabled = false;
+        gameObject.SetActive(false);
     }
 }

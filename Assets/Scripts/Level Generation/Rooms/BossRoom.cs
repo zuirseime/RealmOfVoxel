@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class BossRoom : Room
 {
-    [SerializeField] private Boss[] _prefabs;
+    [SerializeField] private Boss[] _possibleBosses;
 
     private bool _clear = false;
     private Boss _boss;
+    private BossBar _bossBar;
+
+    private void Start()
+    {
+        _bossBar = FindObjectOfType<BossBar>();
+        _bossBar.gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,9 +25,12 @@ public class BossRoom : Room
             player.SwitchToBattleMode();
             player.transform.parent = transform;
 
-            var randomPrefab = _prefabs.OrderBy(p => Random.value).FirstOrDefault();
+            var randomPrefab = _possibleBosses.OrderBy(p => Random.value).FirstOrDefault();
             _boss = Instantiate(randomPrefab, transform);
             _boss.Died += OnBossDied;
+            _boss.Activate();
+
+            _bossBar.Initialize(_boss);
 
             StartCoroutine(CloseDoors());
         }
@@ -51,7 +61,7 @@ public class BossRoom : Room
 
         yield return new WaitForSeconds(animationTime / 2f);
 
-        LevelGenerator.Surface.UpdateNavMesh(LevelGenerator.Surface.navMeshData);
+        LevelGenerator.UpdateSurfaces();
     }
 
     private IEnumerator OpenDoors()
@@ -62,6 +72,6 @@ public class BossRoom : Room
 
         yield return new WaitForSeconds(animationTime);
 
-        LevelGenerator.Surface.UpdateNavMesh(LevelGenerator.Surface.navMeshData);
+        LevelGenerator.UpdateSurfaces();
     }
 }

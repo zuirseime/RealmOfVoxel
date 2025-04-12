@@ -5,7 +5,7 @@ using System.Linq;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public static NavMeshSurface Surface;
+    public static NavMeshSurface[] Surfaces;
 
     [SerializeField] private RoomPlacer _roomPlacer;
     [SerializeField] private CollisionResolver _collisionResolver;
@@ -15,11 +15,19 @@ public class LevelGenerator : MonoBehaviour
     [field: Header("Read Only"), SerializeField]
     public List<Room> Rooms { get; private set; } = new();
 
+    public static void UpdateSurfaces()
+    {
+        foreach (var surface in Surfaces)
+        {
+            surface.UpdateNavMesh(surface.navMeshData);
+        }
+    }
+
     private void Awake()
     {
         _roomPlacer.level = transform;
         _corridorBuilder.Initialize(transform);
-        Surface = GetComponent<NavMeshSurface>();
+        Surfaces = GetComponents<NavMeshSurface>();
     }
 
     private void Start()
@@ -31,7 +39,10 @@ public class LevelGenerator : MonoBehaviour
             room.Prepare();
         }
 
-        Surface.BuildNavMesh();
+        foreach (var surface in Surfaces)
+        {
+            surface.BuildNavMesh();
+        }
     }
 
     private void GenerateLevel()
