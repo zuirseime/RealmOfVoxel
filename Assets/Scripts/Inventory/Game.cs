@@ -17,6 +17,7 @@ public class Game : MonoBehaviour
     [SerializeField] private Weapon[] _defaultWeapons;
  
     private Spell[] _activeSpells = new Spell[4];
+    private int _money;
 
     public Spell[] CurrentSpellSet
     {
@@ -40,14 +41,29 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        CurrentSpellSet = SpellManager.GetActive();
-
-        foreach (Spell spell in CurrentSpellSet)
+        foreach (Spell spell in SpellManager.GetAll())
         {
             spell.Initialize();
         }
 
+        CurrentSpellSet = SpellManager.GetActive();
+
         Save();
+    }
+
+    public void AddMoney(int amount)
+    {
+        _money += amount;
+    }
+
+    public bool SpendMoney(int amount)
+    {
+        if (_money >= amount)
+        {
+            _money -= amount;
+            return true;
+        }
+        return false;
     }
 
     public Weapon GetStartWeapon()
@@ -88,9 +104,27 @@ public class Game : MonoBehaviour
 
         if (CurrentSpellSet[indexToReplace] != null)
             SpellManager.SetSpellActive(CurrentSpellSet[indexToReplace].ID, false);
-        SpellManager.SetSpellActive(spellId, true);
+        SpellManager.SetSpellActive(spellId, true, indexToReplace);
 
         CurrentSpellSet[indexToReplace] = SpellManager.GetSpell(spellId);
+    }
+
+    public void SwapActiveSpells(int indexA, int indexB)
+    {
+        if (indexA < 0 || indexA >= CurrentSpellSet.Length || 
+            indexB < 0 || indexB >= CurrentSpellSet.Length || 
+            indexA == indexB)
+        {
+            Debug.LogWarning($"Invalid indices for SwapActiveSpells: {indexA}, {indexB}");
+            return;
+        }
+
+        Spell[] tempSpell = new Spell[CurrentSpellSet.Length];
+        Array.Copy(CurrentSpellSet, tempSpell, CurrentSpellSet.Length);
+
+        (tempSpell[indexA], tempSpell[indexB]) = (tempSpell[indexB], tempSpell[indexA]);
+
+        CurrentSpellSet = tempSpell;
     }
 
     public void AcquireSpell(string spellId)

@@ -220,8 +220,8 @@ MonoBehaviour:
   _acceleration: 2
   _deceleration: 60
   _health:
-    _maxValue: 150
-    _regenerationRate: 0.25
+    _maxValue: 250
+    _regenerationRate: 1
     _value: 0
   _mana:
     _maxValue: 0

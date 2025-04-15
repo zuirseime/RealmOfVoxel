@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class Tooltip : MonoBehaviour
     [SerializeField] private TooltipStatBox _statBoxPrefab;
 
     [SerializeField] private TextMeshProUGUI _title;
+    [SerializeField] private Transform _costContainer;
+    [SerializeField] private TextMeshProUGUI _costText;
     [SerializeField] private TextMeshProUGUI _descritption;
     [SerializeField] private Transform _statsBox;
 
@@ -31,6 +34,13 @@ public class Tooltip : MonoBehaviour
 
         _title.text = displayable.Title;
         _descritption.text = displayable.Description;
+        
+        if (displayable is Spell spell)
+        {
+            _costText.text = spell.Price.ToString();
+            bool acquired = Game.Instance.SpellManager.GetSpellData(spell.ID).Acquired;
+            _costContainer.gameObject.SetActive(!acquired);
+        }
 
         gameObject.SetActive(true);
         transform.position = Vector3Int.RoundToInt(position + _offset);

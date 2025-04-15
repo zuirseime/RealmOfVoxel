@@ -10,6 +10,7 @@ public class SpellData
     [field: SerializeField] public string SpellId { get; set; }
     [field: SerializeField] public bool Acquired { get; set; } = false;
     [field: SerializeField] public bool Active { get; set; } = false;
+    [field: SerializeField] public int Slot { get; set; } = -1;
 }
 
 [Preserve]
@@ -57,6 +58,7 @@ public abstract class Spell : ScriptableObject, IDisplayable
     }
     public float ManaCost => _manaCost;
     public float Duration => _duration;
+    public float Price => _price;
 
     public SerializedDictionary<string, string> Stats { get; set; } = new();
 

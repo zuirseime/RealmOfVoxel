@@ -32,7 +32,7 @@ public abstract class AreaEffect : SpellEffect
 
     protected abstract void AffectEntity(Entity entity);
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (!IsColliderAcceptable(other, out Entity entity)) return;
 
@@ -40,7 +40,7 @@ public abstract class AreaEffect : SpellEffect
             _entitiesToAffect.Add(entity);
     }
 
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (!IsColliderAcceptable(other, out Entity entity)) return;
 
@@ -48,7 +48,7 @@ public abstract class AreaEffect : SpellEffect
             _entitiesToAffect.Remove(entity);
     }
 
-    private bool IsColliderAcceptable(Collider other, out Entity entity)
+    protected bool IsColliderAcceptable(Collider other, out Entity entity)
     {
         entity = null;
         return !other.isTrigger && other.TryGetComponent(out entity);

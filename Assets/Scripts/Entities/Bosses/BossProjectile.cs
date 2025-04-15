@@ -23,10 +23,13 @@ public class BossProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider is Collider other && (other.isTrigger || other.TryGetComponent(out Boss _)))
+        if (collision.collider is not Collider other || other.isTrigger)
             return;
 
-        if (collision.collider.TryGetComponent(out Player player))
+        if (other.TryGetComponent(out Boss _))
+            return;
+
+        if (other.TryGetComponent(out Player player))
         {
             player.TakeDamage(null, _damage);
         }

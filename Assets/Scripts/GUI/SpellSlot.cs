@@ -34,7 +34,7 @@ public class SpellSlot : UISlot
 
     private void OnSpellUsed(object sender, SpellEventArgs args)
     {
-        OnSpellDeselected(_displayable as Spell, args);
+        OnSpellDeselected(_displayable, args);
         StartCoroutine(CooldownRoutine());
     }
 
@@ -51,5 +51,15 @@ public class SpellSlot : UISlot
         }
 
         _cooldown.value = 0;
+    }
+
+    private void OnDestroy()
+    {
+        if (_displayable is Spell spell)
+        {
+            spell.SpellUsed -= OnSpellUsed;
+            spell.SpellSelected -= OnSpellSelected;
+            spell.SpellDeselected -= OnSpellDeselected;
+        }
     }
 }

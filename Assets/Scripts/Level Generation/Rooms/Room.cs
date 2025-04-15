@@ -40,7 +40,8 @@ public abstract class Room : MonoBehaviour
 
     private Door GetNearestDoor(Vector3 position)
     {
-        return doors.Where(d => d.ConnectedDoor == null).OrderBy(d => Vector3.Distance(d.transform.position, position)).FirstOrDefault();
+        return doors.Where(d => !d.IsInterior && d.Available && d.ConnectedDoor == null)
+                    .OrderBy(d => Vector3.Distance(d.transform.position, position)).FirstOrDefault();
     }
 
     public bool IsAlreadyConnected(Room room)
@@ -68,7 +69,7 @@ public abstract class Room : MonoBehaviour
     public void SealUnusedDoors()
     {
         List<Door> toSeal = new();
-        foreach (Door door in doors.Where(d => d.ConnectedDoor == null))
+        foreach (Door door in doors.Where(d => d.ConnectedDoor == null && !d.IsInterior))
         {
             var deadEnd = Instantiate(_deadEndPrefab, transform);
 

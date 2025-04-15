@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,10 +11,40 @@ public class BossRoom : Room
     private Boss _boss;
     private BossBar _bossBar;
 
+    private List<Enemy> _enemiesRemain = new();
+
     private void Start()
     {
         _bossBar = FindObjectOfType<BossBar>();
         _bossBar.gameObject.SetActive(false);
+    }
+
+    public override void Prepare()
+    {
+        StartCoroutine(CloseDoors());
+    }
+
+    public void AddEnemiesToTrack(IEnumerable<Enemy> enemies)
+    {
+        foreach (var enemy in enemies)
+        {
+            enemy.Died += OnEnemyDied;
+        }
+
+        _enemiesRemain.AddRange(enemies);
+    }
+
+    private void OnEnemyDied(object sender, System.EventArgs args)
+    {
+        if (sender is Enemy enemy)
+        {
+            enemy.Died -= OnEnemyDied;
+            _enemiesRemain.Remove(sender as Enemy);
+            if (_enemiesRemain.Count == 0)
+            {
+                StartCoroutine(OpenDoors());
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)

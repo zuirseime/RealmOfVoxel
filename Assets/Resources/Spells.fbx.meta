@@ -17,6 +17,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Dome of Frailty.png
+    second: {fileID: 2100000, guid: df637fb2474c1214f91e94fad5fc33dd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Fireball.png
     second: {fileID: 2100000, guid: cdfa539e8c3c993439f0f648ebf0872b, type: 2}
   - first:

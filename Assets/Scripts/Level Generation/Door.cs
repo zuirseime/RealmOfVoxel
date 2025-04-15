@@ -6,16 +6,13 @@ public class Door : MonoBehaviour
 
     [field: SerializeField] public bool Available { get; set; } = true;
     [field: SerializeField] public Door ConnectedDoor { get; set; }
+    [field: SerializeField] public bool IsInterior { get; set; } = false;
 
     private Animator _animator;
 
     private void Awake()
     {
         Parent = transform.parent.parent.GetComponent<Room>();
-    }
-
-    private void Start()
-    {
         _animator = GetComponent<Animator>();
     }
 

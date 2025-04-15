@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : Entity
 {
@@ -60,8 +61,11 @@ public class Player : Entity
     protected override void Die(Entity entity)
     {
         base.Die(entity);
-        //Debug.Log("Player has died!");
-        //agent.isStopped = true;
+
+        Wallet wallet = GetComponent<Wallet>();
+
+        MoneyManager.ConvertCoinsToMoney(Mathf.RoundToInt(wallet.Coins));
+        SceneManager.LoadScene("MainMenu");
     }
 }
 

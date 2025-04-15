@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a186e89cd8a8046add9b20b414cdd3, type: 3}
+  m_Name: FrailityDome
+  m_EditorClassIdentifier: 
+  <ID>k__BackingField: dome-of-fraility
+  _nextCastTime: 0
+  _spellName: Dome of Fraility
+  _description: Reduces the defense ability of any creature.
+  _price: 15
+  _sprite: {fileID: 21300000, guid: f8ba7ff8f09e54440a9a3cbb5abb1bd3, type: 3}
+  _effectPrefab: {fileID: 1257121393466849185, guid: e4784abde0001bc4284d61028f4875bd,
+    type: 3}
+  _range: 5
+  _cooldown: 15
+  _manaCost: 20
+  _duration: 5
+  _maxExpansion: 10
+  _tickRate: 1
+  _protectionReduction: 50

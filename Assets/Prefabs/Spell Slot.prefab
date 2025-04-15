@@ -565,6 +565,7 @@ MonoBehaviour:
   _image: {fileID: 5699141953137453189}
   _toolTipOffset: {x: 0, y: 25, z: 0}
   _keybind: {fileID: 1334782267717711110}
+  _tooltip: {fileID: 0}
   _background: {fileID: 4246029267467286506}
   _cooldown: {fileID: 7457668444836934135}
   _border: {fileID: 3288866345889088646}

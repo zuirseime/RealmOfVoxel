@@ -50,6 +50,8 @@ public abstract class TrialRoom : Room
 
             _spawnablePositions.Remove(position);
         }
+
+        FindObjectOfType<BossRoom>().AddEnemiesToTrack(_enemies);
     }
 
     private void OnTriggerEnter(Collider other)
