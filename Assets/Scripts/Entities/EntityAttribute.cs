@@ -35,5 +35,4 @@ public class EntityAttribute
     public void Regenerate(float amount, float multiplier = 1) => Value = Mathf.Min(Value + amount * multiplier, MaxValue);
 
     public bool CanDrain(float amount) => Value >= amount;
-    public bool CanRegenerate(float amount) => Value + amount <= MaxValue;
 }

@@ -34,11 +34,14 @@ public abstract class Entity : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
 
-        Health.ValueChanged += (s, e) => HealthChanged?.Invoke(this, e);
-        Mana.ValueChanged += (s, e) => ManaChanged?.Invoke(this, e);
+        if (Health != null && Mana != null)
+        {
+            Health.ValueChanged += (s, e) => HealthChanged?.Invoke(this, e);
+            Mana.ValueChanged += (s, e) => ManaChanged?.Invoke(this, e);
 
-        Health.Restore();
-        Mana.Restore();
+            Health.Restore();
+            Mana.Restore();
+        }
     }
 
     protected virtual void Update()

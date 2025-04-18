@@ -16,7 +16,7 @@ public abstract class Weapon : Collectable
     public float Cooldown => _cooldown * Owner.GetComponent<EntityModifiers>().CooldownModifier.Value;
     public float CritChance => _critChance * Owner.GetComponent<EntityModifiers>().CritChanceModifier.Value;
     public float CritMultiplier => _critMultiplier * Owner.GetComponent<EntityModifiers>().CritMultiplicationModifier.Value;
-    public Entity Owner { get; private set; }
+    public Entity Owner { get; set; }
 
     public event System.EventHandler<WeaponCritEventArgs> CritStrike;
 

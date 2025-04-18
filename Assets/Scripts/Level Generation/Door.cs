@@ -12,7 +12,7 @@ public class Door : MonoBehaviour
 
     private void Awake()
     {
-        Parent = transform.parent.parent.GetComponent<Room>();
+        Parent = transform.parent?.parent?.GetComponent<Room>();
         _animator = GetComponent<Animator>();
     }
 

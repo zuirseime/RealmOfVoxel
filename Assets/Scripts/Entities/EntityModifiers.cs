@@ -15,14 +15,14 @@ public class EntityModifiers : MonoBehaviour
         ResetModifiers();
     }
 
-    private void ResetModifiers()
+    public void ResetModifiers()
     {
-        DamageModifier.Reset();
-        MoveSpeedModifier.Reset();
-        CooldownModifier.Reset();
-        CritChanceModifier.Reset();
-        CritMultiplicationModifier.Reset();
-        DefenceModifier.Reset();
-        CoinModifier.Reset();
+        DamageModifier?.Reset();
+        MoveSpeedModifier?.Reset();
+        CooldownModifier?.Reset();
+        CritChanceModifier?.Reset();
+        CritMultiplicationModifier?.Reset();
+        DefenceModifier?.Reset();
+        CoinModifier?.Reset();
     }
 }

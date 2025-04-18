@@ -17,7 +17,7 @@ public class Pathfinder
 
     public List<PathNode> FindPath(Door door)
     {
-        if ((door != null ? door.ConnectedDoor : null) == null)
+        if (door == null || door.ConnectedDoor == null)
             return new List<PathNode>();
 
         return AStarSearch(door, door.ConnectedDoor);
@@ -25,6 +25,14 @@ public class Pathfinder
 
     private List<PathNode> AStarSearch(Door start, Door end)
     {
+        foreach (var bound in _bounds)
+        {
+            if (bound.type == RoomBounds.BoundsType.Inner && bound.GetComponent<BoxCollider>().bounds.Contains(start.transform.position))
+            {
+                return new List<PathNode>();
+            }
+        }
+
         PriorityQueue<PathNode> openSet = new();
         Dictionary<Vector3, PathNode> allNodes = new();
 

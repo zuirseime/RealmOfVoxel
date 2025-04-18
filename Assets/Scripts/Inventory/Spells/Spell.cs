@@ -60,7 +60,7 @@ public abstract class Spell : ScriptableObject, IDisplayable
     public float Duration => _duration;
     public float Price => _price;
 
-    public SerializedDictionary<string, string> Stats { get; set; } = new();
+    public Dictionary<string, string> Stats { get; set; } = new();
 
     public void CastAt(Entity owner, Vector3 targetPosition)
     {

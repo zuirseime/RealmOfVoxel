@@ -40,7 +40,7 @@ public abstract class Collectable : MonoBehaviour, IDisplayable
     }
     public int Price => _price;
 
-    public SerializedDictionary<string, string> Stats { get; set; } = new();
+    public Dictionary<string, string> Stats { get; set; } = new();
 
     protected virtual void Collect(Player player)
     {
@@ -54,7 +54,7 @@ public abstract class Collectable : MonoBehaviour, IDisplayable
 
     protected virtual void Awake()
     {
-        //_canvas = GetComponentsInChildren<Canvas>();
+        _canvas = GetComponentsInChildren<Canvas>();
         foreach (var c in _canvas)
         {
             c.enabled = false;

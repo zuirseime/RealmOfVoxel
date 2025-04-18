@@ -21,7 +21,7 @@ public class Wallet : MonoBehaviour
         }
     }
 
-    public bool CanSpend(int amount) => Coins >= amount;
+    public bool CanSpend(int amount) => Coins >= amount && amount > 0;
 
     public void Add(float amount) => Coins += amount;
 
