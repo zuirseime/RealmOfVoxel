@@ -1,9 +1,11 @@
 {
-    "name": "UnitTests",
+    "name": "IntegrationTests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
+        "Unity.AI.Navigation",
+        "Tests",
         "Scripts"
     ],
     "includePlatforms": [],

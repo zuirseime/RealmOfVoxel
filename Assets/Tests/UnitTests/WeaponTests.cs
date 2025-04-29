@@ -15,6 +15,10 @@ public class WeaponTests
     [SetUp]
     public void SetUp()
     {
+        var gameGO = new GameObject("GameGO");
+        gameGO.AddComponent<SpellManager>();
+        var game = gameGO.AddComponent<Game>();
+
         playerGO = new GameObject("Player");
         player = playerGO.AddComponent<Player>();
         playerModifiers = playerGO.GetComponent<EntityModifiers>();
@@ -41,7 +45,7 @@ public class WeaponTests
         SetProtectedFieldValue(testSword, "_nextAttackTime", 0f);
 
         targetGO = new GameObject("Target");
-        targetEntity = targetGO.AddComponent<DumyEnemy>();
+        targetEntity = targetGO.AddComponent<DummyEnemy>();
         targetEntity.enabled = true;
         targetHealth = new EntityAttribute
         {
@@ -58,13 +62,13 @@ public class WeaponTests
         targetModifiers.CoinModifier = new EntityModifier();
         targetModifiers.ResetModifiers();
 
-        var healthField = typeof(DumyEnemy).GetField("_health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var healthField = typeof(DummyEnemy).GetField("_health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         if (healthField != null)
             healthField.SetValue(targetEntity, targetHealth);
         else
             Assert.Inconclusive("Cannot set _health field");
         
-        var modifiersField = typeof(DumyEnemy).GetField("GetComponent<EntityModifiers>()", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance); // This won't work, GetComponent is a method
+        var modifiersField = typeof(DummyEnemy).GetField("GetComponent<EntityModifiers>()", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         
         targetGO.AddComponent<EntityModifiers>().DefenceModifier = new EntityModifier();
         targetGO?.GetComponent<EntityModifiers>()?.DefenceModifier?.Reset();
