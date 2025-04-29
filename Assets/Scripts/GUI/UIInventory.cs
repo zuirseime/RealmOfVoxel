@@ -7,9 +7,8 @@ public class UIInventory : MonoBehaviour
 
     private void OnEnable()
     {
-        FindObjectOfType<Game>().SpellSetChanged += OnSpellSetChanged;
-
         var playerInventory = FindObjectOfType<Inventory>();
+        playerInventory.SpellsChanged += OnSpellSetChanged;
         playerInventory.CharmChanged += OnCharmChanged;
     }
 

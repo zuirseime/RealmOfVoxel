@@ -8,6 +8,9 @@ public class SpawnRoom : Room
         base.Prepare();
 
         var player = FindObjectOfType<Player>();
+        if (player == null || Camera.main == null)
+            return;
+
         var agent = player.GetComponent<NavMeshAgent>();
         agent.enabled = false;
 

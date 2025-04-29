@@ -19,7 +19,7 @@ public abstract class Charm : Collectable
     protected float GetIncreaser() => (_bonus + 100) / 100f;
     protected float GetDecreaser() => (100 - _bonus) / 100f;
 
-    protected override void Collect(Player player)
+    public override void Collect(Player player)
     {
         if (!player.TryGetComponent(out Inventory inventory)) return;
         if (!inventory.CanCollect()) return;

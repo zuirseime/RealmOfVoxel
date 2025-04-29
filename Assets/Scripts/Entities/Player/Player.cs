@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Inventory), typeof(WeaponEquipper))]
+[RequireComponent(typeof(CharmEquipper), typeof(SpellCaster))]
+[RequireComponent(typeof(Wallet), typeof(SelectionManager))]
 public class Player : Entity
 {
     [SerializeField] private GameObject _selectionPrefab;
@@ -13,6 +16,13 @@ public class Player : Entity
     public SelectionManager SelectionManager { get; private set; }
     public bool Original { get; set; } = true;
     public Inventory Inventory { get; private set; }
+    public Spell ActiveSpell { get; private set; }
+
+    public void SetActiveSpell(Spell spell)
+    {
+        ActiveSpell = spell;
+        ActiveSpell.SpellUsed += OnSpellUsed;
+    }
 
     public void SwitchToBattleMode()
     {
@@ -26,7 +36,7 @@ public class Player : Entity
 
     public override void Attack()
     {
-        Inventory.CurrentWeapon.Attack(target);
+        Inventory.CurrentWeapon.Attack(Target);
     }
 
     public bool HasReachedDestination()
@@ -36,15 +46,28 @@ public class Player : Entity
 
     public bool CanAttackEnemy()
     {
-        return target != null 
-            && transform.parent == target.transform.parent
-            && !Physics.Linecast(transform.position, target.transform.position, LayerMask.GetMask("Level")) 
-            && Vector3.Distance(transform.position, target.transform.position) <= Inventory.CurrentWeapon.Range;
+        return Target != null
+            && transform.parent == Target.transform.parent
+            && !Physics.Linecast(transform.position, Target.transform.position, LayerMask.GetMask("Level"))
+            && Vector3.Distance(transform.position, Target.transform.position) <= Inventory.CurrentWeapon.Range;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _states = new EntityState[]
+        {
+            new PlayerIdleState(this),
+            new PlayerMoveState(this),
+            new PlayerChaseState(this),
+            new PlayerAttackState(this),
+            new PlayerCastingState(this),
+        };
     }
 
     private void Start()
     {
-        ChangeState(new PlayerIdleState(this));
+        ChangeState<PlayerIdleState>();
         SwitchToSprintMode();
 
         Inventory = GetComponent<Inventory>();
@@ -66,6 +89,20 @@ public class Player : Entity
 
         MoneyManager.ConvertCoinsToMoney(Mathf.RoundToInt(wallet.Coins));
         SceneManager.LoadScene("MainMenu");
+    }
+
+    protected override void OnTargetChanged(object sender, Entity target)
+    {
+        base.OnTargetChanged(sender, target);
+        ChangeState<PlayerChaseState>();
+    }
+
+    private void OnSpellUsed(object sender, SpellEventArgs args)
+    {
+        if (args.Spell == null)
+            return;
+        args.Spell.SpellUsed -= OnSpellUsed;
+        ActiveSpell = null;
     }
 }
 

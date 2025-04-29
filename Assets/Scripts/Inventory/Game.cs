@@ -68,15 +68,22 @@ public class Game : MonoBehaviour
 
     public Weapon GetStartWeapon()
     {
-        return _defaultWeapons.OrderBy(w => UnityEngine.Random.value).FirstOrDefault();
+        return _defaultWeapons?.OrderBy(w => UnityEngine.Random.value).FirstOrDefault();
     }
 
     public Weapon GetWeapon(Weapon[] heldWeapons)
     {
-        foreach (Weapon weapon in _weaponSet.OrderBy(w => UnityEngine.Random.value))
+        List<Weapon> weapons = _weaponSet?.OrderBy(w => UnityEngine.Random.value).ToList();
+
+        foreach (Weapon heldWeapon in heldWeapons)
         {
-            if (!heldWeapons.Any(w => w.Title == weapon.Title))
+            if (heldWeapon == null)
+                continue;
+
+            foreach (Weapon weapon in weapons)
             {
+                if (heldWeapon.Title == weapon.Title)
+                    continue; 
                 return weapon;
             }
         }

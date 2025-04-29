@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public abstract class EntityState : IState
@@ -8,6 +9,11 @@ public abstract class EntityState : IState
     public virtual void Enter() { }
     public virtual void Exit() { }
     public abstract void Update();
+
+    protected void RefreshTimer(float duration)
+    {
+        _timer = duration + Time.time;
+    }
 
     public override string ToString()
     {

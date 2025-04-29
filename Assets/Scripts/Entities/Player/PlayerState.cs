@@ -20,7 +20,7 @@ public class PlayerIdleState : PlayerState
     {
         if (Input.GetMouseButton(1))
         {
-            _player.ChangeState(new PlayerMoveState(_player));
+            _player.ChangeState<PlayerMoveState>();
         }
     }
 }
@@ -33,7 +33,7 @@ public class PlayerMoveState : PlayerState
     {
         if (_player.HasReachedDestination())
         {
-            _player.ChangeState(new PlayerIdleState(_player));
+            _player.ChangeState<PlayerIdleState>();
         }
 
         if (Input.GetMouseButton(1))
@@ -46,7 +46,7 @@ public class PlayerMoveState : PlayerState
                 if (hit.collider.TryGetComponent(out Enemy enemy) && enemy.enabled)
                 {
                     _player.SelectionManager.Select(enemy);
-                    _player.ChangeState(new PlayerChaseState(_player));
+                    _player.ChangeState<PlayerChaseState>();
                 } else
                 {
                     _player.SelectionManager.Select(destination);
@@ -70,23 +70,23 @@ public class PlayerChaseState : PlayerState
     {
         if (Input.GetMouseButtonDown(1))
         {
-            _player.ChangeState(new PlayerMoveState(_player));
+            _player.ChangeState<PlayerMoveState>();
             return;
         }
 
-        if (_player.target == null)
+        if (_player.Target == null)
         {
-            _player.ChangeState(new PlayerIdleState(_player));
+            _player.ChangeState<PlayerIdleState>();
             return;
         }
 
         if (_player.CanAttackEnemy())
         {
-            _player.ChangeState(new PlayerAttackState(_player));
+            _player.ChangeState<PlayerAttackState>();
             return;
         }
 
-        _player.SetDestination(_player.target.transform.position);
+        _player.SetDestination(_player.Target.transform.position);
     }
 
     public override void Exit()
@@ -102,95 +102,90 @@ public class PlayerAttackState : PlayerState
     public override void Enter()
     {
         _player.ClearDestination();
-        _player.target.Died += _player.OnTargetDied;
+        _player.Target.Died += _player.OnTargetDied;
     }
 
     public override void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            _player.ChangeState(new PlayerMoveState(_player));
+            _player.ChangeState<PlayerMoveState>();
             return;
         }
 
-        if (_player.target == null)
+        if (_player.Target == null)
         {
-            _player.ChangeState(new PlayerIdleState(_player));
+            _player.ChangeState<PlayerIdleState>();
             return;
         }
 
         if (!_player.CanAttackEnemy())
         {
-            _player.ChangeState(new PlayerChaseState(_player));
+            _player.ChangeState<PlayerChaseState>();
             return;
         }
 
-        _player.transform.LookAt(_player.target.transform);
+        _player.transform.LookAt(_player.Target.transform);
         _player.Attack();
     }
 
     public override void Exit()
     {
-        if (_player.target != null)
-            _player.target.Died -= _player.OnTargetDied;
+        if (_player.Target != null)
+            _player.Target.Died -= _player.OnTargetDied;
     }
 }
 
 public class PlayerCastingState : PlayerState
 {
-    private Spell _spell;
-
-    public PlayerCastingState(Player player, Spell spell) : base(player)
-    {
-        _spell = spell;
-    }
+    public PlayerCastingState(Player player) : base(player) { }
 
     public override void Enter()
     {
-        if (_spell == null)
+        if (_player.ActiveSpell == null)
         {
-            _player.ChangeState(new PlayerIdleState(_player));
+            _player.ChangeState<PlayerIdleState>();
         } else
         {
-            _spell.SpellDeselected += OnSpellDeselected;
+            _player.ActiveSpell.SpellDeselected += OnSpellDeselected;
         }
     }
 
     public override void Update()
     {
-        if (_player.Mana.CanDrain(_spell.ManaCost))
+        if (_player.Mana.CanDrain(_player.ActiveSpell.ManaCost))
         {
-            _spell.Select();
-            if (_spell.Range == 0)
+            _player.ActiveSpell.Select();
+            if (_player.ActiveSpell.Range == 0)
             {
-                _spell.CastAt(_player, Vector3.zero);
-                _player.ChangeState(new PlayerMoveState(_player));
+                _player.ActiveSpell.CastAt(_player, Vector3.zero);
+                _player.ChangeState<PlayerMoveState>();
             }
             else if (Input.GetMouseButtonDown(1))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    if (Vector3.Distance(_player.transform.position, hit.point) <= _spell.Range)
-                        _spell.CastAt(_player, new Vector3(hit.point.x, 0, hit.point.z));
+                    if (Vector3.Distance(_player.transform.position, hit.point) <= _player.ActiveSpell.Range)
+                        _player.ActiveSpell.CastAt(_player, new Vector3(hit.point.x, 0, hit.point.z));
                 }
 
-                _player.ChangeState(new PlayerMoveState(_player));
+                _player.ChangeState<PlayerMoveState>();
             }
         } else
         {
-            _player.ChangeState(new PlayerMoveState(_player));
+            _player.ChangeState<PlayerMoveState>();
         }
     }
 
     public override void Exit()
     {
-        _spell?.Deselect();
+        _player.ActiveSpell?.Deselect();
     }
 
     private void OnSpellDeselected(object sender, SpellEventArgs args)
     {
-        _spell.SpellDeselected -= OnSpellDeselected;
-        _player.ChangeState(new PlayerMoveState(_player));
+        _player.ActiveSpell.SpellDeselected -= OnSpellDeselected;
+        _player.ChangeState<PlayerMoveState>();
     }
 }

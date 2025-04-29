@@ -7,11 +7,17 @@ public class Billboard : MonoBehaviour
 
     private void Start()
     {
+        if (Camera.main == null)
+        {
+            Debug.Log("No main camera found. Please ensure there is a camera tagged as 'MainCamera' in the scene.");
+            return;
+        }
         _camera = Camera.main.transform;
     }
 
     private void LateUpdate()
     {
-        transform.LookAt(transform.position + _camera.forward);
+        if (_camera != null)
+            transform.LookAt(transform.position + _camera.forward);
     }
 }

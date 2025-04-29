@@ -8,13 +8,19 @@ public class EntityBillboard : MonoBehaviour
 
     private void Start()
     {
-        _camera = Camera.main.transform;
         _entity.Died += OnEntityDied;
+        if (Camera.main == null)
+        {
+            Debug.Log("No main camera found. Please ensure there is a camera tagged as 'MainCamera' in the scene.");
+            return;
+        }
+        _camera = Camera.main.transform;
     }
 
     private void LateUpdate()
     {
-        transform.LookAt(transform.position + _camera.forward);
+        if (_camera != null)
+            transform.LookAt(transform.position + _camera.forward);
     }
 
     private void OnEntityDied(object sender, EventArgs args)

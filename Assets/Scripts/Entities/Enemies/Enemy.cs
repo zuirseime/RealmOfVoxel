@@ -32,9 +32,9 @@ public abstract class Enemy : Entity
     public override void Attack()
     {
         base.Attack();
-        if (target != null)
+        if (Target != null)
         {
-            target.TakeDamage(this, _attackDamage * GetComponent<EntityModifiers>().DamageModifier.BaseValue);
+            Target.TakeDamage(this, _attackDamage * GetComponent<EntityModifiers>().DamageModifier.BaseValue);
         }
     }
 
@@ -55,12 +55,12 @@ public abstract class Enemy : Entity
 
     public bool HasPlayerInDetectionRange()
     {
-        return target != null && target.IsAlive;
+        return Target != null && Target.IsAlive;
     }
 
     public bool HasPlayerInAttackRange()
     {
-        return HasPlayerInDetectionRange() && DistanceToTarget(target) < _attackRange;
+        return HasPlayerInDetectionRange() && DistanceToTarget(Target) < _attackRange;
     }
 
     private float DistanceToTarget(Entity target)
@@ -84,9 +84,23 @@ public abstract class Enemy : Entity
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!enabled)
+            return;
+
         if (other.TryGetComponent(out Player player) && player.IsAlive)
         {
-            target = player;
+            Target = player;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!enabled || Target != null)
+            return;
+
+        if (other.TryGetComponent(out Player player) && player.IsAlive)
+        {
+            Target = player;
         }
     }
 
@@ -94,7 +108,7 @@ public abstract class Enemy : Entity
     {
         if (other.TryGetComponent(out Player player) && player.IsAlive)
         {
-            target = null;
+            Target = null;
         }
     }
 }

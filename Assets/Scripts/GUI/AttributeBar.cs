@@ -9,14 +9,11 @@ public class AttributeBar : MonoBehaviour
     [SerializeField] protected Entity _entity;
     [SerializeField] protected TextMeshProUGUI _text;
 
+    public Slider Slider => _slider;
+
     private void OnValidate()
     {
         _text.gameObject.SetActive(_showValue);
-    }
-
-    protected virtual void Start()
-    {
-        UpdateText(_entity.Health.Value, _entity.Health.MaxValue);
     }
 
     public void OnValueChanged(object sender, AttributeEventArgs args)
@@ -30,5 +27,14 @@ public class AttributeBar : MonoBehaviour
         _slider.value = args.CurrentValue;
     }
 
-    private void UpdateText(float value, float maxValue) => _text.text = $"{value:N0} / {maxValue:N0}";
+    protected void UpdateText(float value, float maxValue)
+    {
+        _text.text = $"{value:N0} / {maxValue:N0}";
+
+        if (_slider == null)
+            return;
+
+        _slider.maxValue = maxValue;
+        _slider.value = value;
+    }
 }

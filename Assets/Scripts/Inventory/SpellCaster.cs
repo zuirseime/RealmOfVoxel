@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpellCaster : MonoBehaviour
 {
-    public event EventHandler<Spell[]> SpellsChanged;
+    public event EventHandler<SpellSetEventArgs> SpellsChanged;
 
     [SerializeField, ReadOnly] private Spell[] _spells;
     private Spell _selected;
@@ -13,7 +13,7 @@ public class SpellCaster : MonoBehaviour
     public void SetSpells(Spell[] spells)
     {
         _spells = spells;
-        SpellsChanged?.Invoke(this, _spells);
+        SpellsChanged?.Invoke(this, new SpellSetEventArgs(Spells));
 
         foreach (Spell spell in _spells)
         {
@@ -27,7 +27,7 @@ public class SpellCaster : MonoBehaviour
 
     public void UseSpell(int index)
     {
-        if (index < 0 || index >= _spells.Length)
+        if (index < 0 || index >= _spells.Length || _spells[index] == null)
             return;
 
         if (_selected != null && _spells[index].Title == _selected.Title)
@@ -36,6 +36,8 @@ public class SpellCaster : MonoBehaviour
             return;
         }
 
-        GetComponent<Player>().ChangeState(new PlayerCastingState(GetComponent<Player>(), _spells[index]));
+        var player = GetComponent<Player>();
+        player.SetActiveSpell(_spells[index]);
+        player.ChangeState<PlayerCastingState>();
     }
 }

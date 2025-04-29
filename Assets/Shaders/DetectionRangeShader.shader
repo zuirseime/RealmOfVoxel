@@ -444,8 +444,6 @@ Shader "Custom/DetectionRangeShader"
                     float attackRange = _AttackRanges[i];
                     float detectionRange = _DetectionRanges[i];
 
-                    float playerDist = distance(_PlayerPosition.xz, inputData.positionWS.xz);
-
                     if (dist > attackRange && dist < (attackRange + _Thickness))
                     {
                         color.rgb *= _AttackColour.rgb * 2;
@@ -455,16 +453,18 @@ Shader "Custom/DetectionRangeShader"
                     {
                         color.rgb *= _DetectionColour.rgb * 2;
                     }
-                    
-                    if (playerDist > _PlayerAttackRange && playerDist < (_PlayerAttackRange + _Thickness))
-                    {
-                        color.rgb *= _PlayerAttackColour.rgb * 2;
-                    }
+                }
 
-                    if (playerDist > _SpellRange && playerDist < (_SpellRange + _Thickness))
-                    {
-                        color.rgb *= _SpellRangeColour.rgb * 2;
-                    }
+                float playerDist = distance(_PlayerPosition.xz, inputData.positionWS.xz);
+                    
+                if (playerDist > _PlayerAttackRange && playerDist < (_PlayerAttackRange + _Thickness))
+                {
+                    color.rgb *= _PlayerAttackColour.rgb * 2;
+                }
+
+                if (playerDist > _SpellRange && playerDist < (_SpellRange + _Thickness))
+                {
+                    color.rgb *= _SpellRangeColour.rgb * 2;
                 }
 
 

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6763822055763383107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2520885237327844080}
+  - component: {fileID: 8846623005308179269}
+  - component: {fileID: 5836134672669064263}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2520885237327844080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763822055763383107}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8846623005308179269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763822055763383107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a580d95a5a17881469f1676f6c20fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5836134672669064263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763822055763383107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d21cc21ce015a4eb5c528a4f544cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponSet:
+  - {fileID: -267794447042164441, guid: 5907d80f45eefe340b60f831b281d1e3, type: 3}
+  - {fileID: -358158709396281742, guid: 6bfeb260ec0e04a4fb5c0dee80819698, type: 3}
+  - {fileID: 2365494332048924066, guid: 9a0ef2169c5475944a23a428827e4e5c, type: 3}
+  - {fileID: 5932324631869707828, guid: 942066b9e8269654e81860ce05c9d607, type: 3}
+  _charmSet:
+  - {fileID: -2302645025232766276, guid: b9a2fb3364377c44b9bd313a1aac54ae, type: 3}
+  - {fileID: 6208749166771372707, guid: cac90ff433134514dac6df11ef2ee712, type: 3}
+  - {fileID: 6682464333624704833, guid: c3b6f368adaacc344b1f4018ad8be118, type: 3}
+  - {fileID: -5089297328109055631, guid: f7a754f2912b14e47b1f898ba04f6270, type: 3}
+  - {fileID: 3044867784206834010, guid: 763e11016f2c7fe4ca97802da37ced93, type: 3}
+  - {fileID: 6522863803542713714, guid: 5761195bbf2b699429db67fd9e75493f, type: 3}
+  - {fileID: 5674401954534691610, guid: 8f2c3c1aec9ba80488478fee6e38a520, type: 3}
+  _defaultWeapons:
+  - {fileID: -267794447042164441, guid: 5907d80f45eefe340b60f831b281d1e3, type: 3}
+  - {fileID: 2365494332048924066, guid: 9a0ef2169c5475944a23a428827e4e5c, type: 3}

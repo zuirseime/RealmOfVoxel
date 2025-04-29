@@ -3,9 +3,11 @@ using UnityEngine.UI;
 
 public class ManaBar : AttributeBar
 {
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
-        _entity.ManaChanged += OnValueChanged;
+        UpdateText(_entity.Mana.Value, _entity.Mana.MaxValue);
+
+        if (_entity != null)
+            _entity.ManaChanged += OnValueChanged;
     }
 }

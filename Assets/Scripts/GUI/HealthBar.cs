@@ -3,9 +3,10 @@ using UnityEngine.UI;
 
 public class HealthBar : AttributeBar
 {
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
-        _entity.HealthChanged += OnValueChanged;
+        UpdateText(_entity.Health.Value, _entity.Health.MaxValue);
+        if (_entity != null)
+            _entity.HealthChanged += OnValueChanged;
     }
 }

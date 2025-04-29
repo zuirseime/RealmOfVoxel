@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4408310132256931651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4279050558573262268}
+  - component: {fileID: 1296028586448296378}
+  - component: {fileID: 5775390914712145693}
+  - component: {fileID: 8374524398678037478}
+  - component: {fileID: 7508696950864690532}
+  m_Layer: 0
+  m_Name: Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4279050558573262268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4408310132256931651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1296028586448296378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4408310132256931651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78fb7660ffd45db45b0edddb11c8abb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomPlacer:
+    level: {fileID: 0}
+    roomPrefabs:
+    - {fileID: -8553242173722074749, guid: 9904eab9377f1d8459fba6039761bcd9, type: 3}
+    - {fileID: -1443125466687422802, guid: 855129954e2183443960411785fb5932, type: 3}
+    - {fileID: -8466032231285843188, guid: 293a89b6db903594c98058d1e02005fd, type: 3}
+    - {fileID: 5514172214315860354, guid: 1a883f6ec0987c743a0207239339a76b, type: 3}
+    - {fileID: -2666282105189618755, guid: cd5f35247519f7644bf097af81bf021b, type: 3}
+    - {fileID: -7306084405969128450, guid: 1a28cd2f32f9d4e47908c7a118515802, type: 3}
+    - {fileID: 2166721745268936640, guid: 1f8a25ac4f6a16848808ba42658d912d, type: 3}
+    - {fileID: -3994038920202797815, guid: f2f8f775150acb044b419f309e440618, type: 3}
+    rules:
+    - roomType: Spawn
+      minAmount: 1
+      maxAmount: 1
+      actualAmount: 0
+    - roomType: Boss
+      minAmount: 1
+      maxAmount: 1
+      actualAmount: 0
+    - roomType: Treasure
+      minAmount: 1
+      maxAmount: 2
+      actualAmount: 0
+    - roomType: Merchant
+      minAmount: 1
+      maxAmount: 1
+      actualAmount: 0
+    - roomType: MediumTrial
+      minAmount: 1
+      maxAmount: 2
+      actualAmount: 0
+    - roomType: BigTrial
+      minAmount: 0
+      maxAmount: 1
+      actualAmount: 0
+    maxRoomAmount: 10
+    radius: 2
+    rooms: []
+  _collisionResolver:
+    _pushStrength: 0.25
+    rooms: []
+  _roomConnector:
+    rooms: []
+  _corridorBuilder:
+    rooms: []
+    _prefab: {fileID: 3222297157727429418, guid: 179f4e05abe35204dac384d59346cd99,
+      type: 3}
+    _preferStraightCorridors: 0
+  <Rooms>k__BackingField: []
+--- !u!114 &5775390914712145693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4408310132256931651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0
+--- !u!114 &8374524398678037478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4408310132256931651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a600ed4a3205c164cac7acfa5b5bf189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: d4a64d58837b84c49b3b38882c257488, type: 2}
+--- !u!114 &7508696950864690532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4408310132256931651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0

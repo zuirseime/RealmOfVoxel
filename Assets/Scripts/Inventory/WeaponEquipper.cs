@@ -22,19 +22,24 @@ public class WeaponEquipper : MonoBehaviour
 
     public void Equip(Weapon weapon)
     {
+        if (weapon == null)
+            return;
+
         if (SecondaryWeapon == null && CurrentWeapon != null)
         {
             SecondaryWeapon = Instantiate(weapon, _container);
             SecondaryWeapon.gameObject.SetActive(false);
+            SecondaryWeapon.Owner = GetComponent<Player>();
         } else
         {
             if (CurrentWeapon != null)
             {
                 Instantiate(CurrentWeapon, transform.position + Vector3.up, Quaternion.identity);
-                Destroy(CurrentWeapon.gameObject);
+                Destroy(CurrentWeapon?.gameObject);
             } 
 
             CurrentWeapon = Instantiate(weapon, _container);
+            CurrentWeapon.Owner = GetComponent<Player>();
         }
 
         OnWeaponChanged();

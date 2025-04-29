@@ -16,6 +16,8 @@ public class BossRoom : Room
     private void Start()
     {
         _bossBar = FindObjectOfType<BossBar>();
+        if (_bossBar == null)
+            return;
         _bossBar.gameObject.SetActive(false);
     }
 

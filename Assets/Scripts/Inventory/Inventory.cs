@@ -9,7 +9,7 @@ public class Inventory : MonoBehaviour
     public event EventHandler<WeaponEventArgs> WeaponChanged;
     public event EventHandler<CoinsEventArgs> CoinsChanged;
     public event EventHandler<Charm> CharmChanged;
-    public event EventHandler<Spell[]> SpellsChanged;
+    public event EventHandler<SpellSetEventArgs> SpellsChanged;
 
     private WeaponEquipper _weaponEquipper;
     private CharmEquipper _charmEquipper;
@@ -20,8 +20,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] private float _collectingCooldown;
     private float _nextCollecting;
 
-    public Weapon CurrentWeapon => _weaponEquipper.CurrentWeapon;
-    public Weapon SecondayWeapon => _weaponEquipper.SecondaryWeapon;
+    public Weapon CurrentWeapon => _weaponEquipper?.CurrentWeapon;
+    public Weapon SecondaryWeapon => _weaponEquipper?.SecondaryWeapon;
     public Spell[] Spells => _spellCaster.Spells;
     public float LocalCoins => _wallet.Coins;
 
@@ -58,6 +58,11 @@ public class Inventory : MonoBehaviour
         _wallet.Spend(amount);
     }
 
+    public Weapon[] GetWeaponSet()
+    {
+        return new[] { _weaponEquipper.CurrentWeapon, _weaponEquipper.SecondaryWeapon };
+    }
+
     private void Awake()
     {
         _settings = Settings.Instance;
@@ -69,7 +74,7 @@ public class Inventory : MonoBehaviour
         _weaponEquipper.WeaponChanged += (sender, args) => WeaponChanged?.Invoke(this, args);
         _charmEquipper.CharmChanged += (sender, charm) => CharmChanged?.Invoke(this, charm);
         _wallet.CoinsChanged += (sender, args) => CoinsChanged?.Invoke(this, args);
-        _spellCaster.SpellsChanged += (sender, spells) => SpellsChanged?.Invoke(this, spells);
+        _spellCaster.SpellsChanged += (sender, args) => SpellsChanged?.Invoke(this, args);
     }
 
     private void OnEnable()

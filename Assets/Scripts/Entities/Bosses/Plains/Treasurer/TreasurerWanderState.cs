@@ -30,7 +30,7 @@ public class TreasurerWanderState : BossState
 
         if (_boss.HasPlayerInDetectionRange())
         {
-            _boss.ChangeState(new TreasurerChaseState((Treasurer)_boss));
+            _boss.ChangeState<TreasurerChaseState>();
         }
     }
 

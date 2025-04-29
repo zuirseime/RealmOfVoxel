@@ -3,11 +3,11 @@ using UnityEngine;
 public abstract class Weapon : Collectable
 {
     [Header("Weapon Stats")]
-    [SerializeField, Min(0)] protected float _baseDamage;
-    [SerializeField, Min(0)] protected float _range;
-    [SerializeField, Min(0)] protected float _cooldown;
-    [SerializeField, Range(0f, 1f)] protected float _critChance;
-    [SerializeField, Min(1f)] protected float _critMultiplier;
+    [SerializeField, Min(0)] protected float _baseDamage = 1;
+    [SerializeField, Min(0)] protected float _range = 1;
+    [SerializeField, Min(0)] protected float _cooldown = 1;
+    [SerializeField, Range(0f, 1f)] protected float _critChance = 1;
+    [SerializeField, Min(1f)] protected float _critMultiplier = 2;
 
     protected float _nextAttackTime = 0;
 
@@ -47,7 +47,10 @@ public abstract class Weapon : Collectable
         if (Time.time < _nextAttackTime)
             return;
 
-        Damage = _baseDamage * Owner.GetComponent<EntityModifiers>().DamageModifier.Value;
+        if (!target.CanBeDamagedBy(Owner))
+            return;
+
+            Damage = _baseDamage * Owner.GetComponent<EntityModifiers>().DamageModifier.Value;
         if (Random.value < CritChance)
         {
             Damage *= CritMultiplier;
@@ -64,7 +67,7 @@ public abstract class Weapon : Collectable
         return target != null;
     }
 
-    protected override void Collect(Player player)
+    public override void Collect(Player player)
     {
         if (!player.TryGetComponent(out Inventory inventory)) return;
         if (!inventory.CanCollect()) return;

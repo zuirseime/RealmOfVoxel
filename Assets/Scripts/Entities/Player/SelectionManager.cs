@@ -26,7 +26,7 @@ public class SelectionManager : MonoBehaviour
     {
         Select(target.transform.position);
 
-        GetComponent<Player>().target = target;
+        GetComponent<Player>().Target = target;
 
         _target = target;
         _target.Died += OnTargetDied;

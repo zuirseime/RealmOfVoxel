@@ -147,7 +147,7 @@ Material:
     - _Colour: {r: 1, g: 1, b: 1, a: 1}
     - _DetectionColour: {r: 0.8396226, g: 0.77204514, b: 0.5980331, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _PlayerAttackColour: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+    - _PlayerAttackColour: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpellRangeColour: {r: 0.6036846, g: 0.7271301, b: 0.9622642, a: 1}
+    - _SpellRangeColour: {r: 0.495283, g: 0.6672196, b: 1, a: 1}
   m_BuildTextureStacks: []

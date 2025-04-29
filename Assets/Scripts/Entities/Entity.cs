@@ -2,11 +2,30 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.AI.Navigation;
+using System.Linq;
 
 [RequireComponent(typeof(NavMeshAgent), typeof(EntityModifiers))]
+[RequireComponent(typeof(NavMeshModifier), typeof(Rigidbody))]
 public abstract class Entity : MonoBehaviour
 {
-    [ReadOnly] public Entity target;
+    [ReadOnly] private Entity _target;
+
+    public event EventHandler<EntityState> StateChanged;
+    public event EventHandler<Entity> TargetChanged;
+
+    public Entity Target
+    {
+        get => _target;
+        set
+        {
+            _target = value;
+            if (value != null)
+            {
+                TargetChanged?.Invoke(this, value);
+            }
+        }
+    }
 
     [Header("NavMesh Agent")]
     [SerializeField] private float _acceleration = 2f;
@@ -18,6 +37,7 @@ public abstract class Entity : MonoBehaviour
 
     protected EntityState _currentState;
     protected NavMeshAgent _agent;
+    protected EntityState[] _states = new EntityState[0];
 
     private bool _takingPeriodicDamage;
 
@@ -38,10 +58,12 @@ public abstract class Entity : MonoBehaviour
         {
             Health.ValueChanged += (s, e) => HealthChanged?.Invoke(this, e);
             Mana.ValueChanged += (s, e) => ManaChanged?.Invoke(this, e);
-
-            Health.Restore();
-            Mana.Restore();
         }
+
+        TargetChanged += OnTargetChanged;
+
+        Health?.Restore();
+        Mana?.Restore();
     }
 
     protected virtual void Update()
@@ -49,8 +71,8 @@ public abstract class Entity : MonoBehaviour
         Agent.acceleration = (Agent.remainingDistance <= 1) ? _deceleration : _acceleration;
 
         _currentState?.Update();
-        Health.Regenerate();
-        Mana.Regenerate();
+        Health?.Regenerate();
+        Mana?.Regenerate();
     }
 
     public virtual void TakePeriodicDamage(Entity entity, float amount, float duration, float tick)
@@ -76,6 +98,8 @@ public abstract class Entity : MonoBehaviour
             Die(entity);
         }
     }
+
+    public virtual bool CanBeDamagedBy(Entity attacker) => true;
 
     protected virtual void Die(Entity entity)
     {
@@ -115,14 +139,20 @@ public abstract class Entity : MonoBehaviour
 
     public void OnTargetDied(object sender, EventArgs args)
     {
-        target = null;
+        Target = null;
     }
 
-    public void ChangeState(EntityState state)
+    public void ChangeState<T>() where T : EntityState
     {
         _currentState?.Exit();
-        _currentState = state;
-        _currentState.Enter();
+        _currentState = _states.FirstOrDefault(s => s is T);
+        _currentState?.Enter();
+        StateChanged?.Invoke(this, _currentState);
+    }
+
+    public bool HasReachedDestionation()
+    {
+        return !Agent.pathPending && Agent.remainingDistance <= Agent.stoppingDistance && (!Agent.hasPath || Agent.velocity.sqrMagnitude == 0f);
     }
 
     private IEnumerator DamageRoutine(Entity entity, float amount, float duration, float tick)
@@ -137,5 +167,11 @@ public abstract class Entity : MonoBehaviour
             yield return new WaitForSeconds(tick);
         }
         _takingPeriodicDamage = false;
+    }
+
+    protected virtual void OnTargetChanged(object sender, Entity target)
+    {
+        target.Died += OnTargetDied;
+        SetDestination(target.transform.position);
     }
 }

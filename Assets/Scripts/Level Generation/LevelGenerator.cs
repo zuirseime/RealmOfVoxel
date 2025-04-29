@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
 using System.Linq;
+using System;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public event EventHandler LevelGenerated;
+
     public static NavMeshSurface[] Surfaces;
 
     [SerializeField] private RoomPlacer _roomPlacer;
@@ -43,9 +46,11 @@ public class LevelGenerator : MonoBehaviour
         {
             surface.BuildNavMesh();
         }
+
+        LevelGenerated?.Invoke(this, EventArgs.Empty);
     }
 
-    private void GenerateLevel()
+    public void GenerateLevel()
     {
         while (!IsLevelFullyConnected())
         {
@@ -86,7 +91,7 @@ public class LevelGenerator : MonoBehaviour
         _corridorBuilder?.Clear();
     }
 
-    private bool IsLevelFullyConnected()
+    public bool IsLevelFullyConnected()
     {
         if (Rooms.Count == 0) return false;
 

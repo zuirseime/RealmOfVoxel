@@ -73,6 +73,7 @@ public abstract class Spell : ScriptableObject, IDisplayable
         owner.DrainMana(ManaCost);
         ApplyEffect(owner, targetPosition);
 
+        SpellDeselected?.Invoke(this, new SpellEventArgs(this));
         SpellUsed?.Invoke(this, new SpellEventArgs(this));
         _nextCastTime = Time.time + Cooldown;
     }

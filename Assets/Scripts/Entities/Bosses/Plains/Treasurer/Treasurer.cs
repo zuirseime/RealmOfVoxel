@@ -17,15 +17,15 @@ public class Treasurer : Boss
     public override void Activate()
     {
         base.Activate();
-        ChangeState(new TreasurerWanderState(this));
+        ChangeState<TreasurerWanderState>();
     }
 
     public override void Attack()
     {
-        if (target != null && _projectilePrefab != null && CanShootProjectile())
+        if (Target != null && _projectilePrefab != null && CanShootProjectile())
         {
             BossProjectile projectile = Instantiate(_projectilePrefab, transform.position + Vector3.up, Quaternion.identity);
-            projectile.Initialize(target.transform.position + Vector3.up, _attackDamage);
+            projectile.Initialize(Target.transform.position + Vector3.up, _attackDamage);
 
             _attackTimer = Time.time + _projectileShootingCooldown;
         }
@@ -69,6 +69,18 @@ public class Treasurer : Boss
         {
             _chests.Remove(chest);
         }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _states = new EntityState[]
+        {
+            new TreasurerWanderState(this),
+            new TreasurerChaseState(this),
+            new TreasurerAttackState(this)
+        };
     }
 
     private bool CanPlaceChest()

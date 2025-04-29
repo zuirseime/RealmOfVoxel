@@ -1,6 +1,7 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(SphereCollider), typeof(NavMeshModifier))]
 public abstract class SpellEffect : MonoBehaviour
 {
     public Entity Owner { get; set; }

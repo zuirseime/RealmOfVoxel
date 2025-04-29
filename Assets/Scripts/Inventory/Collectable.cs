@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(CapsuleCollider), typeof(NavMeshModifier))]
 public abstract class Collectable : MonoBehaviour, IDisplayable
 {
     private Player _playerWithinReach;
@@ -42,7 +43,7 @@ public abstract class Collectable : MonoBehaviour, IDisplayable
 
     public Dictionary<string, string> Stats { get; set; } = new();
 
-    protected virtual void Collect(Player player)
+    public virtual void Collect(Player player)
     {
         _taken = true;
         _playerWithinReach = null;
@@ -63,8 +64,9 @@ public abstract class Collectable : MonoBehaviour, IDisplayable
 
     protected virtual void Start()
     {
-        _hint.text = Settings.Instance.Input.Interact.ToString();
         _taken = false;
+        if (_hint != null)
+        _hint.text = Settings.Instance.Input.Interact.ToString();
     }
 
     protected virtual void Update()
@@ -114,7 +116,11 @@ public abstract class Collectable : MonoBehaviour, IDisplayable
     {
         if (value != 0)
         {
-            Stats.Add(key, $"{Math.Round(value, 1)}{units}");
+            string formattedValue = $"{Math.Round(value, 1)}{units}";
+            if (!Stats.ContainsKey(key))
+                Stats.Add(key, formattedValue);
+            else
+                Stats[key] = formattedValue;
         }
     }
 }

@@ -15,13 +15,13 @@ public class TreasurerAttackState : BossState
 
     public override void Update()
     {
-        if (_boss.target == null || !_boss.target.IsAlive)
+        if (_boss.Target == null || !_boss.Target.IsAlive)
         {
-            _boss.ChangeState(new TreasurerWanderState((Treasurer)_boss));
+            _boss.ChangeState<TreasurerWanderState>();
             return;
         }
 
-        _boss.transform.LookAt(_boss.target.transform);
+        _boss.transform.LookAt(_boss.Target.transform);
 
         _timer += Time.deltaTime;
         if (_timer >= _boss.AttackCooldown)
@@ -42,7 +42,7 @@ public class TreasurerAttackState : BossState
 
         if (!_boss.HasPlayerInAttackRange())
         {
-            _boss.ChangeState(new TreasurerChaseState((Treasurer)_boss));
+            _boss.ChangeState<TreasurerChaseState>();
         }
     }
 }

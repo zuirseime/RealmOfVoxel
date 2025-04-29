@@ -13,17 +13,21 @@ public class PauseMenuManager : MonoBehaviour
 
     private bool _isPaused = false;
 
+    public void ChangeState(bool active, float timeScale)
+    {
+        if (_pauseMenuUI == null)
+            return;
+
+        _isPaused = active;
+
+        Time.timeScale = timeScale;
+
+        _pauseMenuUI.SetActive(active);
+    }
+
     private void Start()
     {
-        if (_pauseMenuUI != null)
-        {
-            _pauseMenuUI.SetActive(false);
-        } else
-        {
-            Debug.LogError("Pause Menu UI is not assigned in the inspector.");
-        }
-        _isPaused = false;
-        Time.timeScale = 1f;
+        ChangeState(false, 1f);
 
         _resumeButton.onClick.AddListener(ResumeGame);
         _mainMenuButton.onClick.AddListener(ReturnToMainMenu);
@@ -32,36 +36,15 @@ public class PauseMenuManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             if (_isPaused)
-                ResumeGame();
+                ChangeState(false, 1);
             else
-                PauseGame();
-        }
-    }
-
-    private void PauseGame()
-    {
-        if (_pauseMenuUI == null)
-            return;
-
-        _isPaused = true;
-
-        Time.timeScale = 0f;
-
-        _pauseMenuUI.SetActive(true);
+                ChangeState(true, 0);
     }
 
     private void ResumeGame()
     {
-        if (_pauseMenuUI == null)
-            return;
-
-        _isPaused = false;
-
-        Time.timeScale = 1f;
-
-        _pauseMenuUI.SetActive(false);
+        ChangeState(false, 1);
     }
 
     private void ReturnToMainMenu()

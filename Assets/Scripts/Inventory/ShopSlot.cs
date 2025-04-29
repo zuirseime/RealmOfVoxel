@@ -1,9 +1,12 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopSlot : MonoBehaviour
 {
+    public event EventHandler<Collectable> CollectablePurchased;
+
     [SerializeField] private Image _sprite;
     [SerializeField] private TextMeshProUGUI _priceTag;
 

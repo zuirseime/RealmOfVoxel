@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.AI.Navigation;
+using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Collider), typeof(NavMeshModifier))]
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float _speed;
@@ -14,11 +15,16 @@ public class Projectile : MonoBehaviour
 
     public void Initialize(Entity target, float damage, Entity owner)
     {
+        GetComponent<Collider>().isTrigger = true;
+
+        _launched = true;
+        _damage = damage;
         Owner = owner;
         _target = target;
-        _damage = damage;
-        _launched = true;
-        Destroy(gameObject, _lifeTime);
+        _target.Died += OnTargetDied;
+        
+        if (_launched && _target.IsAlive)
+            Destroy(gameObject, _lifeTime);
     }
 
     private void Update()
@@ -32,14 +38,28 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.TryGetComponent(out Entity entity) 
-            && entity.GetType() != Owner.GetType())
+        if (other.TryGetComponent(out Entity entity)
+            && entity.GetType() != Owner.GetType() && !other.isTrigger)
         {
             entity.TakeDamage(Owner, _damage);
             GetComponent<Collider>().enabled = false;
-            Destroy(gameObject);
+            if (gameObject != null)
+                Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (_target != null)
+            _target.Died -= OnTargetDied;
+    }
+
+    private void OnTargetDied(object sender, System.EventArgs args)
+    {
+        if (gameObject != null)
+            Destroy(gameObject);
+        _launched = false;
     }
 }
