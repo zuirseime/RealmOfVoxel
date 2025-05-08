@@ -376,6 +376,7 @@ MonoBehaviour:
   - {fileID: 5368222542419512085}
   _possibleBosses:
   - {fileID: 6137018860383801702, guid: cb0515952a3368342ae7ac8afc834871, type: 3}
+  - {fileID: 6207375645018787326, guid: 33c9081d14161494fb1913fbf84ac814, type: 3}
 --- !u!114 &-8908612326764681448
 MonoBehaviour:
   m_ObjectHideFlags: 0

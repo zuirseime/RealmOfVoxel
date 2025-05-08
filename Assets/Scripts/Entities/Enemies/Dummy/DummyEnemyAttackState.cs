@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 
-public class DummyEnemyAttackState : EnemyState
+public class DummyEnemyAttackState : EnemyState<DummyEnemy>
 {
-    public DummyEnemyAttackState(Enemy enemy) : base(enemy) { }
+    public DummyEnemyAttackState(DummyEnemy enemy) : base(enemy) { }
 
     public override void Enter()
     {
         RefreshTimer(_enemy.AttackCooldown / 2f);
         _enemy.ClearDestination();
         _enemy.Target.Died += _enemy.OnTargetDied;
-        //Debug.Log($"{_enemy.name} is currently attacking the player...");
     }
 
     public override void Update()

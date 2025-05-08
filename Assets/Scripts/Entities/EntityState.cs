@@ -14,6 +14,10 @@ public abstract class EntityState : IState
     {
         _timer = duration + Time.time;
     }
+    protected bool IsTimerFinished()
+    {
+        return Time.time >= _timer;
+    }
 
     public override string ToString()
     {

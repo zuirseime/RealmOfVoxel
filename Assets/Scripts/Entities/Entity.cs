@@ -30,6 +30,7 @@ public abstract class Entity : MonoBehaviour
     [Header("NavMesh Agent")]
     [SerializeField] private float _acceleration = 2f;
     [SerializeField] private float _deceleration = 60f;
+    private float _baseSpeed;
 
     [Header("Attributes")]
     [SerializeField] protected EntityAttribute _health;
@@ -45,6 +46,7 @@ public abstract class Entity : MonoBehaviour
     public EntityAttribute Health => _health;
     public EntityAttribute Mana => _mana;
     public bool IsAlive { get; private set; } = true;
+    public float BaseSpeed => _baseSpeed;
 
     public event EventHandler Died;
     public event EventHandler<AttributeEventArgs> HealthChanged;
@@ -53,6 +55,7 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _baseSpeed = _agent.speed;
 
         if (Health != null && Mana != null)
         {
@@ -145,7 +148,7 @@ public abstract class Entity : MonoBehaviour
     public void ChangeState<T>() where T : EntityState
     {
         _currentState?.Exit();
-        _currentState = _states.FirstOrDefault(s => s is T);
+        _currentState = _states.FirstOrDefault(s => s is T || s.GetType().IsSubclassOf(typeof(T)));
         _currentState?.Enter();
         StateChanged?.Invoke(this, _currentState);
     }

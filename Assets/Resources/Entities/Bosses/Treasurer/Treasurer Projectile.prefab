@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 2313982345305503400}
+  - {fileID: 7253991613620290658}
   m_Father: {fileID: 8192286904880187716}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1959255874989540471
@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 8693746023605196823}
   - component: {fileID: 9063695606455991826}
   - component: {fileID: 1265556568416009843}
-  - component: {fileID: -4055688254748442256}
+  - component: {fileID: -6181002156411225382}
   m_Layer: 0
-  m_Name: Treasuer Gold
+  m_Name: Treasurer Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
---- !u!114 &-4055688254748442256
+--- !u!114 &-6181002156411225382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 10
   _lifeTime: 5
---- !u!1001 &1162080432704216504
+--- !u!1001 &6095403987378499442
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -217,9 +217,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 980bf62c8e3e40e40a537647214d5dc4, type: 3}
---- !u!4 &2313982345305503400 stripped
+--- !u!4 &7253991613620290658 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3475762215249898256, guid: 980bf62c8e3e40e40a537647214d5dc4,
     type: 3}
-  m_PrefabInstance: {fileID: 1162080432704216504}
+  m_PrefabInstance: {fileID: 6095403987378499442}
   m_PrefabAsset: {fileID: 0}

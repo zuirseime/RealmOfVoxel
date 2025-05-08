@@ -399,6 +399,7 @@ MonoBehaviour:
   - {fileID: 9201017724323144184, guid: b4ef7dbba8a171244bb01ba64a13c978, type: 3}
   - {fileID: 3028369536605847821, guid: 8d7673a826296774485db0ae060de596, type: 3}
   - {fileID: 3611356390178906602, guid: 929aa551f9fb4ad4ba1a2a9a2e222e17, type: 3}
+  - {fileID: -5882420547902940660, guid: 575db6796e9225749b12fc0517cfd0af, type: 3}
   _colorThreshold: 0.01
   _enemies: []
 --- !u!65 &3330934247100418292

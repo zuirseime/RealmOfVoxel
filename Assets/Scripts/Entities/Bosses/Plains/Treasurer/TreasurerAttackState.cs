@@ -1,48 +1,48 @@
 ﻿using UnityEngine;
 
-public class TreasurerAttackState : BossState
+public class TreasurerAttackState : EnemyState<Treasurer>
 {
     private float _abilityTimer;
 
-    public TreasurerAttackState(Treasurer boss) : base(boss) { }
+    public TreasurerAttackState(Treasurer treasurer) : base(treasurer) { }
 
     public override void Enter()
     {
         _timer = 0;
         _abilityTimer = 0;
-        _boss.ClearDestination();
+        _enemy.ClearDestination();
     }
 
     public override void Update()
     {
-        if (_boss.Target == null || !_boss.Target.IsAlive)
+        if (!_enemy.HasPlayerInDetectionRange())
         {
-            _boss.ChangeState<TreasurerWanderState>();
+            _enemy.ChangeState<TreasurerWanderState>();
             return;
         }
 
-        _boss.transform.LookAt(_boss.Target.transform);
+        if (!_enemy.HasPlayerInAttackRange())
+        {
+            _enemy.ChangeState<TreasurerChaseState>();
+        }
+
+        _enemy.transform.LookAt(_enemy.Target.transform);
 
         _timer += Time.deltaTime;
-        if (_timer >= _boss.AttackCooldown)
+        if (_timer >= _enemy.AttackCooldown)
         {
-            _boss.Attack();
+            _enemy.Attack();
             _timer = 0;
         }
 
-        if (_boss.IsSecondPhase)
+        if (_enemy.IsSecondPhase)
         {
             _abilityTimer += Time.deltaTime;
-            if (_abilityTimer >= _boss.AbilityCooldown)
+            if (_abilityTimer >= _enemy.AbilityCooldown)
             {
-                _boss.AlternativeAttack();
+                _enemy.AlternativeAttack();
                 _abilityTimer = 0;
             }
-        }
-
-        if (!_boss.HasPlayerInAttackRange())
-        {
-            _boss.ChangeState<TreasurerChaseState>();
         }
     }
 }

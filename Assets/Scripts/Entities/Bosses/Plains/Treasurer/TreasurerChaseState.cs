@@ -1,33 +1,33 @@
-﻿public class TreasurerChaseState : BossState
+﻿public class TreasurerChaseState : EnemyState<Treasurer>
 {
-    public TreasurerChaseState(Treasurer boss) : base(boss) { }
+    public TreasurerChaseState(Treasurer treasurer) : base(treasurer) { }
 
     public override void Enter()
     {
-        _boss.SetDestination(_boss.Target.transform.position);
+        _enemy.SetDestination(_enemy.Target.transform.position);
     }
 
     public override void Update()
     {
-        if (_boss.Target == null || !_boss.Target.IsAlive)
+        if (_enemy.Target == null || !_enemy.Target.IsAlive)
         {
-            _boss.ChangeState<TreasurerWanderState>();
+            _enemy.ChangeState<TreasurerWanderState>();
             return;
         }
 
-        _boss.SetDestination(_boss.Target.transform.position);
+        _enemy.SetDestination(_enemy.Target.transform.position);
 
-        if (_boss.HasPlayerInAttackRange())
+        if (_enemy.HasPlayerInAttackRange())
         {
-            _boss.ChangeState<TreasurerAttackState>();
-        } else if (!_boss.HasPlayerInDetectionRange())
+            _enemy.ChangeState<TreasurerAttackState>();
+        } else if (!_enemy.HasPlayerInDetectionRange())
         {
-            _boss.ChangeState<TreasurerWanderState>();
+            _enemy.ChangeState<TreasurerWanderState>();
         }
     }
 
     public override void Exit()
     {
-        _boss.ClearDestination();
+        _enemy.ClearDestination();
     }
 }

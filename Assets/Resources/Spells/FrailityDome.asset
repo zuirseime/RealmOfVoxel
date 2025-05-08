@@ -16,7 +16,7 @@ MonoBehaviour:
   _nextCastTime: 0
   _spellName: Dome of Fraility
   _description: Reduces the defense ability of any creature.
-  _price: 15
+  _price: 40
   _sprite: {fileID: 21300000, guid: f8ba7ff8f09e54440a9a3cbb5abb1bd3, type: 3}
   _effectPrefab: {fileID: 1257121393466849185, guid: e4784abde0001bc4284d61028f4875bd,
     type: 3}

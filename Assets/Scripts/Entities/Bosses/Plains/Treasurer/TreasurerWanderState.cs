@@ -1,52 +1,38 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class TreasurerWanderState : BossState
+public class TreasurerWanderState : EnemyWanderState<Treasurer>
 {
     private Vector3 _wanderTarget;
 
-    public TreasurerWanderState(Treasurer boss) : base(boss) { }
+    public TreasurerWanderState(Treasurer treasurer) : base(treasurer) { }
 
     public override void Enter()
     {
-        _timer = 0;
-        SetNewWanderTarget();
+        RefreshTimer(_enemy.WanderCooldown);
+        _enemy.ClearDestination();
     }
 
     public override void Update()
     {
-        _timer += Time.deltaTime;
-
-        if (_boss.Agent.remainingDistance < 0.5f || _timer >= _boss.WanderCooldown)
+        if (_enemy.Agent.remainingDistance < 0.5f || IsTimerFinished())
         {
-            SetNewWanderTarget();
-            _timer = 0;
+            Wander();
         }
 
-        if (!_boss.Agent.pathPending && _boss.Agent.remainingDistance > 0.1f)
+        if (!_enemy.Agent.pathPending && _enemy.Agent.remainingDistance > 0.1f)
         {
-            _boss.SetDestination(_wanderTarget);
+            _enemy.SetDestination(_wanderTarget);
         }
 
-        if (_boss.HasPlayerInDetectionRange())
+        if (_enemy.HasPlayerInDetectionRange())
         {
-            _boss.ChangeState<TreasurerChaseState>();
+            _enemy.ChangeState<TreasurerChaseState>();
         }
     }
 
     public override void Exit()
     {
-        _boss.ClearDestination();
-    }
-
-    private void SetNewWanderTarget()
-    {
-        Vector3 randomDirection = Random.insideUnitSphere * ((Treasurer)_boss).WanderRadius;
-        randomDirection.y = 0;
-        _wanderTarget = _boss.transform.position + randomDirection;
-        if (NavMesh.SamplePosition(_wanderTarget, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-        {
-            _wanderTarget = hit.position;
-        }
+        _enemy.ClearDestination();
     }
 }
