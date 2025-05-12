@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,7 +10,10 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private string _mainMenuSceneName = "MainMenu";
 
     [SerializeField] private Button _resumeButton;
+    [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _mainMenuButton;
+
+    [SerializeField] private SettingsMenu _settingsMenu;
 
     private bool _isPaused = false;
 
@@ -30,7 +34,13 @@ public class PauseMenuManager : MonoBehaviour
         ChangeState(false, 1f);
 
         _resumeButton.onClick.AddListener(ResumeGame);
+        _settingsButton.onClick.AddListener(OpenSettings);
         _mainMenuButton.onClick.AddListener(ReturnToMainMenu);
+    }
+
+    private void OpenSettings()
+    {
+        _settingsMenu.gameObject.SetActive(true);
     }
 
     private void Update()

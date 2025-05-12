@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(SphereCollider), typeof(AudioSource))]
 public abstract class Enemy : Entity
 {
     [SerializeField] protected float _detectionRange;
@@ -14,6 +14,11 @@ public abstract class Enemy : Entity
 
     [SerializeField] protected int _minCoins;
     [SerializeField] protected int _maxCoins;
+
+    [Header("Audo Settings")]
+    [SerializeField] protected AudioClip _attackSound;
+    [SerializeField] protected AudioClip _deathSound;
+    [SerializeField] protected AudioSource _audioSource;
 
     public float WanderRadius => _wanderRadius;
     public float WanderCooldown => _wanderCooldown;
@@ -34,8 +39,20 @@ public abstract class Enemy : Entity
         base.Attack();
         if (Target != null)
         {
+            PlaySound(_attackSound);
             Target.TakeDamage(this, _attackDamage * GetComponent<EntityModifiers>().DamageModifier.BaseValue);
         }
+    }
+
+    protected void PlaySound(AudioClip audioClip)
+    {
+        if (audioClip == null)
+            return;
+
+        if (_audioSource != null)
+            _audioSource.PlayOneShot(audioClip);
+        else
+            AudioSource.PlayClipAtPoint(audioClip, transform.position);
     }
 
     protected override void Awake()
@@ -75,8 +92,10 @@ public abstract class Enemy : Entity
             inventory.AddCoins(Coins);
         }
 
+        PlaySound(_deathSound);
+
         base.Die(entity);
-        transform.Rotate(Vector3.right * 90, Space.Self);
+        transform.Rotate(Vector3.forward * 90, Space.Self);
         Agent.enabled = false;
         this.enabled = false;
         GetComponent<BoxCollider>().enabled = false;

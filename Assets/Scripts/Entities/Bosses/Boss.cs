@@ -3,6 +3,8 @@ using UnityEngine;
 
 public abstract class Boss : Enemy
 {
+    [SerializeField] protected AudioClip _abilitySound;
+
     [SerializeField, Range(0, 100)] protected int _secondPhaseThreshold;
     [SerializeField, ReadOnly] protected bool _isSecondPhase;
     [SerializeField] protected float _abilityCooldown;

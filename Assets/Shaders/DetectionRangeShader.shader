@@ -469,6 +469,8 @@ Shader "Custom/DetectionRangeShader"
 
 
 
+
+
                 color.rgb = MixFog(color.rgb, inputData.fogCoord);
                 color.a = OutputAlpha(color.a, IsSurfaceTypeTransparent(_Surface));
 

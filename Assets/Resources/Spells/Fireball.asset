@@ -25,6 +25,7 @@ MonoBehaviour:
   _cooldown: 15
   _manaCost: 25
   _duration: 1
+  _castSound: {fileID: 8300000, guid: f1cb5d83282f2904a85f73111d068616, type: 3}
   _moveSpeed: 10
   _damage: 15
   _maxExpansion: 10

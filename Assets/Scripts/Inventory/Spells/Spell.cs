@@ -39,6 +39,10 @@ public abstract class Spell : ScriptableObject, IDisplayable
     [SerializeField] protected float _manaCost;
     [SerializeField] protected float _duration;
 
+    [Header("Audo Settings")]
+    [SerializeField] private AudioClip _castSound;
+
+    public AudioClip CastSound => _castSound;
     public float Range => _range;
     public float Cooldown => _cooldown;
     public string Title

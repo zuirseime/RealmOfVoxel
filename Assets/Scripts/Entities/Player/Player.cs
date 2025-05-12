@@ -52,6 +52,17 @@ public class Player : Entity
             && Vector3.Distance(transform.position, Target.transform.position) <= Inventory.CurrentWeapon.Range;
     }
 
+    public void PlaySound(AudioClip castSound)
+    {
+        AudioSource audioSource = GetComponent<AudioSource>();
+
+        if (castSound == null)
+            return;
+
+        if (audioSource != null)
+            audioSource.PlayOneShot(castSound);
+    }
+
     protected override void Awake()
     {
         base.Awake();

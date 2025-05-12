@@ -24,6 +24,7 @@ MonoBehaviour:
   _cooldown: 15
   _manaCost: 20
   _duration: 5
+  _castSound: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
   _maxExpansion: 10
   _tickRate: 1
   _protectionReduction: 50

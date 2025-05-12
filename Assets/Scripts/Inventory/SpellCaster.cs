@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class SpellCaster : MonoBehaviour
 {
     public event EventHandler<SpellSetEventArgs> SpellsChanged;

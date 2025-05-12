@@ -12,12 +12,14 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button _newGameButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _optionsButton;
+    [SerializeField] private Button _creditsButton;
     [SerializeField] private Button _quitButton;
     [SerializeField] private TextMeshProUGUI _moneyText;
     [SerializeField] private SpellShopUI _spellShopUI;
     [SerializeField] private SpellInventoryUI _spellInventoryUI;
     [SerializeField] private GameObject _dragIconPrefab;
     [SerializeField] private Tooltip _tooltip;
+    [SerializeField] private SettingsMenu _settingsMenu;
 
     [Header("Scenes")]
     [SerializeField] private string _levelScene;
@@ -32,6 +34,7 @@ public class MainMenuManager : MonoBehaviour
         _newGameButton?.onClick.AddListener(StartNewGame);
         _continueButton?.onClick.AddListener(ContinueGame);
         _optionsButton?.onClick.AddListener(OpenOptions);
+        _creditsButton?.onClick.AddListener(OpenCredits);
         _quitButton?.onClick.AddListener(QuitGame);
 
         if (!PlayerPrefs.HasKey(PlayedKey))
@@ -175,6 +178,14 @@ public class MainMenuManager : MonoBehaviour
     private void OpenOptions()
     {
         Debug.Log("Opening Settings...");
+        _settingsMenu.gameObject.SetActive(true);
+    }
+
+    private void OpenCredits()
+    {
+        Debug.Log("Opening Credits...");
+
+        SceneManager.LoadScene("Credits");
     }
 
     private void QuitGame()

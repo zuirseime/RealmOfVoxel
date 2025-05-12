@@ -148,6 +148,7 @@ public class PlayerCastingState : PlayerState
         } else
         {
             _player.ActiveSpell.SpellDeselected += OnSpellDeselected;
+            _player.ActiveSpell.SpellUsed += OnSpellUsed;
         }
     }
 
@@ -159,7 +160,6 @@ public class PlayerCastingState : PlayerState
             if (_player.ActiveSpell.Range == 0)
             {
                 _player.ActiveSpell.CastAt(_player, Vector3.zero);
-                _player.ChangeState<PlayerMoveState>();
             }
             else if (Input.GetMouseButtonDown(1))
             {
@@ -169,8 +169,6 @@ public class PlayerCastingState : PlayerState
                     if (Vector3.Distance(_player.transform.position, hit.point) <= _player.ActiveSpell.Range)
                         _player.ActiveSpell.CastAt(_player, new Vector3(hit.point.x, 0, hit.point.z));
                 }
-
-                _player.ChangeState<PlayerMoveState>();
             }
         } else
         {
@@ -181,6 +179,12 @@ public class PlayerCastingState : PlayerState
     public override void Exit()
     {
         _player.ActiveSpell?.Deselect();
+    }
+
+    private void OnSpellUsed(object sender, SpellEventArgs args)
+    {
+        _player.PlaySound(args.Spell.CastSound);
+        _player.ActiveSpell.SpellUsed -= OnSpellUsed;
     }
 
     private void OnSpellDeselected(object sender, SpellEventArgs args)

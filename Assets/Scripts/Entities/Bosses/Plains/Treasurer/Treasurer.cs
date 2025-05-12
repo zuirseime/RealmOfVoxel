@@ -24,6 +24,7 @@ public class Treasurer : Boss
     {
         if (Target != null && _projectilePrefab != null && CanShootProjectile())
         {
+            PlaySound(_attackSound);
             BossProjectile projectile = Instantiate(_projectilePrefab, transform.position + Vector3.up, Quaternion.identity);
             projectile.Initialize(Target.transform.position + Vector3.up, _attackDamage);
 
@@ -35,6 +36,7 @@ public class Treasurer : Boss
     {
         if (_chestPrefab != null && CanPlaceChest())
         {
+            PlaySound(_abilitySound);
             Vector3 spawnPosition = Vector3.zero;
             do
             {

@@ -33,6 +33,9 @@ public class Mole : Enemy
 
     public void EndAttack()
     {
+        if (Target != null && Target.Target == this)
+            Target.Target = null;
+
         _isAttacking = false;
         SetModelActive(false);
     }

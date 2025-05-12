@@ -3,7 +3,22 @@ guid: ba601728295c09348b4fac5596e4c87e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Atlas
+    second: {fileID: 2100000, guid: c22574bb8b72e704cab32a66faacc950, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ExitDoorFrame.png
+    second: {fileID: 2100000, guid: 7e9a96c6185407849bb5af2f490be6f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table.png
+    second: {fileID: 2100000, guid: 1ba25146f4829774283b43af2782c92b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

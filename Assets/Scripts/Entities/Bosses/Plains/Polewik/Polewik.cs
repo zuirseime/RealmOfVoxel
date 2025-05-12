@@ -23,6 +23,7 @@ public class Polewik : Boss
         float angleOffset = _waveShiftIndex * _waveShift;
         for (int i = 0; i < _wavesOnAttack; i++)
         {
+            PlaySound(_attackSound);
             float angle = angleOffset + i * angleFactor;
             Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
 
@@ -38,6 +39,7 @@ public class Polewik : Boss
 
         if (NavMeshUtils.TryGetRandomPoint(origin, _teleporationRadius, out Vector3 randomPosition))
         {
+            PlaySound(_abilitySound);
             Target.transform.position = randomPosition;
 
             Vector3 awayFromBoss = (randomPosition - transform.position).normalized;
@@ -76,7 +78,7 @@ public class Polewik : Boss
         for (int i = 0; i < _debrisPerWave; i++)
         {
             float distance = i * step;
-            Vector3 spawnPosition = start + direction * distance + Vector3.Cross(direction, Vector3.up).normalized;
+            Vector3 spawnPosition = Vector3Int.RoundToInt(start + direction * distance + Vector3.Cross(direction, Vector3.up).normalized);
 
             Debris debris = Instantiate(_debrisPrefab, spawnPosition, Quaternion.identity);
             debris.Initialize(_attackDamage, this);
@@ -86,53 +88,6 @@ public class Polewik : Boss
             }
 
             yield return new WaitForSeconds(_waveSpeed);
-        }
-    }
-}
-
-public class PolewikAttackState : EnemyAttackState<Polewik>
-{
-    private float _abilityTimer;
-
-    public PolewikAttackState(Polewik polewik) : base(polewik) { }
-
-    public override void Enter()
-    {
-        _abilityTimer = 0;
-        _enemy.ClearDestination();
-        RefreshTimer(_enemy.AttackCooldown);
-    }
-
-    public override void Update()
-    {
-        if (!_enemy.HasPlayerInDetectionRange())
-        {
-            _enemy.ChangeState<EnemyWanderState<Polewik>>();
-            return;
-        }
-
-        if (!_enemy.HasPlayerInAttackRange())
-        {
-            _enemy.ChangeState<EnemyChaseState<Polewik>>();
-            return;
-        }
-
-        _enemy.transform.LookAt(_enemy.Target.transform);
-
-        if (IsTimerFinished())
-        {
-            _enemy.Attack();
-            RefreshTimer(_enemy.AttackCooldown);
-        }
-
-        if (_enemy.IsSecondPhase)
-        {
-            _abilityTimer += Time.deltaTime;
-            if (_abilityTimer >= _enemy.AbilityCooldown)
-            {
-                _enemy.AlternativeAttack();
-                _abilityTimer = 0;
-            }
         }
     }
 }

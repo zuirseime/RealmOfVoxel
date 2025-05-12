@@ -73,3 +73,4 @@ MonoBehaviour:
   _defaultWeapons:
   - {fileID: -267794447042164441, guid: 5907d80f45eefe340b60f831b281d1e3, type: 3}
   - {fileID: 2365494332048924066, guid: 9a0ef2169c5475944a23a428827e4e5c, type: 3}
+  _audioMixer: {fileID: 24100000, guid: b1c10a496fcfad4419f9fa3c9f5500fd, type: 2}

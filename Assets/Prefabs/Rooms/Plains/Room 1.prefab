@@ -315,7 +315,7 @@ MonoBehaviour:
   - {fileID: 1304611061575596199}
   - {fileID: 8264884248071714030}
   - {fileID: 2588080186522411755}
-  _enemiesNumber: 2
+  _enemiesNumber: 3
   _enemyPrefabs:
   - {fileID: 9201017724323144184, guid: b4ef7dbba8a171244bb01ba64a13c978, type: 3}
   - {fileID: 3028369536605847821, guid: 8d7673a826296774485db0ae060de596, type: 3}

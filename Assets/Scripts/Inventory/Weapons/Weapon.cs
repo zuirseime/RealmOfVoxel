@@ -9,6 +9,10 @@ public abstract class Weapon : Collectable
     [SerializeField, Range(0f, 1f)] protected float _critChance = 1;
     [SerializeField, Min(1f)] protected float _critMultiplier = 2;
 
+    [Header("Audo Settings")]
+    [SerializeField] private AudioClip _attackSound;
+    [SerializeField] private AudioSource _audioSource;
+
     protected float _nextAttackTime = 0;
 
     public float Damage { get; private set; }
@@ -50,16 +54,27 @@ public abstract class Weapon : Collectable
         if (!target.CanBeDamagedBy(Owner))
             return;
 
-            Damage = _baseDamage * Owner.GetComponent<EntityModifiers>().DamageModifier.Value;
+        Damage = _baseDamage * Owner.GetComponent<EntityModifiers>().DamageModifier.Value;
         if (Random.value < CritChance)
         {
             Damage *= CritMultiplier;
             CritStrike?.Invoke(this, new WeaponCritEventArgs(CritMultiplier, Damage));
         }
 
+        PlayAttackSound();
         AttackLogic(target);
 
         _nextAttackTime = Time.time + Cooldown;
+    }
+
+    private void PlayAttackSound()
+    {
+        if (_attackSound == null) return;
+
+        if (_audioSource != null)
+            _audioSource.PlayOneShot(_attackSound);
+        else
+            AudioSource.PlayClipAtPoint(_attackSound, transform.position);
     }
 
     public virtual bool CanAttack(Entity target)

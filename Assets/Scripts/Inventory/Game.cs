@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Game : MonoBehaviour
 {
@@ -15,7 +17,9 @@ public class Game : MonoBehaviour
     [SerializeField] private Weapon[] _weaponSet;
     [SerializeField] private Charm[] _charmSet;
     [SerializeField] private Weapon[] _defaultWeapons;
- 
+
+    [SerializeField] private AudioMixer _audioMixer;
+
     private Spell[] _activeSpells = new Spell[4];
     private int _money;
 
@@ -35,6 +39,9 @@ public class Game : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+
+        Settings.Instance.AudioMixer = _audioMixer;
+        Settings.Instance.LoadSettings();
 
         SpellManager = GetComponent<SpellManager>();
     }
