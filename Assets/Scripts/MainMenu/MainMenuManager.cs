@@ -20,6 +20,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject _dragIconPrefab;
     [SerializeField] private Tooltip _tooltip;
     [SerializeField] private SettingsMenu _settingsMenu;
+    [SerializeField] private TextMeshProUGUI _version;
 
     [Header("Scenes")]
     [SerializeField] private string _levelScene;
@@ -51,6 +52,8 @@ public class MainMenuManager : MonoBehaviour
         if (_spellInventoryUI == null) Debug.LogError("SpellInventoryUI is not assigned.");
 
         if (_dragIconInstance != null) _dragIconInstance.SetActive(false);
+
+        _version.text = Application.version.ToString();
     }
 
     private void OnDestroy()
