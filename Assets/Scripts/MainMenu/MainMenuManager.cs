@@ -30,7 +30,7 @@ public class MainMenuManager : MonoBehaviour
 
     public Tooltip Tooltip => _tooltip;
 
-    void Start()
+    void Awake()
     {
         _newGameButton?.onClick.AddListener(StartNewGame);
         _continueButton?.onClick.AddListener(ContinueGame);

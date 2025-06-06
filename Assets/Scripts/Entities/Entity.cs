@@ -106,7 +106,7 @@ public abstract class Entity : MonoBehaviour
 
     protected virtual void Die(Entity entity)
     {
-        IsAlive = Health.Value > 0;
+        IsAlive = Health.Value >= 1;
         Died?.Invoke(this, EventArgs.Empty);
     }
 

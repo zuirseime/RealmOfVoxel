@@ -77,9 +77,9 @@ public abstract class Spell : ScriptableObject, IDisplayable
         owner.DrainMana(ManaCost);
         ApplyEffect(owner, targetPosition);
 
+        _nextCastTime = Time.time + Cooldown;
         SpellDeselected?.Invoke(this, new SpellEventArgs(this));
         SpellUsed?.Invoke(this, new SpellEventArgs(this));
-        _nextCastTime = Time.time + Cooldown;
     }
 
     public void Select()
@@ -96,6 +96,10 @@ public abstract class Spell : ScriptableObject, IDisplayable
     public virtual void Initialize()
     {
         _nextCastTime = 0;
+
+        SpellUsed = null;
+        SpellSelected = null;
+        SpellDeselected = null;
     }
 
     protected void AddToStats(string key, float value, char units)

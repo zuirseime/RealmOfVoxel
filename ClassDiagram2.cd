@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Entity" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>A8QhCAAAEgEABACgEgUAACBAQJAAAgAAAIAAoSJAQHA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Enemy" Collapsed="true">
+    <Position X="6.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAQQAQgARBgEQAAGAwBAoAAAIAQRCQFAAAABEA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Enemies\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="12.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARkAAAAACAAAAAiAAAIQAqAAIAAAAAEAEAAAoBABEQ=</HashCode>
+      <FileName>Assets\Scripts\Entities\Player\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Boss" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAQAACADAAAgAAAAAEQQAAAAAgEAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Bosses\Boss.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Boar" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABIAABAAAAAgABAAQAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Enemies\Boar\Boar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DummyEnemy" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Enemies\Dummy\DummyEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mole" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAREAACAAgkRABAGgAAAAAAJAAAAAAAAAAgAAEAAEA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Enemies\Mole\Mole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wolf" Collapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAQAAAAAAAAABAAAAAAAQIAAAAQAAAAAAAAQAAAkA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Enemies\Wolf\Wolf.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Polewik" Collapsed="true">
+    <Position X="2.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAQAACQQAAAIAAQAAACgBICAQAAAAAEAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Bosses\Plains\Polewik\Polewik.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Treasurer" Collapsed="true">
+    <Position X="4.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAEAAAAAAAAEBCIIQAAACAAIAAAAAAAAAAEAAAEEA=</HashCode>
+      <FileName>Assets\Scripts\Entities\Bosses\Plains\Treasurer\Treasurer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inventory" Collapsed="true">
+    <Position X="5.75" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQAAgAIiAAAAkAwAAEAGCCAAAICBEIAgCAQACEA=</HashCode>
+      <FileName>Assets\Scripts\Inventory\Inventory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_charmEquipper" />
+      <Field Name="_spellCaster" />
+      <Field Name="_wallet" />
+      <Field Name="_weaponEquipper" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CharmEquipper" Collapsed="true">
+    <Position X="8.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAACAAAIAAAAAgQIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Inventory\CharmEquipper.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Charm" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SpellCaster" Collapsed="true">
+    <Position X="2.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAACAAAAAAAAAAAAAAAAAKEAAAAAAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\Inventory\SpellCaster.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Spells" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Wallet" Collapsed="true">
+    <Position X="6.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAACAAgAAAAAAABAAAACAAAIAA=</HashCode>
+      <FileName>Assets\Scripts\Inventory\Wallet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeaponEquipper" Collapsed="true">
+    <Position X="4.75" Y="8.5" Width="1.5" />
+    <AssociationLine Name="CurrentWeapon" Type="Weapon" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="9.191" />
+        <Point X="5.5" Y="11.312" />
+        <Point X="2.5" Y="11.312" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QIAAAAAAgCAAAAAAAAAAACAACAABAAAgAAAgABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Inventory\WeaponEquipper.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CurrentWeapon" />
+      <Property Name="SecondaryWeapon" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Weapon" Collapsed="true">
+    <Position X="1" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAACEACQACgAgMAAAGAABAIAAAAAgAAAABAAAQEE=</HashCode>
+      <FileName>Assets\Scripts\Inventory\Weapons\Weapon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Charm" Collapsed="true">
+    <Position X="8.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAASAAAoAAAAAAAAAAACAAAAAABAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Inventory\Charms\Charm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spell" Collapsed="true">
+    <Position X="1" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAAAAAAAYAmiUAMEBAAAAAEACAACCQwEAkASggAAAI=</HashCode>
+      <FileName>Assets\Scripts\Inventory\Spells\Spell.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="LevelGenerator" Collapsed="true">
+    <Position X="3.5" Y="15" Width="1.5" />
+    <AssociationLine Name="_roomConnector" Type="RoomConnector">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.023" Y="0.1" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AICAAAAAAKAACACAAgIAAAQCAIAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Level Generation\LevelGenerator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_collisionResolver" />
+      <Field Name="_corridorBuilder" />
+      <Field Name="_roomConnector" />
+      <Field Name="_roomPlacer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CollisionResolver" Collapsed="true">
+    <Position X="2.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAQAAAAIAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Level Generation\CollisionResolver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CorridorBuilder" Collapsed="true">
+    <Position X="6.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEEAAQAAAAAQAAAAIABCAAoAAAQAAAgAAAEABAAAA=</HashCode>
+      <FileName>Assets\Scripts\Level Generation\CorridorBuilder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_pathfinder" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="RoomConnector" Collapsed="true">
+    <Position X="4.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAIAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Level Generation\RoomConnector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoomPlacer" Collapsed="true">
+    <Position X="0.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAIBiAIAAAAAAEIAAAACAAGAAgAAAAAQAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Level Generation\RoomPlacer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pathfinder" Collapsed="true">
+    <Position X="6.5" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAIAIAIAAAAICAAAAAAAAAAAAAAoAAAAAAABAABAA=</HashCode>
+      <FileName>Assets\Scripts\Astar\Pathfinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

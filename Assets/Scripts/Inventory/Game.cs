@@ -143,18 +143,11 @@ public class Game : MonoBehaviour
 
     public void AcquireSpell(string spellId)
     {
-        SpellManager.SetSpellAcquired(spellId, true);
+        SpellManager?.SetSpellAcquired(spellId, true);
     }
 
     public void Save()
     {
-        SpellManager.SaveSpellData();
+        SpellManager?.SaveSpellData();
     }
-}
-
-public class SpellSetEventArgs : EventArgs
-{
-    public Spell[] Spells { get; private set; }
-
-    public SpellSetEventArgs(Spell[] spells) => Spells = spells;
 }

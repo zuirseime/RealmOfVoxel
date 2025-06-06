@@ -9,8 +9,6 @@ public class SpellManager : MonoBehaviour
 {
     private const string SpellDataPrefsKey = "PlayerSpellData";
 
-    //private static string path => Path.Combine(Application.persistentDataPath, "spell_data.json");
-
     private Dictionary<string, SpellData> _spellDataDict;
     private Spell[] _allSpells;
 
@@ -24,35 +22,11 @@ public class SpellManager : MonoBehaviour
     {
         _allSpells = Resources.LoadAll<Spell>("Spells");
         if (_allSpells == null || _allSpells.Length == 0)
-        {
             Debug.LogError("No spells found in Resources/Spells/");
-        }
-
-        foreach (var spell in _allSpells) Debug.Log(spell);
     }
 
     private void LoadSpellData()
     {
-        //if (File.Exists(path))
-        //{
-        //    string json = File.ReadAllText(path);
-        //    List<SpellData> spellDataList = JsonConvert.DeserializeObject<List<SpellData>>(json) ?? new();
-        //    _spellDataDict = spellDataList.ToDictionary(s => s.SpellId);
-
-        //    Debug.Log(json);
-        //} else
-        //{
-        //    _spellDataDict = new Dictionary<string, SpellData>();
-        //}
-
-        //foreach (var spell in _allSpells)
-        //{
-        //    if (!_spellDataDict.ContainsKey(spell.ID))
-        //    {
-        //        _spellDataDict[spell.ID] = new SpellData() { SpellId = spell.ID, Acquired = false, Active = false };
-        //    }
-        //}
-
         if (PlayerPrefs.HasKey(SpellDataPrefsKey))
         {
             string json = PlayerPrefs.GetString(SpellDataPrefsKey);
@@ -64,12 +38,8 @@ public class SpellManager : MonoBehaviour
             {
                 _spellDataDict = new Dictionary<string, SpellData>();
                 foreach (var data in spellDataList)
-                {
                     if (data != null && !string.IsNullOrEmpty(data.SpellId) && !_spellDataDict.ContainsKey(data.SpellId))
-                    {
                         _spellDataDict.Add(data.SpellId, data);
-                    }
-                }
             } else
             {
                 _spellDataDict = new Dictionary<string, SpellData>();
@@ -93,22 +63,14 @@ public class SpellManager : MonoBehaviour
                         Debug.Log($"Added default SpellData for new spell: {spell.ID}");
                     }
                 } else
-                {
                     Debug.LogWarning("Found a spell with null reference or null/empty ID in _allSpells during LoadSpellData.");
-                }
             }
         } else
-        {
             Debug.LogError("_allSpells is null even after trying to load them in LoadSpellData.");
-        }
     }
 
     public void SaveSpellData()
     {
-        //string json = JsonConvert.SerializeObject(_spellDataDict.Values.ToList(), Formatting.Indented);
-        //File.WriteAllText(path, json);
-        //Debug.Log($"Spells saved in: {path}");
-
         if (_spellDataDict == null || _spellDataDict.Count == 0)
         {
             Debug.LogWarning("Spell data dictionary is null or empty. Nothing to save to PlayerPrefs.");

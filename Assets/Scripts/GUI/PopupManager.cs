@@ -15,6 +15,7 @@ public class PopupManager : MonoBehaviour
 
     private void OnWeaponChanged(object sender, WeaponEventArgs args)
     {
+        args.Primary.CritStrike -= OnCritStrike;
         if (args.Secondary != null)
         {
             args.Secondary.CritStrike -= OnCritStrike;
